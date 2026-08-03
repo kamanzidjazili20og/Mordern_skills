@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+
+# secrets - never commit real credentials
+.env
+
+# logs
+*.log
+npm-debug.log*
+
+# user-uploaded content (large binaries)
+backend/uploads/videos/
+
+# OS / editor
+.DS_Store
+Thumbs.db

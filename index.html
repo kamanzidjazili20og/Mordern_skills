@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#06130e">
+<meta name="description" content="Noor Academy — Learn the Quran online with expert instructors. Tajweed, Tafsir, Hifz and Arabic courses.">
+<title>Noor Academy — Learn the Quran Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+    --bg: #06130e;
+    --bg2: #0a1d15;
+    --card: rgba(13,32,24,0.72);
+    --card-solid: #0d2018;
+    --gold: #d4a853;
+    --gold-light: #eccf8b;
+    --green: #34d399;
+    --text: #f2f7f4;
+    --text-sec: #a3bbb0;
+    --text-muted: #5f7a6d;
+    --border: rgba(212,168,83,0.14);
+    --shadow: 0 20px 50px -18px rgba(0,0,0,0.65);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+        radial-gradient(ellipse at 16% -6%, rgba(212,168,83,0.11) 0%, transparent 55%),
+        radial-gradient(ellipse at 88% 6%, rgba(52,211,153,0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 118%, rgba(6,95,70,0.4) 0%, transparent 58%),
+        radial-gradient(ellipse at 96% 62%, rgba(212,168,83,0.05) 0%, transparent 42%),
+        linear-gradient(165deg, #050f0b 0%, #071b13 46%, #040b08 100%);
+    background-attachment: fixed;
+}
+
+/* ===== DECORATIVE BACKGROUND LAYERS ===== */
+.pattern-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg fill='none' stroke='%23d4a853' stroke-opacity='0.045' stroke-width='1'%3E%3Crect x='15' y='15' width='60' height='60'/%3E%3Cpath d='M45 0 L90 45 L45 90 L0 45 Z'/%3E%3Ccircle cx='45' cy='45' r='15'/%3E%3Ccircle cx='45' cy='45' r='22'/%3E%3Cpath d='M15 15 L75 75 M75 15 L15 75'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 90px 90px;
+}
+.skyline {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 240px;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='260' viewBox='0 0 1600 260'%3E%3Cg fill='%23e8c87a' fill-opacity='0.045'%3E%3Crect x='0' y='214' width='1600' height='46'/%3E%3Crect x='90' y='118' width='16' height='96'/%3E%3Ccircle cx='98' cy='110' r='12'/%3E%3Cpath d='M98 90l5 15h-10z'/%3E%3Crect x='1494' y='118' width='16' height='96'/%3E%3Ccircle cx='1502' cy='110' r='12'/%3E%3Cpath d='M1502 90l5 15h-10z'/%3E%3Cpath d='M700 214c0-92 58-150 100-176 42 26 100 84 100 176z'/%3E%3Ccircle cx='800' cy='30' r='16'/%3E%3Cpath d='M800 6l6 18h-12z'/%3E%3Cpath d='M390 214c0-56 32-96 60-118 28 22 60 62 60 118z'/%3E%3Cpath d='M1150 214c0-56 32-96 60-118 28 22 60 62 60 118z'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat-x;
+    background-position: center bottom;
+}
+
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #17382a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+a { text-decoration: none; color: inherit; }
+img { display: block; }
+
+body.lang-en [data-lang="rw"] { display: none !important; }
+body.lang-rw [data-lang="en"] { display: none !important; }
+
+.wrap, .featured-inner { position: relative; z-index: 1; }
+.wrap { max-width: 1320px; margin: 0 auto; padding: 0 36px; }
+
+/* ===== HEADER ===== */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 36px;
+    background: rgba(5,16,11,0.82);
+    backdrop-filter: blur(18px) saturate(140%);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 10px 40px -18px rgba(0,0,0,0.6);
+}
+.header-left { display: flex; align-items: center; gap: 36px; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
+.logo i { color: var(--gold); font-size: 22px; filter: drop-shadow(0 0 8px rgba(212,168,83,0.5)); }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a { color: var(--text-sec); font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all .2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); background: rgba(212,168,83,0.1); }
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.conn-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px; border-radius: 100px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.32); color: #34d399;
+    transition: all .3s; user-select: none; white-space: nowrap;
+}
+.conn-pill .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.8); animation: connPulse 2s infinite; }
+.conn-pill.offline { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #f87171; }
+.conn-pill.offline .conn-dot { background: #f87171; box-shadow: 0 0 8px rgba(248,113,113,0.8); animation: none; }
+@keyframes connPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.lang-toggle { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.lang-option { padding: 6px 10px; font-size: 11px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: all .2s; }
+.lang-option.active { background: rgba(212,168,83,0.16); color: var(--gold-light); }
+
+.btn-admin {
+    color: var(--gold); font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px;
+    border: 1px solid rgba(212,168,83,0.24); transition: all .2s;
+}
+.btn-admin:hover { background: rgba(212,168,83,0.1); border-color: rgba(212,168,83,0.45); }
+
+.offline-banner {
+    display: none; align-items: center; justify-content: center; gap: 10px;
+    padding: 11px 16px; font-size: 13px; font-weight: 600;
+    background: rgba(239,68,68,0.12); color: #fca5a5; border-bottom: 1px solid rgba(239,68,68,0.25);
+}
+.offline-banner.show { display: flex; }
+
+/* ===== FEATURED ===== */
+.featured { position: relative; min-height: 78vh; display: flex; align-items: flex-end; overflow: hidden; }
+.featured-bg { position: absolute; inset: 0; }
+.featured-bg img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+    animation: slowZoom 26s ease-in-out infinite alternate;
+}
+@keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
+.featured-shade {
+    position: absolute; inset: 0;
+    background:
+        linear-gradient(90deg, rgba(4,15,11,0.97) 0%, rgba(4,15,11,0.8) 46%, rgba(4,15,11,0.32) 100%),
+        linear-gradient(0deg, var(--bg) 2%, transparent 46%);
+}
+.featured-inner {
+    max-width: 1320px; margin: 0 auto; padding: 0 36px 66px;
+    width: 100%;
+    display: flex; align-items: flex-end; gap: 48px; justify-content: space-between;
+}
+.featured-info { max-width: 660px; padding-bottom: 8px; }
+.f-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 26px; color: var(--gold-light);
+    letter-spacing: 0.5px; margin-bottom: 12px;
+    opacity: 0.92; text-shadow: 0 0 30px rgba(212,168,83,0.35);
+}
+.f-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    color: var(--gold-light);
+    padding: 7px 15px; border-radius: 100px;
+    background: rgba(212,168,83,0.12); border: 1px solid rgba(212,168,83,0.32);
+    margin-bottom: 18px;
+    backdrop-filter: blur(6px);
+}
+.f-badge .sep { opacity: 0.6; }
+.featured-info h1 { font-size: 48px; line-height: 1.1; font-weight: 800; letter-spacing: -1px; margin-bottom: 14px; }
+.featured-info p { font-size: 15.5px; line-height: 1.65; color: var(--text-sec); margin-bottom: 20px; max-width: 560px; }
+.f-meta { display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--text-sec); margin-bottom: 28px; }
+.f-meta span { display: inline-flex; align-items: center; gap: 7px; }
+.f-meta i { color: var(--gold); font-size: 12px; }
+.f-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-gold, .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 26px; border-radius: 10px;
+    font-size: 14px; font-weight: 700; transition: all .2s;
+}
+.btn-gold { background: linear-gradient(135deg, var(--gold), #c79a45); color: #14100a; box-shadow: 0 8px 26px rgba(212,168,83,0.3); }
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(212,168,83,0.42); }
+.btn-ghost { border: 1px solid var(--border); color: var(--text); background: rgba(255,255,255,0.04); backdrop-filter: blur(6px); }
+.btn-ghost:hover { background: rgba(255,255,255,0.09); }
+
+.featured-poster {
+    flex-shrink: 0; width: 230px;
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    border: 1px solid rgba(212,168,83,0.3);
+    transform: rotate(2deg);
+    transition: transform .3s ease, border-color .3s ease;
+}
+.featured-poster:hover { transform: rotate(0deg) translateY(-6px); border-color: rgba(212,168,83,0.6); }
+.featured-poster img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+
+/* ===== STATS BAND ===== */
+.stats-band {
+    margin-top: -34px;
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    background: linear-gradient(160deg, rgba(16,40,30,0.92), rgba(10,28,21,0.92));
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 26px 34px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(14px);
+}
+.stat { display: flex; align-items: center; gap: 16px; }
+.stat-icon {
+    width: 52px; height: 52px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px; font-size: 20px; color: var(--gold-light);
+    background: linear-gradient(160deg, rgba(212,168,83,0.18), rgba(212,168,83,0.05));
+    border: 1px solid rgba(212,168,83,0.25);
+}
+.stat-num {
+    display: block; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+    background: linear-gradient(120deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.stat-lbl { display: block; font-size: 12.5px; color: var(--text-sec); margin-top: 2px; }
+.stat + .stat { border-left: 1px solid rgba(255,255,255,0.06); padding-left: 22px; }
+
+/* ===== ROW SECTIONS ===== */
+.row-section { margin-top: 54px; }
+.row-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; }
+.row-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; position: relative; padding-bottom: 8px; }
+.row-head h2::after {
+    content: ''; position: absolute; left: 0; bottom: 0;
+    width: 34px; height: 3px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+}
+.row-head h2 em { font-style: normal; color: var(--gold); }
+.row-head.center { justify-content: center; }
+.row-head.center h2::after { left: 50%; transform: translateX(-50%); }
+.row-head.center h2 { text-align: center; }
+.view-more {
+    font-size: 13px; font-weight: 600; color: var(--text-sec);
+    display: inline-flex; align-items: center; gap: 7px; transition: all .2s;
+}
+.view-more:hover { color: var(--gold-light); }
+
+.h-row {
+    display: flex; gap: 16px; overflow-x: auto;
+    padding: 6px 2px 16px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+.h-row::-webkit-scrollbar { display: none; }
+.h-row.expanded { flex-wrap: wrap; overflow-x: visible; }
+
+/* poster card */
+.pcard { flex: 0 0 auto; width: 196px; scroll-snap-align: start; }
+.pcard .poster {
+    position: relative; aspect-ratio: 2/3; border-radius: 14px; overflow: hidden;
+    background: linear-gradient(180deg, #11291d, #0a1a12);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.pcard:hover .poster {
+    transform: translateY(-7px);
+    border-color: rgba(212,168,83,0.5);
+    box-shadow: 0 22px 46px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,168,83,0.2), 0 12px 42px -14px rgba(212,168,83,0.3);
+}
+.pcard .poster img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.pcard:hover .poster img { transform: scale(1.07); }
+.pcard .poster::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(6,18,12,0.55) 100%);
+    pointer-events: none;
+}
+.cat-badge {
+    position: absolute; top: 10px; left: 10px; z-index: 2;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 6px;
+    background: rgba(6,18,12,0.82); color: var(--gold-light); backdrop-filter: blur(4px);
+    border: 1px solid rgba(212,168,83,0.2);
+}
+.dur-badge {
+    position: absolute; bottom: 10px; right: 10px; z-index: 2;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 6px;
+    background: rgba(6,18,12,0.82); color: var(--gold-light);
+}
+.poster-hover {
+    position: absolute; inset: 0; z-index: 3;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(6,18,12,0.4);
+    opacity: 0; transition: opacity .25s;
+}
+.pcard:hover .poster-hover { opacity: 1; }
+.poster-hover i {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #14100a;
+    background: linear-gradient(135deg, var(--gold), #c79a45);
+    box-shadow: 0 8px 24px rgba(212,168,83,0.45);
+    padding-left: 4px;
+}
+.pcard h3 {
+    font-size: 14px; font-weight: 600; line-height: 1.35; margin-top: 11px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pcard .pmeta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+/* ===== HOW IT WORKS ===== */
+.steps-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+.step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 34px 28px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform .25s, border-color .25s, box-shadow .25s;
+}
+.step:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212,168,83,0.45);
+    box-shadow: 0 22px 50px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,168,83,0.12);
+}
+.step-icon {
+    width: 68px; height: 68px; margin: 0 auto 18px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 20px; font-size: 26px; color: var(--gold-light);
+    background: linear-gradient(160deg, rgba(212,168,83,0.2), rgba(212,168,83,0.04));
+    border: 1px solid rgba(212,168,83,0.3);
+    box-shadow: 0 12px 30px -10px rgba(212,168,83,0.35);
+}
+.step .step-num {
+    display: inline-block; margin-bottom: 8px;
+    font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    color: var(--gold-light);
+}
+.step h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.step p { font-size: 13px; line-height: 1.65; color: var(--text-sec); }
+
+/* ===== WHATSAPP CTA ===== */
+.wa-bar {
+    margin: 72px 0 0; border-radius: 18px; overflow: hidden;
+    display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+    padding: 20px;
+    background:
+        radial-gradient(ellipse at 12% 50%, rgba(37,211,102,0.16) 0%, transparent 55%),
+        linear-gradient(135deg, #0e2a1d 0%, #0a1f15 100%);
+    border: 1px solid rgba(37,211,102,0.25);
+    box-shadow: var(--shadow);
+}
+.wa-left { display: flex; align-items: center; gap: 14px; }
+.wa-icon {
+    width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #25d366; color: #06281a; font-size: 21px;
+    box-shadow: 0 10px 26px rgba(37,211,102,0.4);
+}
+.wa-left h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.wa-left p { font-size: 12.5px; color: var(--text-sec); }
+.btn-wa {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: #25d366; color: #06281a; font-weight: 700; font-size: 13px;
+    padding: 10px 20px; border-radius: 10px; transition: all .2s;
+}
+.btn-wa:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(37,211,102,0.45); }
+
+/* ===== FOOTER ===== */
+.footer { margin-top: 64px; border-top: 1px solid var(--border); background: #041009; position: relative; z-index: 1; }
+.footer-inner { max-width: 1320px; margin: 0 auto; padding: 48px 36px 0; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr; gap: 40px; }
+.footer-brand h3 { font-size: 18px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.footer-brand h3 i { color: var(--gold); }
+.footer-brand p { font-size: 13px; line-height: 1.7; color: var(--text-muted); max-width: 340px; margin-bottom: 18px; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social a {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); color: var(--text-sec); font-size: 14px; transition: all .2s;
+}
+.footer-social a:hover { background: rgba(212,168,83,0.14); color: var(--gold-light); border-color: rgba(212,168,83,0.35); transform: translateY(-2px); }
+.footer-col h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-sec); margin-bottom: 16px; }
+.footer-col a, .footer-col span { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 11px; transition: color .2s; }
+.footer-col a:hover { color: var(--gold-light); }
+.footer-col .contact-row { display: flex; align-items: center; gap: 10px; }
+.footer-col .contact-row i { color: var(--gold); font-size: 12px; width: 16px; }
+.footer-bottom {
+    margin-top: 40px; padding: 20px 0;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    font-size: 12px; color: var(--text-muted);
+}
+.footer-bottom i { color: #ef4444; }
+
+/* ===== REVEAL ON SCROLL ===== */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.revealed { opacity: 1; transform: none; }
+
+@media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .featured-inner { flex-direction: column-reverse; align-items: flex-start; }
+    .featured-poster { display: none; }
+    .stats-band { grid-template-columns: 1fr 1fr; gap: 18px; }
+    .stat + .stat { border-left: none; padding-left: 0; }
+    .steps-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .header { padding: 12px 16px; }
+    .wrap { padding: 0 16px; }
+    .nav-links { display: none; }
+    .featured { min-height: 62vh; }
+    .featured-inner { padding: 0 16px 40px; }
+    .featured-info h1 { font-size: 32px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+    .footer-inner { padding: 32px 16px 0; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .wa-bar { padding: 16px; }
+    .pcard { width: 160px; }
+    .stats-band { margin-top: -26px; padding: 20px 18px; }
+    .stat-icon { width: 44px; height: 44px; font-size: 16px; }
+    .stat-num { font-size: 21px; }
+}
+</style>
+</head>
+<body>
+
+<div class="pattern-bg"></div>
+<div class="skyline"></div>
+
+<header class="header">
+    <div class="header-left">
+        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Hababu Academy</a>
+        <nav class="nav-links">
+            <a href="#featured" class="active"><span data-lang="en">Home</span><span data-lang="rw">Ahabanza</span></a>
+            <a href="#categoryRows"><span data-lang="en">Lessons</span><span data-lang="rw">Amasomo</span></a>
+        </nav>
+    </div>
+    <div class="header-right">
+        <span class="conn-pill" id="connPill"><span class="conn-dot"></span><span id="connText">Online</span></span>
+        <div class="lang-toggle" id="langToggle" title="Switch language">
+            <span class="lang-option active" data-lang-code="en">EN</span>
+            <span class="lang-option" data-lang-code="rw">RW</span>
+        </div>
+        <a href="https://wa.me/250788821628" target="_blank" class="btn-admin"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="admin.html" class="btn-admin"><i class="fas fa-cog"></i> Admin</a>
+    </div>
+</header>
+
+<div class="offline-banner" id="offlineBanner">
+    <i class="fas fa-wifi"></i>
+    <span data-lang="en">You are offline. Showing your last saved lessons.</span>
+    <span data-lang="rw">Nta mbuganyuma. Urarekwa amasomo ya nyuma.</span>
+</div>
+
+<!-- ===== FEATURED ===== -->
+<section class="featured" id="featured"></section>
+
+<div class="wrap">
+
+    <!-- ===== STATS ===== -->
+    <div class="stats-band reveal" id="statsBand"></div>
+
+    <!-- ===== CATEGORY ROWS ===== -->
+    <div id="categoryRows"></div>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="row-section">
+        <div class="row-head center reveal">
+            <h2><span data-lang="en">How it works — simple as 1, 2, 3</span><span data-lang="rw">Uko bikora — byoroshye nka 1, 2, 3</span></h2>
+        </div>
+        <div class="steps-grid">
+            <div class="step reveal">
+                <div class="step-icon"><i class="fas fa-book-open"></i></div>
+                <span class="step-num">STEP 1</span>
+                <h4><span data-lang="en">Pick a Lesson</span><span data-lang="rw">Hitamo Amasomo</span></h4>
+                <p><span data-lang="en">Browse our structured Quran lessons — Tajweed, Tafsir, Hifz &amp; Arabic.</span><span data-lang="rw">Sindagura amasomo yacu ya Qur'an — Tajweed, Tafsir, Hifz &amp; Arabic.</span></p>
+            </div>
+            <div class="step reveal">
+                <div class="step-icon"><i class="fas fa-video"></i></div>
+                <span class="step-num">STEP 2</span>
+                <h4><span data-lang="en">Watch &amp; Learn</span><span data-lang="rw">Reba Kandi Wige</span></h4>
+                <p><span data-lang="en">Follow clear step-by-step video guidance from certified teachers.</span><span data-lang="rw">Kurikira amashusho ari inyigisho zirambuye z'abigisha bemejwe.</span></p>
+            </div>
+            <div class="step reveal">
+                <div class="step-icon"><i class="fas fa-mosque"></i></div>
+                <span class="step-num">STEP 3</span>
+                <h4><span data-lang="en">Practice &amp; Master</span><span data-lang="rw">Itoza Kandi Ube Umuhanga</span></h4>
+                <p><span data-lang="en">Repeat with confidence and build your recitation skills day by day.</span><span data-lang="rw">Subiramo wizeye kandi noza ubuhanga bwawe buri munsi.</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== WHATSAPP CTA ===== -->
+        <div class="wa-left">
+            <div class="wa-icon"><i class="fab fa-whatsapp"></i></div>
+            <div>
+                <h3><span data-lang="en">Join our WhatsApp community</span><span data-lang="rw">Injira mu muryango wacu wa WhatsApp</span></h3>
+                <p><span data-lang="en">Get lesson updates, reminders and support directly from our teachers.</span><span data-lang="rw">Bona amakuru y'amasomo, urwibutso n'inkunga bivuye ku bigisha bacu.</span></p>
+            </div>
+        </div>
+        <a href="https://wa.me/250788821628" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> <span data-lang="en">Join Now</span><span data-lang="rw">Injira</span></a>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3><i class="fas fa-book-quran"></i> Noor Academy</h3>
+                <p><span data-lang="en">Your trusted platform for learning the Quran online. Expert instructors, structured lessons, and a supportive community to guide you every step of the way.</span><span data-lang="rw">Uruhando rwawe rwizerwa rwo kwiga Qur'an kuri interineti. Abigisha babahanga, amasomo atunganyijwe, n'umuryango utera inkunga kugira ngo uyoborwe buri cyiciro.</span></p>
+                <div class="footer-social">
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4><span data-lang="en">Quick Links</span><span data-lang="rw">Ihuza Ryihuta</span></h4>
+                <a href="#categoryRows"><span data-lang="en">Lessons</span><span data-lang="rw">Amasomo</span></a>
+                <a href="admin.html"><span data-lang="en">Admin Panel</span><span data-lang="rw">Uruhando rw'Ubutegetsi</span></a>
+            </div>
+            <div class="footer-col">
+                <h4><span data-lang="en">Programs</span><span data-lang="rw">Gahunda</span></h4>
+                <a href="#tajweed">Tajweed</a>
+                <a href="#tafsir">Tafsir</a>
+                <a href="#hifz">Hifz</a>
+                <a href="#arabic">Arabic</a>
+            </div>
+            <div class="footer-col">
+                <h4><span data-lang="en">Contact</span><span data-lang="rw">Twandikire</span></h4>
+                <a href="https://wa.me/250788821628" target="_blank" class="contact-row"><i class="fab fa-whatsapp"></i> +250 788 821 628</a>
+                <a href="mailto:info@nooracademy.com" class="contact-row"><i class="fas fa-envelope"></i> info@nooracademy.com</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Noor Academy. <span data-lang="en">All rights reserved.</span><span data-lang="rw">Uburenganzira bwose buranazwe.</span></span>
+            <span><span data-lang="en">Made with</span><span data-lang="rw">Bikozwe n'</span> <i class="fas fa-heart"></i> <span data-lang="en">for the Quran</span><span data-lang="rw">kubwa Qur'an</span></span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ===== TOAST =====
+function toast(message, type) {
+    const el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:20000;padding:13px 18px;border-radius:12px;background:rgba(8,25,18,0.97);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;box-shadow:0 12px 40px -8px rgba(0,0,0,0.6);display:flex;align-items:center;gap:10px;max-width:340px;';
+    el.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-circle-exclamation" style="color:#f87171;' : type === 'info' ? 'fa-circle-info" style="color:#60a5fa;' : 'fa-circle-check" style="color:#34d399;') + '"></i><span></span>';
+    el.querySelector('span').textContent = message;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.transition = 'opacity 0.3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 320); }, 3200);
+}
+
+// ===== ONLINE / OFFLINE STATUS =====
+function setConn(online) {
+    const pill = document.getElementById('connPill');
+    if (!pill) return;
+    pill.classList.toggle('offline', !online);
+    const serverOnly = !online && navigator.onLine;
+    document.getElementById('connText').textContent = online ? 'Online' : (serverOnly ? 'Server offline' : 'Offline');
+    const banner = document.getElementById('offlineBanner');
+    banner.classList.toggle('show', !online);
+    const en = banner.querySelector('span[data-lang="en"]');
+    const rw = banner.querySelector('span[data-lang="rw"]');
+    if (en && rw) {
+        en.textContent = serverOnly ? 'The app is running, but the server is offline. Showing sample content.' : 'You are offline. Showing your saved lessons.';
+        rw.textContent = serverOnly ? 'Porogaramu ikora ariko seriveri ntikorera. Urarekwa ibyitegererezo.' : 'Nta mbuganyuma. Urarekwa amasomo ya nyuma.';
+    }
+}
+async function checkConnection() {
+    try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 4000);
+        const r = await fetch('http://localhost:3000/api/health', { signal: ctrl.signal });
+        clearTimeout(t);
+        setConn(r.ok);
+    } catch (e) { setConn(false); }
+}
+window.addEventListener('online', checkConnection);
+window.addEventListener('offline', () => setConn(false));
+setInterval(checkConnection, 30000);
+checkConnection();
+
+// ===== DATA HELPERS =====
+const API = 'http://localhost:3000/api';
+const lessonCacheKey = 'noorLessonsCache';
+
+const CATEGORY_IMAGES = {
+    tajweed: 'http://localhost:3000/uploads/thumbnails/thumb_seed_11.jpg',
+    tafsir: 'http://localhost:3000/uploads/thumbnails/thumb_seed_5.jpg',
+    hifz: 'http://localhost:3000/uploads/thumbnails/thumb_seed_9.jpg',
+    arabic: 'http://localhost:3000/uploads/thumbnails/thumb_seed_3.jpg',
+    'video-course': 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg'
+};
+const CATEGORY_COLORS = {
+    gold: '#d4a853', green: '#34d399', blue: '#60a5fa', purple: '#a78bfa', rose: '#fb7185'
+};
+const FEATURED_BG = 'http://localhost:3000/uploads/thumbnails/thumb_seed_11.jpg';
+
+// ===== SAMPLE CONTENT (shown when the server is offline) =====
+const DEMO_CATEGORIES = [
+    { slug: 'tajweed', name: 'Tajweed', color: '#d4a853' },
+    { slug: 'tafsir', name: 'Tafsir', color: '#34d399' },
+    { slug: 'hifz', name: 'Hifz', color: '#60a5fa' },
+    { slug: 'arabic', name: 'Arabic', color: '#a78bfa' }
+];
+const DEMO_LESSONS = [
+    { id: 1, title: 'Introduction to Makhaarij & Sifaat', description: 'Learn where every Arabic letter comes from and the qualities that give each letter its unique sound. A perfect first step for beginners.', category_name: 'Tajweed', category_slug: 'tajweed', category_color: '#d4a853', instructor_name: 'Sheikh Ahmed Karim', duration_minutes: 24, rating: 5, student_count: 328, difficulty: 'Beginner', thumbnail_url: CATEGORY_IMAGES.tajweed },
+    { id: 2, title: 'Tafsir: Surah Al-Fatiha Explained', description: 'A simple, step-by-step explanation of the most recited chapter of the Quran, with its meanings and lessons for daily life.', category_name: 'Tafsir', category_slug: 'tafsir', category_color: '#34d399', instructor_name: 'Ustadh Hamza Noor', duration_minutes: 31, rating: 4.9, student_count: 264, difficulty: 'Beginner', thumbnail_url: CATEGORY_IMAGES.tafsir },
+    { id: 3, title: 'Hifz: Memory Techniques That Work', description: 'Practical, easy memory techniques used by huffaz around the world. Learn to memorize longer pages with confidence.', category_name: 'Hifz', category_slug: 'hifz', category_color: '#60a5fa', instructor_name: 'Sheikh Bilal Hassan', duration_minutes: 27, rating: 4.8, student_count: 190, difficulty: 'Intermediate', thumbnail_url: CATEGORY_IMAGES.hifz },
+    { id: 4, title: 'Arabic: Letters & First Sounds', description: 'Start reading Arabic from scratch. Meet the 28 letters, their shapes and sounds, with clear pronunciation examples.', category_name: 'Arabic', category_slug: 'arabic', category_color: '#a78bfa', instructor_name: 'Ustadha Mariam Yusuf', duration_minutes: 22, rating: 4.7, student_count: 142, difficulty: 'Beginner', thumbnail_url: CATEGORY_IMAGES.arabic },
+    { id: 5, title: 'Tajweed: Rules of Noon & Meem', description: 'Master the essential Tajweed rules of noon and meem — idgham, iqlab, ikhfa and more — with clear spoken examples.', category_name: 'Tajweed', category_slug: 'tajweed', category_color: '#d4a853', instructor_name: 'Sheikh Ahmed Karim', duration_minutes: 35, rating: 4.9, student_count: 215, difficulty: 'Intermediate', thumbnail_url: CATEGORY_IMAGES.tajweed },
+    { id: 6, title: 'Tafsir: Ayat Al-Kursi Deep Dive', description: 'One of the greatest verses in the Quran, explained simply so you can understand and connect with its powerful message.', category_name: 'Tafsir', category_slug: 'tafsir', category_color: '#34d399', instructor_name: 'Ustadh Hamza Noor', duration_minutes: 29, rating: 5, student_count: 173, difficulty: 'Intermediate', thumbnail_url: CATEGORY_IMAGES.tafsir }
+];
+
+function formatCount(n) {
+    if (n == null) return '0';
+    return n >= 1000 ? (n / 1000).toFixed(1).replace('.0', '') + 'k' : n;
+}
+function thumbFor(lesson) {
+    return lesson.thumbnail_url || CATEGORY_IMAGES[lesson.category_slug] || CATEGORY_IMAGES['video-course'];
+}
+
+// ===== RENDER: FEATURED =====
+function renderFeatured(lessons) {
+    const el = document.getElementById('featured');
+    if (!lessons.length) return;
+    const sorted = [...lessons].sort((a, b) => (Number(b.rating) - Number(a.rating)) || (b.student_count - a.student_count));
+    const l = Object.assign({}, sorted[0]);
+    const paint = function () {
+        const rating = l.rating != null ? Number(l.rating).toFixed(1) : '--';
+        const dur = l.duration_minutes != null ? l.duration_minutes + ' min' : '-- min';
+        el.innerHTML = `
+            <div class="featured-bg"><img src="${thumbFor(l)}" alt=""></div>
+            <div class="featured-shade"></div>
+            <div class="featured-inner">
+                <div class="featured-info">
+                    <div class="f-arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                    <div class="f-badge"><span data-lang="en">Featured</span><span data-lang="rw">Bishyizwe Imbere</span><span class="sep">•</span>${l.category_name}</div>
+                    <h1>${l.title}</h1>
+                    <p>${l.description || 'Learn with clear, step-by-step guidance from our certified teachers.'}</p>
+                    <div class="f-meta">
+                        <span><i class="fas fa-star"></i> ${rating}</span>
+                        <span><i class="fas fa-users"></i> ${formatCount(l.student_count)} <span data-lang="en">students</span><span data-lang="rw">abanyeshuri</span></span>
+                        <span><i class="fas fa-clock"></i> ${dur}</span>
+                        <span><i class="fas fa-signal"></i> ${l.difficulty || 'All levels'}</span>
+                    </div>
+                    <div class="f-btns">
+                        <a href="video.html?id=${l.id}" class="btn-gold"><i class="fas fa-play"></i> <span data-lang="en">Watch Now</span><span data-lang="rw">Reba Ubu</span></a>
+                        <a href="#categoryRows" class="btn-ghost"><i class="fas fa-book-open"></i> <span data-lang="en">Browse Lessons</span><span data-lang="rw">Sindagura Amasomo</span></a>
+                    </div>
+                </div>
+                <div class="featured-poster"><img src="${thumbFor(l)}" alt=""></div>
+            </div>`;
+        setLang(currentLang);
+    };
+    paint();
+    fetch(API + '/lessons/' + l.id).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+        if (d && d.lesson) Object.assign(l, d.lesson);
+        paint();
+    }).catch(function () {});
+}
+
+// ===== RENDER: POSTER CARD =====
+function posterCard(l) {
+    const dur = l.duration_minutes != null ? l.duration_minutes + ' min' : '--';
+    return `
+        <a class="pcard" href="video.html?id=${l.id}">
+            <div class="poster">
+                <img src="${thumbFor(l)}" alt="" loading="lazy">
+                <span class="cat-badge">${l.category_name}</span>
+                <span class="dur-badge">${dur}</span>
+                <div class="poster-hover"><i class="fas fa-play"></i></div>
+            </div>
+            <h3>${l.title}</h3>
+            <div class="pmeta">${l.instructor_name}</div>
+        </a>`;
+}
+
+// ===== RENDER: CATEGORY ROWS =====
+function renderCategoryRows(lessons, categories) {
+    const container = document.getElementById('categoryRows');
+    const order = categories && categories.length ? categories : [];
+    const orderMap = {};
+    order.forEach((c, i) => orderMap[c.slug] = i);
+    const byCat = {};
+    lessons.forEach(l => {
+        if (!byCat[l.category_slug]) byCat[l.category_slug] = { name: l.category_name, color: l.category_color, items: [] };
+        byCat[l.category_slug].items.push(l);
+    });
+    const slugs = Object.keys(byCat).sort((a, b) => (orderMap[a] ?? 999) - (orderMap[b] ?? 999));
+    container.innerHTML = `
+        <div class="row-head">
+            <h2><span data-lang="en">All Lessons</span><span data-lang="rw">Amasomo Yose</span></h2>
+        </div>` + slugs.map(slug => {
+        const cat = byCat[slug];
+        return `
+            <section class="row-section" id="${slug}">
+                <div class="row-head">
+                    <h2><em>${cat.name}</em></h2>
+                    <a href="#${slug}" class="view-more" data-expand="${slug}Row"><span data-lang="en">View More</span><span data-lang="rw">Reba Byinshi</span> <i class="fas fa-chevron-right"></i></a>
+                </div>
+                <div class="h-row" id="${slug}Row">${cat.items.map(posterCard).join('')}</div>
+            </section>`;
+    }).join('');
+    setLang(currentLang);
+}
+
+// ===== RENDER: STATS =====
+function animateCounters() {
+    document.querySelectorAll('.stat-num').forEach(el => {
+        const target = parseFloat(el.dataset.count || '0');
+        const dec = parseInt(el.dataset.decimals || '0', 10);
+        const suffix = el.dataset.suffix || '';
+        const dur = 1300;
+        const t0 = performance.now();
+        function tick(t) {
+            const p = Math.min((t - t0) / dur, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const val = target * eased;
+            el.textContent = dec ? val.toFixed(dec) : Math.round(val).toLocaleString();
+            if (p < 1) requestAnimationFrame(tick);
+            else el.textContent = (dec ? target.toFixed(dec) : Math.round(target).toLocaleString()) + suffix;
+        }
+        requestAnimationFrame(tick);
+    });
+}
+function renderStats(lessons) {
+    const el = document.getElementById('statsBand');
+    if (!el) return;
+    const totalStudents = lessons.reduce((s, l) => s + (Number(l.student_count) || 0), 0);
+    const avg = lessons.length ? lessons.reduce((s, l) => s + (Number(l.rating) || 0), 0) / lessons.length : 0;
+    const stats = [
+        { icon: 'fa-book-quran', num: lessons.length, suffix: '+', dec: 0, label: ['Structured Lessons', 'Amasomo Atunganyijwe'] },
+        { icon: 'fa-user-graduate', num: totalStudents, suffix: '+', dec: 0, label: ['Students Learning', 'Abanyeshuri Bari Kwiga'] },
+        { icon: 'fa-star', num: avg, suffix: '/5', dec: 1, label: ['Average Rating', 'Igipimo Gisanzwe'] }
+    ];
+    el.innerHTML = stats.map(s => `
+        <div class="stat">
+            <div class="stat-icon"><i class="fas ${s.icon}"></i></div>
+            <div class="stat-body">
+                <span class="stat-num" data-count="${s.num}" data-decimals="${s.dec}" data-suffix="${s.suffix}">0</span>
+                <span class="stat-lbl"><span data-lang="en">${s.label[0]}</span><span data-lang="rw">${s.label[1]}</span></span>
+            </div>
+        </div>`).join('');
+    setLang(currentLang);
+    animateCounters();
+}
+
+// ===== VIEW MORE TOGGLE =====
+document.addEventListener('click', e => {
+    const vm = e.target.closest('.view-more[data-expand]');
+    if (!vm) return;
+    e.preventDefault();
+    const row = document.getElementById(vm.dataset.expand);
+    if (!row) return;
+    row.classList.toggle('expanded');
+    const more = vm.querySelector('span[data-lang="en"]');
+    if (more) more.textContent = row.classList.contains('expanded') ? 'Show Less' : 'View More';
+});
+
+// ===== DATA LOADING =====
+function renderOffline(container, msg) {
+    if (container) container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px;grid-column:1/-1">' + msg + '</p>';
+}
+function cacheSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+function cacheGet(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
+
+async function loadHome() {
+    let lessons = [], categories = [];
+    let usedSample = false;
+    let ok = false;
+    try {
+        const res = await Promise.all([
+            fetch(API + '/lessons/recent').then(r => { if (!r.ok) throw new Error('http'); return r.json(); }),
+            fetch(API + '/categories').then(r => { if (!r.ok) throw new Error('http'); return r.json(); })
+        ]);
+        lessons = res[0].lessons || [];
+        categories = res[1].categories || [];
+        cacheSet(lessonCacheKey, lessons);
+        ok = true;
+    } catch (e) {
+        lessons = cacheGet(lessonCacheKey) || [];
+        if (!lessons.length) {
+            lessons = DEMO_LESSONS;
+            categories = DEMO_CATEGORIES;
+            usedSample = true;
+        }
+    }
+    if (ok) setConn(true);
+    if (usedSample) toast('Showing sample content — start the server for live data.', 'info');
+    if (!lessons.length) renderOffline(document.getElementById('featured'), 'Unable to reach the server. Please check your connection.');
+    renderFeatured(lessons);
+    renderCategoryRows(lessons, categories);
+    renderStats(lessons);
+}
+loadHome();
+
+// ===== REVEAL ON SCROLL =====
+(function () {
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('revealed')); return; }
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    els.forEach(el => io.observe(el));
+})();
+
+// ===== LANGUAGE TOGGLE =====
+const langToggle = document.getElementById('langToggle');
+const langOptions = langToggle.querySelectorAll('.lang-option');
+let currentLang = localStorage.getItem('noorLang') || 'en';
+function setLang(lang) {
+    currentLang = lang;
+    document.body.className = document.body.className.replace(/lang-\w+/g, '').trim();
+    document.body.classList.add('lang-' + lang);
+    langOptions.forEach(opt => opt.classList.toggle('active', opt.dataset.langCode === lang));
+    localStorage.setItem('noorLang', lang);
+    document.querySelectorAll('[data-lang]').forEach(el => {
+        el.style.display = el.dataset.lang === lang ? '' : 'none';
+    });
+}
+langOptions.forEach(opt => opt.addEventListener('click', () => setLang(opt.dataset.langCode)));
+setLang(currentLang);
+</script>
+</body>
+</html>

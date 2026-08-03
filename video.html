@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Noor Academy — Video Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+    --bg: #06130e;
+    --bg-card: rgba(13,32,24,0.85);
+    --bg-hover: rgba(20,45,34,0.9);
+    --gold: #d4a853;
+    --gold-light: #eccf8b;
+    --text: #f2f7f4;
+    --text-sec: #a3bbb0;
+    --text-muted: #5f7a6d;
+    --border: rgba(212,168,83,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    position: relative;
+    background:
+        radial-gradient(ellipse at 20% -5%, rgba(212,168,83,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 85%, rgba(52,211,153,0.06) 0%, transparent 50%),
+        linear-gradient(165deg, #050f0b 0%, #071b13 46%, #040b08 100%);
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 25% 20%, rgba(212,168,83,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 80%, rgba(212,168,83,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 30%, rgba(52,211,153,0.05) 0%, transparent 45%),
+        radial-gradient(ellipse at 10% 70%, rgba(45,138,94,0.05) 0%, transparent 40%),
+        linear-gradient(180deg, #06130e 0%, #0a1d15 40%, #050f0b 100%);
+    pointer-events: none;
+}
+
+.page-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    filter: blur(52px) saturate(1.35);
+    transform: scale(1.15);
+    opacity: 0.38;
+}
+
+.page-backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(5,15,10,0.85) 0%, rgba(5,15,10,0.5) 45%, rgba(4,11,8,0.94) 100%);
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #06130e; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 12px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(5,16,11,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-left { display: flex; align-items: center; gap: 24px; }
+
+.back-link {
+    text-decoration: none;
+    color: var(--text-sec);
+    font-size: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.back-link:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+    gap: 10px;
+}
+
+.logo i { font-size: 20px; color: var(--gold); }
+.logo span { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+    color: var(--text-sec);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all .2s;
+    text-decoration: none;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); background: rgba(255,255,255,0.06); }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.btn-admin {
+    text-decoration: none;
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(212,168,83,0.2);
+    transition: all 0.2s;
+}
+
+.btn-admin:hover { background: rgba(212,168,83,0.08); }
+
+.conn-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px; border-radius: 100px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.32); color: #34d399;
+    transition: all 0.3s; user-select: none; white-space: nowrap;
+}
+.conn-pill .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px rgba(52,211,153,0.8); animation: connPulse 2s infinite; }
+.conn-pill.offline { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35); color: #f87171; }
+.conn-pill.offline .conn-dot { background: #f87171; box-shadow: 0 0 8px rgba(248,113,113,0.8); animation: none; }
+@keyframes connPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.player-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px 40px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.player-main { min-width: 0; }
+
+.player-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 20px 60px -15px rgba(0,0,0,0.6);
+    border: 1px solid rgba(212,168,83,0.14);
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.player-container:hover {
+    border-color: rgba(212,168,83,0.4);
+    box-shadow: 0 26px 80px -16px rgba(0,0,0,0.8), 0 0 40px -18px rgba(212,168,83,0.5);
+}
+
+.player-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#youtubeFrame { position: absolute; inset: 0; display: none; }
+#youtubeFrame iframe { width: 100%; height: 100%; border: none; }
+#realVideo { position: absolute; inset: 0; }
+
+.player-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.1) 70%, transparent 100%);
+    pointer-events: none;
+}
+
+.player-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.player-top { display: flex; align-items: center; justify-content: space-between; }
+
+.player-top-badge {
+    padding: 4px 14px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.player-top-right { display: flex; gap: 8px; }
+
+.player-top-btn {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.5);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.player-top-btn:hover { background: rgba(0,0,0,0.7); color: white; }
+
+.player-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.play-big-btn {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.3);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    font-size: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    backdrop-filter: blur(8px);
+    margin: 0 auto 12px;
+}
+
+.play-big-btn:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    transform: scale(1.05);
+}
+
+.player-center span { display: block; font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500; }
+
+.player-bottom { display: flex; align-items: center; justify-content: space-between; }
+
+.player-timeline { flex: 1; margin-right: 16px; }
+
+.player-timeline .bar {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.player-timeline .bar .fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gold);
+    border-radius: 2px;
+    position: relative;
+}
+
+.player-timeline .bar .fill::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.player-timeline:hover .bar .fill::after { opacity: 1; }
+
+.player-time { font-size: 12px; color: rgba(255,255,255,0.6); font-weight: 500; margin-top: 4px; }
+
+.player-bottom-right { display: flex; align-items: center; gap: 12px; }
+
+.player-bottom-btn {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(0,0,0,0.4);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.player-bottom-btn:hover { background: rgba(0,0,0,0.6); color: white; }
+
+.video-info-section {
+    margin-top: 24px;
+    background: rgba(10,28,21,0.72);
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid var(--border);
+}
+
+.video-info-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.video-info-header .left { flex: 1; min-width: 0; }
+
+.video-info-header .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.video-info-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+    margin-bottom: 10px;
+}
+
+.video-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.video-stats-row .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-sec);
+}
+
+.video-stats-row .stat i { font-size: 13px; }
+.video-stats-row .stat .stars { color: var(--gold); }
+
+.video-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+.btn-action {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-action.primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: white;
+}
+
+.btn-action.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,168,83,0.3); }
+
+.btn-action.secondary {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-action.secondary:hover { background: var(--bg-hover); }
+
+.instructor-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    margin: 16px 0;
+    position: relative;
+}
+
+.instructor-bar::before,
+.instructor-bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,83,0.3), rgba(212,168,83,0.05), transparent);
+}
+
+.instructor-bar::before { top: 0; }
+.instructor-bar::after { bottom: 0; }
+
+.instructor-avatar {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.instructor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.instructor-info h4 { font-size: 15px; font-weight: 700; }
+.instructor-info p { font-size: 13px; color: var(--text-muted); }
+.instructor-info a { color: var(--gold); text-decoration: none; font-size: 13px; font-weight: 600; }
+
+.video-description { padding: 16px 0; }
+
+.video-description h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.video-description p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-sec);
+}
+
+.video-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 16px 0;
+}
+
+.video-tags span {
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-sec);
+    transition: all 0.2s;
+}
+
+.video-tags span:hover { border-color: rgba(212,168,83,0.2); color: var(--gold); }
+
+.player-sidebar {
+    background: rgba(10,28,21,0.72);
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid var(--border);
+}
+
+.player-sidebar h3 {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    position: relative;
+}
+
+.player-sidebar h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,83,0.3), rgba(212,168,83,0.05), transparent);
+}
+
+.player-sidebar h3 span { font-weight: 400; color: var(--text-muted); font-size: 13px; }
+
+.related-card {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    margin-bottom: 4px;
+    position: relative;
+}
+
+.related-card:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 12px;
+    right: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), rgba(212,168,83,0.1), rgba(255,255,255,0.03), transparent);
+}
+
+.related-card:hover {
+    background: rgba(212,168,83,0.03);
+    box-shadow: 0 0 0 1px rgba(212,168,83,0.06);
+}
+
+.related-thumb {
+    width: 168px;
+    min-width: 168px;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg-hover);
+}
+
+.related-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.related-thumb .dur {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(0,0,0,0.75);
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+}
+
+.related-info h4 { font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 4px; }
+.related-info .rel-instructor { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.related-info .rel-meta { font-size: 11px; color: var(--text-muted); }
+.related-info .rel-meta i { color: var(--gold); font-size: 10px; }
+
+.footer {
+    padding: 24px 40px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.footer a { color: var(--text-sec); text-decoration: none; transition: color 0.2s; }
+.footer a:hover { color: var(--gold); }
+.footer-links { display: flex; gap: 24px; }
+
+@media (max-width: 1024px) {
+    .player-wrapper { grid-template-columns: 1fr; padding: 20px; }
+    .player-sidebar { order: -1; }
+    .related-thumb { width: 140px; min-width: 140px; }
+    .header { padding: 12px 20px; }
+    .nav-links { display: none; }
+    .footer { padding: 20px; }
+}
+
+@media (max-width: 640px) {
+    .player-wrapper { padding: 16px; }
+    .video-info-header h1 { font-size: 20px; }
+    .video-actions { width: 100%; }
+    .btn-action { flex: 1; justify-content: center; }
+    .play-big-btn { width: 60px; height: 60px; font-size: 24px; }
+    .related-thumb { width: 120px; min-width: 120px; }
+    .footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-backdrop" id="pageBackdrop"></div>
+
+<header class="header">
+    <div class="header-left">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i></a>
+        <a href="index.html" class="logo">
+            <i class="fas fa-book-quran"></i>
+            <span>Noor Academy</span>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#categoryRows">Lessons</a>
+        </nav>
+    </div>
+    <div class="header-right">
+        <span class="conn-pill" id="connPill"><span class="conn-dot"></span><span id="connText">Online</span></span>
+        <a href="https://wa.me/250788821628" target="_blank" class="btn-admin"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <a href="admin.html" class="btn-admin"><i class="fas fa-cog"></i> Admin</a>
+    </div>
+</header>
+
+<div class="player-wrapper">
+
+    <div class="player-main">
+        <div class="player-container" id="playerContainer">
+            <img id="videoThumbnail" src="http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg" alt="Video thumbnail">
+            <div class="player-gradient" id="playerGradient"></div>
+            <div class="player-controls" id="playerControls">
+                <div class="player-top">
+                    <span class="player-top-badge" id="playerTopBadge"><i class="fas fa-play" style="font-size:10px;margin-right:4px;"></i> Now Playing</span>
+                    <div class="player-top-right">
+                        <button class="player-top-btn" id="btnSubtitles" title="Subtitles" style="display:none;"><i class="fas fa-closed-captioning"></i></button>
+                    </div>
+                </div>
+                <div class="player-center" id="playerCenter">
+                    <button class="play-big-btn" id="playBigBtn"><i class="fas fa-play" style="margin-left:3px;"></i></button>
+                    <span id="playerHint">Click to play</span>
+                </div>
+                <div class="player-bottom">
+                    <div class="player-timeline">
+                        <div class="bar" id="timelineBar"><div class="fill" id="timelineFill" style="width: 0%;"></div></div>
+                        <div class="player-time" id="playerTime">0:00 / 0:00</div>
+                    </div>
+                    <div class="player-bottom-right">
+                        <button class="player-bottom-btn" id="btnVolume"><i class="fas fa-volume-up"></i></button>
+                        <button class="player-bottom-btn" id="btnExpand"><i class="fas fa-expand"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="youtubeFrame"></div>
+            <video id="realVideo" controls playsinline style="display:none;width:100%;height:100%;object-fit:contain;background:#000;"></video>
+        </div>
+
+        <div class="video-info-section">
+            <div class="video-info-header">
+                <div class="left">
+                    <div class="tag" id="videoTag">Tajweed</div>
+                    <h1 id="videoTitle">Introduction to Makhaarij &amp; Sifaat</h1>
+                    <div class="video-stats-row">
+                        <span class="stat" id="difficultyDisplay"><i class="fas fa-signal"></i> <span id="difficultyLevel">—</span></span>
+                        <span class="stat" id="ratingDisplay"><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span> 5.0</span>
+                        <span class="stat" id="viewsDisplay"><i class="fas fa-eye"></i> <span id="viewCount">0</span> views</span>
+                        <span class="stat" id="studentsDisplay"><i class="fas fa-user-graduate"></i> <span id="studentCount">0</span> students</span>
+                        <span class="stat" id="dateDisplay"><i class="fas fa-calendar"></i> —</span>
+                    </div>
+                </div>
+                <div class="video-actions">
+                    <button class="btn-action primary"><i class="fas fa-play"></i> Watch Now</button>
+                    <button class="btn-action secondary"><i class="fas fa-bookmark"></i> Save</button>
+                    <button class="btn-action secondary"><i class="fas fa-share"></i></button>
+                </div>
+            </div>
+
+            <div class="instructor-bar">
+                <div class="instructor-avatar" id="instructorAvatar">
+                    <img src="http://localhost:3000/uploads/avatars/avatar_1.jpg" alt="Instructor">
+                </div>
+                <div class="instructor-info">
+                    <h4 id="instructorName">—</h4>
+                    <p id="instructorBio">Instructor &middot; <a href="#">View Profile</a></p>
+                </div>
+            </div>
+
+            <div class="video-description" id="lessonDescription">
+                <h3><i class="fas fa-align-left" style="color:var(--gold);font-size:14px;margin-right:8px;"></i> Description</h3>
+                <div id="descriptionContent">
+                    <p id="descriptionText"><em>Loading lesson data...</em></p>
+                </div>
+            </div>
+
+            <div class="video-tags" id="videoTags"></div>
+
+            <div style="margin-top:20px;padding:20px;border-radius:12px;background:linear-gradient(145deg,rgba(212,168,83,0.06),rgba(212,168,83,0.02));border:1px solid rgba(212,168,83,0.1);">
+                <p style="font-size:13px;color:var(--text-muted);text-align:center;">
+                    <i class="fas fa-info-circle" style="color:var(--gold);margin-right:6px;"></i>
+                    Lesson description and materials are managed by the admin through the dashboard.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="player-sidebar">
+        <h3>Related Lessons <span id="relatedCount">0 videos</span></h3>
+        <div id="relatedList"></div>
+
+        <div style="margin-top:20px;padding:16px;border-radius:12px;background:linear-gradient(145deg,rgba(212,168,83,0.08),rgba(212,168,83,0.02));border:1px solid rgba(212,168,83,0.1);">
+            <h4 style="font-size:14px;font-weight:700;margin-bottom:6px;"><i class="fas fa-mosque" style="color:var(--gold);margin-right:8px;"></i> <span id="courseTitle">Complete Tajweed Course</span></h4>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Master all Tajweed rules with our structured 12-lesson course.</p>
+            <a href="index.html" style="display:inline-block;padding:8px 16px;border-radius:8px;background:var(--gold);color:white;font-size:12px;font-weight:700;text-decoration:none;">Enroll Now — Free</a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <span>&copy; 2026 Noor Academy. All rights reserved.</span>
+    <div class="footer-links">
+        <a href="admin.html">Admin Panel</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+    </div>
+</footer>
+
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const lessonId = parseInt(params.get('id')) || 1;
+const API_BASE = 'http://localhost:3000/api';
+
+const viewKey = 'lesson_view_' + lessonId;
+let views = parseInt(localStorage.getItem(viewKey)) || 0;
+views++;
+localStorage.setItem(viewKey, views);
+
+function formatNumber(num) {
+    if (num == null) return '0';
+    if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return num.toLocaleString();
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return 'N/A';
+    const d = new Date(dateStr);
+    if (isNaN(d)) return 'N/A';
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function getCategoryFallback(category) {
+    const map = {
+        'Tajweed': 'http://localhost:3000/uploads/thumbnails/thumb_seed_11.jpg',
+        'Tafsir': 'http://localhost:3000/uploads/thumbnails/thumb_seed_5.jpg',
+        'Hifz': 'http://localhost:3000/uploads/thumbnails/thumb_seed_9.jpg',
+        'Arabic': 'http://localhost:3000/uploads/thumbnails/thumb_seed_3.jpg',
+        'Video Course': 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg'
+    };
+    return map[category] || 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg';
+}
+
+function generateStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5 ? 1 : 0;
+    const empty = 5 - full - half;
+    let html = '';
+    for (let i = 0; i < full; i++) html += '<i class="fas fa-star"></i>';
+    if (half) html += '<i class="fas fa-star-half-alt"></i>';
+    for (let i = 0; i < empty; i++) html += '<i class="far fa-star"></i>';
+    return html;
+}
+
+function formatDuration(minutes) {
+    const mins = Math.floor(minutes);
+    const secs = Math.round((minutes - mins) * 60);
+    return mins + ':' + String(secs).padStart(2, '0');
+}
+
+function formatClock(secs) {
+    if (!isFinite(secs)) return '0:00';
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return m + ':' + String(s).padStart(2, '0');
+}
+
+// ===== ONLINE / OFFLINE STATUS =====
+function setConn(online) {
+    const pill = document.getElementById('connPill');
+    if (!pill) return;
+    pill.classList.toggle('offline', !online);
+    document.getElementById('connText').textContent = online ? 'Online' : (!online && navigator.onLine ? 'Server offline' : 'Offline');
+}
+async function checkConnection() {
+    try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 4000);
+        const r = await fetch(API_BASE + '/health', { signal: ctrl.signal });
+        clearTimeout(t);
+        setConn(r.ok);
+    } catch (e) { setConn(false); }
+}
+window.addEventListener('online', checkConnection);
+window.addEventListener('offline', () => setConn(false));
+setInterval(checkConnection, 30000);
+checkConnection();
+
+// ===== PLAYER STATE =====
+let videoSource = null; // { type:'html5', src } | { type:'youtube', src }
+let lessonData = null;
+
+function toast(message, type) {
+    const el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:20000;padding:13px 18px;border-radius:12px;background:rgba(8,25,18,0.97);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;box-shadow:0 12px 40px -8px rgba(0,0,0,0.6);display:flex;align-items:center;gap:10px;';
+    el.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-circle-exclamation" style="color:#f87171;' : 'fa-circle-info" style="color:var(--gold);') + '"></i><span></span>';
+    el.querySelector('span').textContent = message;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.transition = 'opacity 0.3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 320); }, 3200);
+}
+
+function getYouTubeEmbed(url) {
+    let m = url.match(/(?:youtube\.com\/watch\?v=)([\w-]+)/) || url.match(/(?:youtu\.be\/)([\w-]+)/);
+    if (m) return 'https://www.youtube.com/embed/' + m[1] + '?rel=0&autoplay=1';
+    return null;
+}
+
+function startPlayback() {
+    if (!videoSource) {
+        toast('This video is not uploaded yet. Please check back soon.');
+        return;
+    }
+    document.getElementById('videoThumbnail').style.display = 'none';
+    document.getElementById('playerGradient').style.display = 'none';
+    document.getElementById('playerControls').style.display = 'none';
+    if (videoSource.type === 'youtube') {
+        const wrap = document.getElementById('youtubeFrame');
+        wrap.style.display = 'block';
+        wrap.innerHTML = '<iframe src="' + getYouTubeEmbed(videoSource.src) + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    } else {
+        const v = document.getElementById('realVideo');
+        v.style.display = 'block';
+        v.src = videoSource.src;
+        v.play().catch(() => {});
+    }
+}
+
+// Custom player controls (used when video loads)
+function wirePlayerControls() {
+    const v = document.getElementById('realVideo');
+    const big = document.getElementById('playBigBtn');
+    const center = document.getElementById('playerCenter');
+    const timeEl = document.getElementById('playerTime');
+    const fill = document.getElementById('timelineFill');
+    const bar = document.getElementById('timelineBar');
+    const volBtn = document.getElementById('btnVolume');
+    const expBtn = document.getElementById('btnExpand');
+
+    big.addEventListener('click', startPlayback);
+    center.addEventListener('click', startPlayback);
+
+    v.addEventListener('timeupdate', () => {
+        if (!v.duration) return;
+        fill.style.width = (v.currentTime / v.duration * 100) + '%';
+        timeEl.textContent = formatClock(v.currentTime) + ' / ' + formatClock(v.duration);
+    });
+    v.addEventListener('loadedmetadata', () => {
+        timeEl.textContent = '0:00 / ' + formatClock(v.duration);
+    });
+    bar.addEventListener('click', (e) => {
+        if (!v.duration) return;
+        const rect = bar.getBoundingClientRect();
+        const pct = (e.clientX - rect.left) / rect.width;
+        v.currentTime = pct * v.duration;
+    });
+    volBtn.addEventListener('click', () => {
+        v.muted = !v.muted;
+        volBtn.innerHTML = v.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-up"></i>';
+    });
+    expBtn.addEventListener('click', () => {
+        const pc = document.getElementById('playerContainer');
+        if (document.fullscreenElement) document.exitFullscreen();
+        else pc.requestFullscreen().catch(() => toast('Fullscreen unavailable'));
+    });
+}
+
+document.getElementById('playBigBtn').addEventListener('click', startPlayback);
+document.getElementById('playerCenter').addEventListener('click', startPlayback);
+wirePlayerControls();
+
+(async function () {
+    try {
+        let res = await fetch(API_BASE + '/lessons/recent');
+        if (!res.ok) throw new Error('API ' + res.status);
+        const data = await res.json();
+        const lessons = data.lessons || [];
+        let lesson = lessons.find(function (l) { return l.id === lessonId; });
+        if (!lesson) lesson = lessons[0];
+        if (!lesson) {
+            document.getElementById('descriptionText').textContent = 'No lessons available yet.';
+            return;
+        }
+
+        // Fetch full detail (includes video_url, instructor bio, tags)
+        try {
+            const dRes = await fetch(API_BASE + '/lessons/' + lesson.id);
+            if (dRes.ok) {
+                const dJson = await dRes.json();
+                lesson = Object.assign({}, lesson, dJson.lesson || {});
+            }
+        } catch (e) {}
+        lessonData = lesson;
+
+        document.title = lesson.title + ' — Noor Academy';
+        document.getElementById('videoTag').textContent = lesson.category_name || 'Lesson';
+        document.getElementById('videoTitle').textContent = lesson.title || '';
+
+        const thumbEl = document.getElementById('videoThumbnail');
+        thumbEl.src = lesson.thumbnail_url || getCategoryFallback(lesson.category_name);
+
+        const backdrop = document.getElementById('pageBackdrop');
+        if (backdrop) {
+            backdrop.style.backgroundImage = "url('" + (lesson.thumbnail_url || getCategoryFallback(lesson.category_name)) + "')";
+        }
+
+        const rating = lesson.rating || 0;
+        document.getElementById('ratingDisplay').innerHTML = '<span class="stars">' + generateStars(rating) + '</span> ' + Number(rating).toFixed(1);
+
+        document.getElementById('viewCount').textContent = formatNumber(views);
+        document.getElementById('studentCount').textContent = formatNumber(lesson.student_count || 0);
+        document.getElementById('dateDisplay').innerHTML = '<i class="fas fa-calendar"></i> ' + formatDate(lesson.created_at);
+        document.getElementById('difficultyLevel').textContent = lesson.difficulty || '—';
+
+        const instrName = lesson.instructor_name || 'Unknown Instructor';
+        document.getElementById('instructorName').textContent = instrName;
+        const bioTxt = lesson.instructor_bio ? lesson.instructor_bio : 'Instructor';
+        document.getElementById('instructorBio').innerHTML = bioTxt;
+        const avatarImg = document.querySelector('#instructorAvatar img');
+        if (avatarImg) avatarImg.src = lesson.instructor_avatar || 'http://localhost:3000/uploads/avatars/avatar_1.jpg';
+
+        const timeEl = document.getElementById('playerTime');
+        if (lesson.duration_minutes != null) {
+            timeEl.textContent = '0:00 / ' + formatDuration(lesson.duration_minutes);
+        }
+
+        const badge = document.getElementById('playerTopBadge');
+        if (badge) badge.innerHTML = '<i class="fas fa-play" style="font-size:10px;margin-right:4px;"></i> ' + (lesson.difficulty || 'Now Playing');
+
+        document.getElementById('descriptionText').textContent = lesson.description || 'No description available for this lesson yet.';
+
+        const tagsContainer = document.getElementById('videoTags');
+        const tags = [lesson.category_name, lesson.difficulty, lesson.is_free ? 'Free' : null].filter(Boolean);
+        tagsContainer.innerHTML = tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
+
+        // Determine video source (uploaded files take priority over external links)
+        const vurl = lesson.video_file_path || lesson.video_url;
+        if (vurl) {
+            const isYT = getYouTubeEmbed(vurl);
+            if (isYT) {
+                videoSource = { type: 'youtube', src: vurl };
+            } else {
+                const full = /^https?:\/\//.test(vurl) ? vurl : 'http://localhost:3000' + vurl;
+                videoSource = { type: 'html5', src: full };
+            }
+            document.getElementById('playerHint').textContent = videoSource.type === 'youtube' ? 'Click to play (YouTube)' : 'Click to play';
+        } else {
+            document.getElementById('playerHint').textContent = 'Video coming soon';
+        }
+
+        // Related lessons
+        let related = lessons.filter(function (l) {
+            return l.id !== lesson.id && l.category_name === lesson.category_name;
+        });
+        if (related.length === 0) {
+            related = lessons.filter(function (l) { return l.id !== lesson.id; });
+        }
+        related = related.slice(0, 4);
+        document.getElementById('relatedCount').textContent = related.length + ' videos';
+
+        document.getElementById('relatedList').innerHTML = related.map(function (r) {
+            const mins = r.duration_minutes || 0;
+            const d = Math.floor(mins);
+            const relViews = parseInt(localStorage.getItem('lesson_view_' + r.id)) || r.student_count || 0;
+            return '<a href="video.html?id=' + r.id + '" class="related-card">' +
+                '<div class="related-thumb">' +
+                    '<img src="' + (r.thumbnail_url || getCategoryFallback(r.category_name)) + '" alt="">' +
+                    '<span class="dur">' + d + '</span>' +
+                '</div>' +
+                '<div class="related-info">' +
+                    '<h4>' + (r.title || '') + '</h4>' +
+                    '<div class="rel-instructor">' + (r.instructor_name || '') + '</div>' +
+                    '<div class="rel-meta"><i class="fas fa-star"></i> ' + (r.rating || 0) + ' &middot; ' + formatNumber(relViews) + ' views</div>' +
+                '</div>' +
+            '</a>';
+        }).join('');
+
+        const courseTitle = document.getElementById('courseTitle');
+        if (lesson.category_name) courseTitle.textContent = 'Complete ' + lesson.category_name + ' Course';
+    } catch (err) {
+        console.error('Failed to load lesson data:', err);
+        setConn(false);
+        document.getElementById('descriptionText').textContent = 'Unable to reach the server. Please check your internet connection and try again.';
+        document.getElementById('playerHint').textContent = 'Offline — check connection';
+    }
+})();
+</script>
+</body>
+</html>

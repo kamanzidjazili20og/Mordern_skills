@@ -1,0 +1,2966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Noor Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+    --bg: #06130e;
+    --bg-card: rgba(13,32,24,0.85);
+    --bg-hover: rgba(20,45,34,0.9);
+    --gold: #d4a853;
+    --gold-light: #eccf8b;
+    --text: #f2f7f4;
+    --text-sec: #a3bbb0;
+    --text-muted: #5f7a6d;
+    --border: rgba(212,168,83,0.12);
+    --radius: 12px;
+    --sidebar-width: 240px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 18% -6%, rgba(212,168,83,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 90%, rgba(52,211,153,0.06) 0%, transparent 50%),
+        linear-gradient(165deg, #050f0b 0%, #071b13 46%, #040b08 100%);
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 25% 20%, rgba(212,168,83,0.08) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 80%, rgba(212,168,83,0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 30%, rgba(52,211,153,0.04) 0%, transparent 45%),
+        radial-gradient(ellipse at 10% 70%, rgba(45,138,94,0.05) 0%, transparent 40%),
+        linear-gradient(180deg, #06130e 0%, #0a1d15 40%, #050f0b 100%);
+    pointer-events: none;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #06130e; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+/* ===== LOGIN OVERLAY ===== */
+.login-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5,15,11,0.95);
+    backdrop-filter: blur(20px);
+}
+
+.login-overlay.hidden { display: none; }
+
+.login-box {
+    width: 420px;
+    max-width: 90vw;
+    padding: 48px 40px 40px;
+    background: rgba(13,32,24,0.9);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px -15px rgba(0,0,0,0.5);
+}
+
+.login-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+}
+
+.login-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+    color: #06130e;
+    box-shadow: 0 8px 30px rgba(212,168,83,0.25);
+}
+
+.login-box h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.login-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+
+.login-error {
+    display: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    color: #f87171;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+.login-error.show { display: block; }
+
+.login-box .form-group { text-align: left; margin-bottom: 20px; }
+.login-box .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-sec);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(6,19,14,0.6);
+    color: var(--text);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
+}
+.login-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,168,83,0.08);
+}
+.login-input::placeholder { color: var(--text-muted); }
+
+.login-submit {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #06130e;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.login-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212,168,83,0.3);
+}
+
+.login-box .footer-text { margin-top: 20px; font-size: 12px; color: var(--text-muted); }
+.login-box .footer-text a { color: var(--gold); text-decoration: none; }
+
+/* ===== DASHBOARD ===== */
+.dashboard { display: none; }
+.dashboard.show { display: block; }
+
+/* SIDEBAR */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: rgba(6,19,14,0.92);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+}
+
+.sidebar-header {
+    padding: 20px 18px;
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.sidebar .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #06130e;
+    box-shadow: 0 4px 12px rgba(212,168,83,0.2);
+}
+
+.sidebar .logo-text { font-size: 18px; font-weight: 800; line-height: 1; }
+.sidebar .logo-text span { display: block; font-size: 9px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 2px; }
+
+.sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+
+.sidebar-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 12px 6px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--text-sec);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    margin-bottom: 2px;
+    position: relative;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+}
+
+.sidebar-link i { width: 18px; text-align: center; font-size: 14px; }
+.sidebar-link .badge {
+    margin-left: auto;
+    background: var(--gold);
+    color: #06130e;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 100px;
+}
+.sidebar-link:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+
+.sidebar-link.active {
+    background: rgba(212,168,83,0.08);
+    color: var(--gold-light);
+}
+
+.sidebar-link.active::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 8px rgba(212,168,83,0.3);
+}
+
+.sidebar-footer {
+    padding: 12px 10px;
+    border-top: 1px solid var(--border);
+}
+
+.sidebar-footer .sidebar-link { font-size: 12px; }
+.logout-btn { color: #f87171 !important; }
+
+/* MAIN */
+.main {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TOPBAR */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(6,19,14,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+
+.page-title { font-size: 18px; font-weight: 700; }
+.page-title span { color: var(--gold); }
+
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+/* Connection status pill */
+.conn-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px; border-radius: 100px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+    background: rgba(45,138,94,0.1); border: 1px solid rgba(45,138,94,0.3); color: #3da76e;
+    transition: all 0.3s; user-select: none; white-space: nowrap;
+}
+.conn-pill .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: #3da76e; box-shadow: 0 0 8px rgba(61,167,110,0.8); animation: connPulse 2s infinite; }
+.conn-pill.offline { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.35); color: #f87171; }
+.conn-pill.offline .conn-dot { background: #f87171; box-shadow: 0 0 8px rgba(248,113,113,0.8); animation: none; }
+.conn-pill.checking { background: rgba(212,168,83,0.1); border-color: rgba(212,168,83,0.3); color: var(--gold); }
+.conn-pill.checking .conn-dot { background: var(--gold); animation: none; }
+@keyframes connPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+.topbar-search { position: relative; }
+.topbar-search input {
+    padding: 8px 12px 8px 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(6,19,14,0.6);
+    color: var(--text);
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+    width: 200px;
+    transition: all 0.3s;
+}
+.topbar-search input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,168,83,0.08); }
+.topbar-search input::placeholder { color: var(--text-muted); }
+.topbar-search i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 3px 3px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.admin-profile:hover { background: var(--bg-hover); }
+.admin-profile span { font-size: 12px; font-weight: 600; }
+.admin-profile img { width: 30px; height: 30px; border-radius: 7px; object-fit: cover; }
+
+.mobile-toggle {
+    display: none;
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(6,19,14,0.6);
+    color: var(--text-sec);
+    font-size: 14px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CONTENT */
+.content { padding: 24px 32px; flex: 1; }
+
+/* PAGE SECTIONS */
+.page-section { display: none; }
+.page-section.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== PAGE: DASHBOARD ===== */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: rgba(13,32,24,0.72);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stat-card:hover {
+    border-color: rgba(212,168,83,0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px -12px rgba(0,0,0,0.5);
+}
+
+.stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.stat-icon.gold { background: rgba(212,168,83,0.1); color: var(--gold); }
+.stat-icon.green { background: rgba(45,138,94,0.1); color: #3da76e; }
+.stat-icon.blue { background: rgba(59,130,246,0.1); color: #60a5fa; }
+.stat-icon.purple { background: rgba(168,85,247,0.1); color: #c084fc; }
+
+.stat-info h3 { font-size: 22px; font-weight: 800; line-height: 1; margin-bottom: 2px; }
+.stat-info p { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+}
+
+/* ===== PANEL ===== */
+.panel {
+    background: rgba(13,32,24,0.72);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+.panel:hover { border-color: rgba(212,168,83,0.1); }
+
+.panel-header {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+.panel-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 22px;
+    right: 22px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,83,0.25), rgba(212,168,83,0.04), transparent);
+}
+.panel-header h3 { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.panel-header h3 i { color: var(--gold); font-size: 14px; }
+
+.panel-body { padding: 20px 22px; }
+
+/* Dashboard — quick list */
+.quick-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    position: relative;
+}
+.quick-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+.quick-item .thumb {
+    width: 44px; height: 30px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: var(--bg-hover);
+}
+.quick-item .info { flex: 1; }
+.quick-item .info h4 { font-size: 13px; font-weight: 600; }
+.quick-item .info p { font-size: 11px; color: var(--text-muted); }
+.quick-item .status { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 100px; }
+.quick-item .status.published { background: rgba(45,138,94,0.1); color: #3da76e; }
+.quick-item .status.pending { background: rgba(212,168,83,0.1); color: var(--gold); }
+
+/* Chart placeholder */
+.chart-placeholder {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 120px;
+    padding-top: 16px;
+    gap: 8px;
+}
+.chart-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    background: linear-gradient(to top, rgba(212,168,83,0.25), rgba(212,168,83,0.08));
+    position: relative;
+    min-height: 12px;
+    transition: height 0.5s;
+}
+.chart-bar .label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* ===== PAGE: ALL LESSONS ===== */
+.lessons-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.lessons-toolbar .filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.lessons-toolbar .filters select,
+.lessons-toolbar .filters input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(6,19,14,0.6);
+    color: var(--text);
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
+}
+.lessons-toolbar .filters select:focus,
+.lessons-toolbar .filters input:focus { border-color: var(--gold); }
+
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-sec);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.filter-btn:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.filter-btn.active { background: rgba(212,168,83,0.1); color: var(--gold); border-color: rgba(212,168,83,0.2); }
+
+.table-wrapper { overflow-x: auto; }
+
+.table { width: 100%; border-collapse: collapse; }
+
+.table th {
+    text-align: left;
+    padding: 11px 14px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+    position: relative;
+}
+.table th::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 14px;
+    right: 14px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,83,0.15), rgba(212,168,83,0.03), transparent);
+}
+
+.table td {
+    padding: 12px 14px;
+    font-size: 13px;
+    vertical-align: middle;
+    position: relative;
+}
+.table td::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 14px;
+    right: 14px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+
+.table tr:hover td { background: rgba(255,255,255,0.02); }
+.table tr:last-child td { border-bottom: none; }
+
+.table .lesson-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.table .lesson-thumb {
+    width: 44px; height: 30px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: var(--bg-hover);
+}
+.table .lesson-name { font-weight: 600; color: var(--text); font-size: 13px; }
+.table .lesson-name small { display: block; font-weight: 400; color: var(--text-muted); font-size: 11px; margin-top: 1px; }
+
+.status-badge {
+    display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+.status-badge.published { background: rgba(45,138,94,0.1); color: #3da76e; }
+.status-badge.draft { background: rgba(100,116,139,0.1); color: var(--text-muted); }
+.status-badge.pending { background: rgba(212,168,83,0.1); color: var(--gold); }
+
+.table-actions { display: flex; gap: 3px; }
+
+.table-btn {
+    width: 30px; height: 30px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 12px;
+}
+.table-btn:hover { background: rgba(255,255,255,0.04); }
+.table-btn.edit:hover { color: #60a5fa; }
+.table-btn.delete:hover { color: #f87171; }
+.table-btn.view:hover { color: var(--gold); }
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 22px;
+    font-size: 12px;
+    color: var(--text-muted);
+    position: relative;
+}
+.pagination::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 22px;
+    right: 22px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,83,0.12), rgba(212,168,83,0.02), transparent);
+}
+.pagination-btns { display: flex; gap: 3px; }
+
+.pagination-btn {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-sec);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+.pagination-btn:hover,
+.pagination-btn.active {
+    background: var(--gold);
+    color: #06130e;
+    border-color: var(--gold);
+}
+
+/* ===== PAGE: UPLOAD LESSON ===== */
+.upload-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+}
+
+.upload-form-section .form-group { margin-bottom: 16px; }
+.upload-form-section .form-group:last-child { margin-bottom: 0; }
+
+.form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin-bottom: 5px;
+}
+.form-label .required { color: #ef4444; margin-left: 2px; }
+
+.form-control {
+    width: 100%;
+    padding: 10px 13px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: rgba(6,19,14,0.6);
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
+}
+.form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,168,83,0.08); }
+.form-control::placeholder { color: var(--text-muted); }
+textarea.form-control { resize: vertical; min-height: 80px; }
+
+select.form-control {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%2364748b' d='M5 7L1 2h8z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+.file-upload {
+    position: relative;
+    border: 2px dashed var(--border);
+    border-radius: 10px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(6,19,14,0.3);
+}
+.file-upload:hover {
+    border-color: var(--gold);
+    background: rgba(212,168,83,0.02);
+}
+.file-upload input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.file-upload i { font-size: 28px; color: var(--text-muted); margin-bottom: 8px; display: block; }
+.file-upload h4 { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.file-upload p { font-size: 11px; color: var(--text-muted); }
+
+.file-upload.has-file {
+    border-color: #2d8a5e;
+    border-style: solid;
+    background: rgba(45,138,94,0.05);
+}
+.file-upload.has-file .file-name { color: #3da76e; font-weight: 600; }
+
+.thumbnail-preview { margin-top: 10px; display: none; }
+.thumbnail-preview.show { display: block; }
+.thumbnail-preview img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.upload-progress { margin-top: 10px; display: none; }
+.upload-progress.show { display: block; }
+
+.progress-bar {
+    height: 5px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.progress-bar .fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+.progress-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.upload-sidebar .tip-card {
+    background: rgba(6,19,14,0.4);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+.upload-sidebar .tip-card i { color: var(--gold); font-size: 16px; margin-bottom: 8px; display: block; }
+.upload-sidebar .tip-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.upload-sidebar .tip-card p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+.upload-sidebar .tip-card ul { list-style: none; padding: 0; margin-top: 6px; }
+.upload-sidebar .tip-card ul li {
+    font-size: 12px;
+    color: var(--text-sec);
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.upload-sidebar .tip-card ul li i { font-size: 8px; color: var(--gold); margin: 0; }
+
+.btn {
+    padding: 11px 24px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #06130e;
+    box-shadow: 0 6px 24px rgba(212,168,83,0.2);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(212,168,83,0.3); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-sec);
+    border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--bg-hover); color: var(--text); }
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+    padding-top: 16px;
+    position: relative;
+}
+.form-actions::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(212,168,83,0.15), rgba(212,168,83,0.03), transparent);
+}
+
+/* ===== PAGE: CATEGORIES ===== */
+.categories-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 20px;
+}
+
+.add-category .panel-body { padding: 22px; }
+.cat-color-options { display: flex; gap: 8px; margin-top: 6px; }
+.cat-color-options span {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+.cat-color-options span:hover { transform: scale(1.15); }
+.cat-color-options span.selected { border-color: var(--text); }
+
+.cat-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    position: relative;
+}
+.cat-list-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+}
+
+.cat-list-item .color-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.cat-list-item .cat-info { flex: 1; }
+.cat-list-item .cat-info h4 { font-size: 14px; font-weight: 600; }
+.cat-list-item .cat-info p { font-size: 11px; color: var(--text-muted); }
+
+.cat-list-item .cat-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.cat-list-item .cat-stats span { white-space: nowrap; }
+
+@media (max-width: 1200px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .dash-grid { grid-template-columns: 1fr; }
+    .upload-grid { grid-template-columns: 1fr; }
+    .categories-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 992px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-left: 0; }
+    .content { padding: 20px; }
+    .topbar { padding: 10px 20px; }
+    .mobile-toggle { display: flex !important; }
+}
+
+@media (max-width: 640px) {
+    .stats-row { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .topbar-search { display: none; }
+    .page-title { font-size: 16px; }
+    .admin-profile span { display: none; }
+    .login-box { padding: 36px 24px 28px; }
+    .lessons-toolbar .filters { width: 100%; }
+    .lessons-toolbar .filters select { flex: 1; }
+}
+
+/* ===== LANGUAGE TOGGLE (ADMIN) ===== */
+.lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+    user-select: none;
+    margin-right: 8px;
+}
+
+.lang-toggle:hover {
+    border-color: rgba(212,168,83,0.2);
+    background: rgba(255,255,255,0.06);
+}
+
+.lang-option {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 100px;
+    color: var(--text-muted);
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.lang-option.active {
+    background: var(--gold);
+    color: #06130e;
+}
+
+.lang-option:not(.active):hover {
+    color: var(--text-sec);
+}
+
+body.lang-en [data-lang="rw"] { display: none !important; }
+body.lang-rw [data-lang="en"] { display: none !important; }
+
+/* ===== TESTIMONIALS ADMIN ===== */
+.testimonials-admin-header {
+    margin-bottom: 20px;
+}
+
+.testimonial-admin-card {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(13,32,24,0.5);
+    margin-bottom: 10px;
+    align-items: flex-start;
+    transition: all 0.2s;
+}
+
+.testimonial-admin-card:hover {
+    background: rgba(20,45,34,0.7);
+    border-color: rgba(212,168,83,0.1);
+}
+
+.testimonial-admin-card .t-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(212,168,83,0.12), rgba(212,168,83,0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+    border: 1px solid rgba(212,168,83,0.08);
+}
+
+.testimonial-admin-card .t-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.testimonial-admin-card .t-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.testimonial-admin-card .t-role {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.testimonial-admin-card .t-text {
+    font-size: 12px;
+    color: var(--text-sec);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.testimonial-admin-card .t-lang-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gold);
+    background: rgba(212,168,83,0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.testimonial-admin-card .t-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.testimonial-admin-card .t-stars {
+    color: var(--gold);
+    font-size: 11px;
+    margin-bottom: 4px;
+}
+
+.testimonial-admin-card .t-stars i { margin-right: 1px; }
+
+.testimonials-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.testimonials-empty i {
+    font-size: 36px;
+    opacity: 0.2;
+    margin-bottom: 12px;
+}
+
+.testimonials-empty h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-sec);
+}
+
+.testimonials-empty p { font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+        <div class="login-icon"><i class="fas fa-lock"></i></div>
+        <h2 data-lang="en">Admin Access</h2><h2 data-lang="rw">Kwinjira kwa Admin</h2>
+        <p data-lang="en">Enter your password to access the dashboard</p><p data-lang="rw">Shyiramo ijambo wibanga kugira ngo uinjire</p>
+        <div class="login-error" id="loginError">
+             <i class="fas fa-exclamation-circle"></i> <span data-lang="en" id="loginErrorEn">Invalid email or password. Try again.</span><span data-lang="rw" id="loginErrorRw">Imeri cyangwa ijambo wibanga ntabwo ari byo. Ongera ugerageze.</span>
+        </div>
+        <form id="loginForm" autocomplete="off">
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-envelope" style="margin-right:4px;"></i> <span data-lang="en">Email</span><span data-lang="rw">Imeri</span></label>
+                <input type="email" class="login-input" id="emailInput" placeholder="admin@nooracademy.com" value="admin@nooracademy.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-key" style="margin-right:4px;"></i> <span data-lang="en">Password</span><span data-lang="rw">Ijambo wibanga</span></label>
+                <input type="password" class="login-input" id="passwordInput" placeholder="Enter admin password..." autofocus>
+            </div>
+            <button type="submit" class="login-submit" id="loginBtn">
+                <i class="fas fa-arrow-right-to-bracket"></i> <span data-lang="en">Sign In</span><span data-lang="rw">Injira</span>
+            </button>
+        </form>
+        <div class="footer-text">
+            <i class="fas fa-shield" style="margin-right:4px;"></i>
+            <a href="index.html"><span data-lang="en">Back to Home</span><span data-lang="rw">Subira mu Rugo</span></a>
+        </div>
+    </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div class="dashboard" id="dashboard">
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fas fa-book-quran"></i></div>
+            <div class="logo-text">Noor Academy<span>Admin Panel</span></div>
+        </a>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="sidebar-label">Navigation</div>
+        <button class="sidebar-link active" data-page="dashboard"><i class="fas fa-chart-pie"></i> <span data-lang="en">Dashboard</span><span data-lang="rw">Ijambo ry'ibanze</span></button>
+        <button class="sidebar-link" data-page="lessons"><i class="fas fa-video"></i> <span data-lang="en">All Lessons</span><span data-lang="rw">Amasomo Yose</span> <span class="badge" id="lessonCount">12</span></button>
+        <button class="sidebar-link" data-page="upload"><i class="fas fa-cloud-upload-alt"></i> <span data-lang="en">Upload Lesson</span><span data-lang="rw">Shyira Isomo</span></button>
+        <button class="sidebar-link" data-page="categories"><i class="fas fa-folder"></i> <span data-lang="en">Categories</span><span data-lang="rw">Ibyiciro</span></button>
+        <button class="sidebar-link" data-page="testimonials"><i class="fas fa-quote-right"></i> <span data-lang="en">Testimonials</span><span data-lang="rw">Ibyabo Bavuga</span></button>
+        <button class="sidebar-link" data-page="instructors"><i class="fas fa-chalkboard-user"></i> <span data-lang="en">Instructors</span><span data-lang="rw">Abigisha</span></button>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="index.html" class="sidebar-link"><i class="fas fa-arrow-left"></i> <span data-lang="en">Back to Site</span><span data-lang="rw">Subira kuri Site</span></a>
+        <button class="sidebar-link logout-btn" id="logoutBtn"><i class="fas fa-right-from-bracket"></i> <span data-lang="en">Logout</span><span data-lang="rw">Sohoka</span></button>
+    </div>
+</aside>
+
+<div class="main">
+
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="mobile-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+            <div>
+                <div class="page-title" id="pageTitle">Dashboard</div>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <div class="topbar-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search..." id="globalSearch">
+            </div>
+            <span class="conn-pill" id="connPill" title="Server connection status"><span class="conn-dot"></span><span id="connText">Online</span></span>
+            <div class="lang-toggle" id="adminLangToggle" title="Switch language">
+                <span class="lang-option active" data-lang-code="en">EN</span>
+                <span class="lang-option" data-lang-code="rw">RW</span>
+            </div>
+            <div class="admin-profile">
+                <span>Admin</span>
+                <img src="http://localhost:3000/uploads/avatars/avatar_1.jpg" alt="Admin">
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+
+        <!-- ===== PAGE: DASHBOARD ===== -->
+        <div class="page-section active" id="page-dashboard">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon gold"><i class="fas fa-video"></i></div>
+                    <div class="stat-info"><h3 id="statLessons">12</h3><p data-lang="en">Total Lessons</p><p data-lang="rw">Amasomo Yose</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-users"></i></div>
+                    <div class="stat-info"><h3 id="statStudents">1,024</h3><p data-lang="en">Enrolled Students</p><p data-lang="rw">Abanyeshuri</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info"><h3 id="statPending">3</h3><p data-lang="en">Pending Review</p><p data-lang="rw">Gutegeka Gukesha</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info"><h3 id="statThisMonth">8</h3><p data-lang="en">Uploads This Month</p><p data-lang="rw">Byashyizwe Ukwezi</p></div>
+                </div>
+            </div>
+
+            <div class="dash-grid">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-clock-rotate"></i> Recent Lessons</h3>
+                        <button class="btn btn-secondary" style="padding:6px 14px;font-size:11px;" onclick="navigateTo('lessons')">View All</button>
+                    </div>
+                    <div class="panel-body" id="recentLessons">
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-chart-simple"></i> Monthly Uploads</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="chart-placeholder" id="monthlyChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PAGE: ALL LESSONS ===== -->
+        <div class="page-section" id="page-lessons">
+            <div class="lessons-toolbar">
+                <div class="filters">
+                    <select id="filterCategory">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="published">Published</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                    <input type="text" placeholder="Search lessons..." id="lessonSearch" style="width:180px;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(6,19,14,0.6);color:var(--text);font-size:12px;font-family:inherit;outline:none;">
+                </div>
+                <button class="btn btn-primary" style="padding:9px 18px;font-size:12px;" onclick="navigateTo('upload')"><i class="fas fa-plus"></i> <span data-lang="en">New Lesson</span><span data-lang="rw">Isomo Rishya</span></button>
+            </div>
+
+            <div class="panel">
+                <div class="table-wrapper">
+                    <table class="table" id="lessonsTable">
+                        <thead>
+                            <tr>
+                                <th>Lesson</th>
+                                <th>Category</th>
+                                <th>Instructor</th>
+                                <th>Rating</th>
+                                <th>Students</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <span id="paginationInfo">Showing 0 of 0 lessons</span>
+                    <div class="pagination-btns" id="paginationBtns"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PAGE: UPLOAD LESSON ===== -->
+        <div class="page-section" id="page-upload">
+            <div class="upload-grid">
+                <div class="panel upload-form-section">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-cloud-upload-alt"></i> <span data-lang="en">Upload New Lesson</span><span data-lang="rw">Shyira Isomo Rishya</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="uploadForm" novalidate>
+                            <div class="form-group">
+                                <label class="form-label">Lesson Title <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="lessonTitle" placeholder="e.g. Introduction to Tajweed — Noon Sakinah" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description <span class="required">*</span></label>
+                                <textarea class="form-control" id="lessonDesc" placeholder="Describe what students will learn, key takeaways, and any prerequisites..." required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Category <span class="required">*</span></label>
+                                    <select class="form-control" id="lessonCategory" required>
+                                        <option value="">Select category...</option>
+                                        <option value="Tajweed">Tajweed</option>
+                                        <option value="Tafsir">Tafsir</option>
+                                        <option value="Hifz">Hifz (Memorization)</option>
+                                        <option value="Arabic">Arabic Language</option>
+                                        <option value="Video Course">Video Course</option>
+                                    </select>
+                                </div>
+                            <div class="form-group">
+                                <label class="form-label">Difficulty Level</label>
+                                <select class="form-control" id="lessonDifficulty">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                    <option value="All Levels">All Levels</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Rating (1-5)</label>
+                                <select class="form-control" id="lessonRating" style="width:120px;">
+                                    <option value="5.0">5.0</option>
+                                    <option value="4.5">4.5</option>
+                                    <option value="4.0">4.0</option>
+                                    <option value="3.5">3.5</option>
+                                    <option value="3.0">3.0</option>
+                                    <option value="2.5">2.5</option>
+                                    <option value="2.0">2.0</option>
+                                    <option value="1.5">1.5</option>
+                                    <option value="1.0">1.0</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Student Count</label>
+                                <input type="number" class="form-control" id="lessonStudents" placeholder="e.g. 234" min="0" style="width:160px;">
+                            </div>
+                        </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Instructor <span class="required">*</span></label>
+                                    <select class="form-control" id="lessonInstructor" required>
+                                        <option value="">Select instructor...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                <label class="form-label">Duration</label>
+                                <input type="text" class="form-control" id="lessonDuration" placeholder="Auto-detected or type e.g. 28 min">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tags</label>
+                                <input type="text" class="form-control" id="lessonTags" placeholder="e.g. tajweed, noon-sakinah, pronunciation, rules">
+                                <div class="form-hint">Separate tags with commas</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Video URL (YouTube / external)</label>
+                                <input type="url" class="form-control" id="lessonVideoUrl" placeholder="https://youtube.com/watch?v=...">
+                                <div class="form-hint">Optional — paste a URL instead of uploading a file</div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Thumbnail Image</label>
+                                    <div class="file-upload" id="thumbUpload">
+                                        <input type="file" id="thumbInput" accept="image/*">
+                                        <i class="fas fa-image"></i>
+                                        <h4>Upload Thumbnail</h4>
+                                        <p>PNG, JPG or WebP — Max 2MB</p>
+                                    </div>
+                                    <div class="thumbnail-preview" id="thumbPreview"><img src="#" alt="Preview"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Video File <span class="required">*</span></label>
+                                    <div class="file-upload" id="videoUpload">
+                                        <input type="file" id="videoInput" accept="video/*">
+                                        <i class="fas fa-video"></i>
+                                        <h4>Upload Video</h4>
+                                        <p>MP4, MOV or WebM — Max 500MB</p>
+                                    </div>
+                                    <div class="upload-progress" id="uploadProgress">
+                                        <div class="progress-bar"><div class="fill" id="progressFill"></div></div>
+                                        <div class="progress-text"><span id="progressLabel">Uploading...</span><span id="progressPercent">0%</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="submitBtn"><i class="fas fa-cloud-upload-alt"></i> Upload Lesson</button>
+                                <button type="reset" class="btn btn-secondary"><i class="fas fa-times"></i> Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="upload-sidebar">
+                    <div class="tip-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h4>Tips for Great Lessons</h4>
+                        <ul>
+                            <li><i class="fas fa-circle"></i> Use clear, descriptive titles</li>
+                            <li><i class="fas fa-circle"></i> Add relevant tags for discovery</li>
+                            <li><i class="fas fa-circle"></i> Upload a high-quality thumbnail</li>
+                            <li><i class="fas fa-circle"></i> Keep videos under 30 minutes</li>
+                            <li><i class="fas fa-circle"></i> Categorize lessons accurately</li>
+                        </ul>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-video"></i>
+                        <h4>Video Guidelines</h4>
+                        <p>Supported formats: MP4 (H.264), MOV, WebM. Maximum resolution: 1920×1080. Keep file size under 500MB for optimal upload speed.</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="fas fa-copyright"></i>
+                        <h4>Content Policy</h4>
+                        <p>Ensure all content is appropriate, accurate, and aligns with Quranic teaching principles. All lessons are reviewed before publication.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PAGE: CATEGORIES ===== -->
+        <div class="page-section" id="page-categories">
+            <div class="categories-layout">
+                <div class="panel add-category">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-plus-circle"></i> <span data-lang="en">Add Category</span><span data-lang="rw">Ongera Icyiciro</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="categoryForm">
+                            <div class="form-group">
+                                <label class="form-label">Category Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="catName" placeholder="e.g. Tajweed" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="catDesc" placeholder="Brief description of this category..." rows="2"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Color</label>
+                                <div class="cat-color-options" id="colorOptions">
+                                    <span data-color="#d4a853" class="selected" style="background:#d4a853;"></span>
+                                    <span data-color="#3da76e" style="background:#3da76e;"></span>
+                                    <span data-color="#60a5fa" style="background:#60a5fa;"></span>
+                                    <span data-color="#c084fc" style="background:#c084fc;"></span>
+                                    <span data-color="#f87171" style="background:#f87171;"></span>
+                                    <span data-color="#fbbf24" style="background:#fbbf24;"></span>
+                                    <span data-color="#34d399" style="background:#34d399;"></span>
+                                    <span data-color="#f472b6" style="background:#f472b6;"></span>
+                                </div>
+                                <input type="hidden" id="catColor" value="#d4a853">
+                            </div>
+                            <div class="form-actions" style="border:none;padding-top:0;margin-top:0;">
+                                <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;"><i class="fas fa-plus"></i> Add Category</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-list"></i> All Categories</h3>
+                        <span class="status-badge published" id="catCount" style="font-size:11px;">5 categories</span>
+                    </div>
+                    <div class="panel-body" id="categoriesList">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PAGE: TESTIMONIALS ===== -->
+        <div class="page-section" id="page-testimonials">
+            <div class="testimonials-admin-header">
+                <p style="color:var(--text-muted);font-size:13px;">Manage student testimonials shown on the homepage</p>
+            </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <h3><i class="fas fa-plus-circle"></i> <span data-lang="en">Add Testimonial</span><span data-lang="rw">Ongera Ubuhamya</span></h3>
+                </div>
+                <div class="panel-body">
+                    <form id="testimonialForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Full Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="testName" placeholder="e.g. Fatima Ahmed" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Initials</label>
+                                <input type="text" class="form-control" id="testInitials" placeholder="e.g. FA" maxlength="2" style="width:100px;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Title / Role <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="testRole" placeholder="e.g. Student since 2025">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Testimonial (English) <span class="required">*</span></label>
+                                <textarea class="form-control" id="testEn" placeholder="English version..." rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Testimonial (Kinyarwanda) <span class="required">*</span></label>
+                                <textarea class="form-control" id="testRw" placeholder="Kinyarwanda version..." rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Role (Kinyarwanda)</label>
+                                <input type="text" class="form-control" id="testRoleRw" placeholder="e.g. Umunyeshuri kuva 2025">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Rating (1-5)</label>
+                                <select class="form-control" id="testRating" style="width:100px;">
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-actions" style="border:none;padding-top:0;margin-top:0;">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Testimonial</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel" style="margin-top:20px;">
+                <div class="panel-header">
+                    <h3><i class="fas fa-list"></i> All Testimonials</h3>
+                    <span class="status-badge published" id="testCount" style="font-size:11px;">0 testimonials</span>
+                </div>
+                <div class="panel-body" id="testimonialsList"></div>
+            </div>
+        </div>
+
+        <!-- ===== PAGE: INSTRUCTORS ===== -->
+        <div class="page-section" id="page-instructors">
+            <div class="categories-layout">
+                <div class="panel add-category">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-user-plus"></i> <span data-lang="en">Add Instructor</span><span data-lang="rw">Ongera Umwarimu</span></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form id="instructorForm">
+                            <div class="form-group">
+                                <label class="form-label"><span data-lang="en">Full Name</span> <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="instName" placeholder="e.g. Sheikh Ahmad Al-Misri" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label"><span data-lang="en">Expertise</span><span data-lang="rw">Ubushobozi</span></label>
+                                <input type="text" class="form-control" id="instExpertise" placeholder="e.g. Tajweed, Qiraat">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label"><span data-lang="en">Bio</span><span data-lang="rw">Ubuzima</span></label>
+                                <textarea class="form-control" id="instBio" rows="3" placeholder="Short biography..."></textarea>
+                            </div>
+                            <div class="form-actions" style="border:none;padding-top:0;margin-top:0;">
+                                <button type="submit" class="btn btn-primary" style="flex:1;justify-content:center;"><i class="fas fa-plus"></i> <span data-lang="en">Add Instructor</span><span data-lang="rw">Ongera Umwarimu</span></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-chalkboard-user"></i> <span data-lang="en">All Instructors</span><span data-lang="rw">Abigisha Bwose</span></h3>
+                        <span class="status-badge published" id="instCount" style="font-size:11px;">0 instructors</span>
+                    </div>
+                    <div class="panel-body" id="instructorsList"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<!-- ===== EDIT LESSON MODAL ===== -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 data-lang="en">Edit Lesson</h3><h3 data-lang="rw">Guhindura Isomo</h3>
+            <button class="modal-close" id="editModalClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="editForm">
+                <input type="hidden" id="editLessonId">
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Lesson Title</span><span data-lang="rw">Izina ry'Isomo</span> <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="editTitle" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Description</span><span data-lang="rw">Ibisobanuro</span> <span class="required">*</span></label>
+                    <textarea class="form-control" id="editDesc" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Category</span><span data-lang="rw">Icyiciro</span></label>
+                        <select class="form-control" id="editCategory">
+                            <option value="Tajweed">Tajweed</option>
+                            <option value="Tafsir">Tafsir</option>
+                            <option value="Hifz">Hifz</option>
+                            <option value="Arabic">Arabic</option>
+                            <option value="Video Course">Video Course</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Instructor</span><span data-lang="rw">Umurimu</span></label>
+                        <select class="form-control" id="editInstructor"></select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Rating</span><span data-lang="rw">Imanota</span></label>
+                        <select class="form-control" id="editRating">
+                            <option value="5.0">5.0</option>
+                            <option value="4.5">4.5</option>
+                            <option value="4.0">4.0</option>
+                            <option value="3.5">3.5</option>
+                            <option value="3.0">3.0</option>
+                            <option value="2.5">2.5</option>
+                            <option value="2.0">2.0</option>
+                            <option value="1.5">1.5</option>
+                            <option value="1.0">1.0</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Status</span><span data-lang="rw">Imiterere</span></label>
+                        <select class="form-control" id="editStatus">
+                            <option value="published">Published</option>
+                            <option value="pending">Pending</option>
+                            <option value="draft">Draft</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Difficulty</span><span data-lang="rw">Urwego</span></label>
+                        <select class="form-control" id="editDifficulty">
+                            <option value="All Levels">All Levels</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Students</span><span data-lang="rw">Abanyeshuri</span></label>
+                        <input type="number" class="form-control" id="editStudents" min="0" placeholder="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Video</span><span data-lang="rw">Video</span></label>
+                    <input type="url" class="form-control" id="editVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="form-hint" id="editVideoHint"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Video File <span style="color:var(--text-muted);font-weight:400;">(from PC / phone — replaces the link above)</span></label>
+                    <div class="file-upload" id="editVideoUpload">
+                        <input type="file" id="editVideoInput" accept="video/*">
+                        <i class="fas fa-video"></i>
+                        <h4>Upload Video File</h4>
+                        <p>MP4, MOV or WebM — Max 500MB</p>
+                    </div>
+                    <div class="upload-progress" id="editUploadProgress" style="display:none;">
+                        <div class="progress-bar"><div class="fill" id="editProgressFill"></div></div>
+                        <div class="progress-text"><span id="editProgressLabel">Uploading...</span><span id="editProgressPercent">0%</span></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="editSaveBtn"><i class="fas fa-save"></i> <span data-lang="en">Save Changes</span><span data-lang="rw">Bika</span></button>
+                    <button type="button" class="btn btn-secondary" id="editCancelBtn"><span data-lang="en">Cancel</span><span data-lang="rw">Guhagarika</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== EDIT TESTIMONIAL MODAL ===== -->
+<div class="modal-overlay" id="editTestModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 data-lang="en">Edit Testimonial</h3><h3 data-lang="rw">Guhindura Ubuhamya</h3>
+            <button class="modal-close" id="editTestClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="editTestForm">
+                <input type="hidden" id="editTestId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Full Name</span><span data-lang="rw">Amazina</span> <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="editTestName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Initials</span><span data-lang="rw">Inyuguti</span></label>
+                        <input type="text" class="form-control" id="editTestInitials" maxlength="4" style="width:100px;">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Role (EN)</span></label>
+                        <input type="text" class="form-control" id="editTestRoleEn">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Role (RW)</span></label>
+                        <input type="text" class="form-control" id="editTestRoleRw">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Testimonial (English)</span> <span class="required">*</span></label>
+                    <textarea class="form-control" id="editTestTextEn" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Testimonial (Kinyarwanda)</span> <span class="required">*</span></label>
+                    <textarea class="form-control" id="editTestTextRw" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Rating</span><span data-lang="rw">Imanota</span></label>
+                        <select class="form-control" id="editTestRating" style="width:100px;">
+                            <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-lang="en">Active</span></label>
+                        <select class="form-control" id="editTestActive" style="width:120px;">
+                            <option value="1">Yes</option><option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span data-lang="en">Save Changes</span><span data-lang="rw">Bika</span></button>
+                    <button type="button" class="btn btn-secondary" id="editTestCancel"><span data-lang="en">Cancel</span><span data-lang="rw">Guhagarika</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== EDIT CATEGORY MODAL ===== -->
+<div class="modal-overlay" id="editCatModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 data-lang="en">Edit Category</h3><h3 data-lang="rw">Guhindura Icyiciro</h3>
+            <button class="modal-close" id="editCatClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="editCatForm">
+                <input type="hidden" id="editCatId">
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Category Name</span><span data-lang="rw">Izina ry'Icyiciro</span> <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="editCatName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Description</span><span data-lang="rw">Ibisobanuro</span></label>
+                    <textarea class="form-control" id="editCatDesc" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Color</span></label>
+                    <div class="cat-color-options" id="editColorOptions">
+                        <span data-color="#d4a853" style="background:#d4a853;"></span>
+                        <span data-color="#3da76e" style="background:#3da76e;"></span>
+                        <span data-color="#60a5fa" style="background:#60a5fa;"></span>
+                        <span data-color="#c084fc" style="background:#c084fc;"></span>
+                        <span data-color="#f87171" style="background:#f87171;"></span>
+                        <span data-color="#fbbf24" style="background:#fbbf24;"></span>
+                        <span data-color="#34d399" style="background:#34d399;"></span>
+                        <span data-color="#f472b6" style="background:#f472b6;"></span>
+                    </div>
+                    <input type="hidden" id="editCatColor">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span data-lang="en">Save Changes</span><span data-lang="rw">Bika</span></button>
+                    <button type="button" class="btn btn-secondary" id="editCatCancel"><span data-lang="en">Cancel</span><span data-lang="rw">Guhagarika</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== EDIT INSTRUCTOR MODAL ===== -->
+<div class="modal-overlay" id="editInstModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 data-lang="en">Edit Instructor</h3><h3 data-lang="rw">Guhindura Umwarimu</h3>
+            <button class="modal-close" id="editInstClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="editInstForm">
+                <input type="hidden" id="editInstId">
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Full Name</span> <span class="required">*</span></label>
+                    <input type="text" class="form-control" id="editInstName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Expertise</span></label>
+                    <input type="text" class="form-control" id="editInstExpertise">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-lang="en">Bio</span></label>
+                    <textarea class="form-control" id="editInstBio" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <span data-lang="en">Save Changes</span><span data-lang="rw">Bika</span></button>
+                    <button type="button" class="btn btn-secondary" id="editInstCancel"><span data-lang="en">Cancel</span><span data-lang="rw">Guhagarika</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(6,19,14,0.9); backdrop-filter: blur(10px);
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+    width: 560px; max-width: 92vw; max-height: 90vh; overflow-y: auto;
+    background: rgba(13,32,24,0.98); border: 1px solid var(--border);
+    border-radius: 20px; box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+    animation: modalIn 0.25s ease;
+}
+@keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; position: relative;
+}
+.modal-header::after {
+    content: ''; position: absolute; bottom: 0; left: 24px; right: 24px;
+    height: 1px; background: linear-gradient(90deg, rgba(212,168,83,0.2), rgba(212,168,83,0.03), transparent);
+}
+.modal-header h3 { font-size: 18px; font-weight: 700; }
+.modal-close {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+.modal-body { padding: 20px 24px 24px; }
+</style>
+
+<script>
+// ===== API LAYER =====
+const API_BASE = 'http://localhost:3000/api';
+
+function getToken() { return localStorage.getItem('noorAdminToken'); }
+
+async function api(path, options = {}) {
+    const token = getToken();
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    try {
+        const r = await fetch(`${API_BASE}${path}`, { ...options, headers });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'Request failed');
+        return data;
+    } catch (err) {
+        console.error(`API ${options.method||'GET'} ${path} error:`, err);
+        throw err;
+    }
+}
+
+let lessonsCache = [];
+let currentPage = 'dashboard';
+let currentFilterCategory = '';
+let currentFilterStatus = '';
+let currentSearch = '';
+let currentPageNum = 1;
+const perPage = 5;
+
+// ===== TOAST NOTIFICATIONS =====
+const toastStyle = document.createElement('style');
+toastStyle.textContent = `
+#toastStack { position: fixed; top: 18px; right: 18px; z-index: 20000; display: flex; flex-direction: column; gap: 10px; }
+.toast-item { min-width: 260px; max-width: 360px; padding: 13px 16px; border-radius: 12px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--text); background: rgba(13,32,24,0.97); border: 1px solid var(--border); box-shadow: 0 12px 40px -8px rgba(0,0,0,0.6); animation: toastIn 0.3s ease; backdrop-filter: blur(12px); }
+.toast-item i { font-size: 15px; }
+.toast-item.success { border-color: rgba(45,138,94,0.4); } .toast-item.success i { color: #3da76e; }
+.toast-item.error { border-color: rgba(239,68,68,0.4); } .toast-item.error i { color: #f87171; }
+.toast-item.info { border-color: rgba(59,130,246,0.4); } .toast-item.info i { color: #60a5fa; }
+.toast-item.warning { border-color: rgba(212,168,83,0.4); } .toast-item.warning i { color: var(--gold); }
+.toast-item.out { animation: toastOut 0.3s ease forwards; }
+@keyframes toastIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes toastOut { to { opacity: 0; transform: translateX(30px); } }
+`;
+document.head.appendChild(toastStyle);
+const toastStack = document.createElement('div');
+toastStack.id = 'toastStack';
+document.body.appendChild(toastStack);
+function toast(message, type = 'success') {
+    const icons = { success: 'fa-circle-check', error: 'fa-circle-exclamation', info: 'fa-circle-info', warning: 'fa-triangle-exclamation' };
+    const el = document.createElement('div');
+    el.className = 'toast-item ' + type;
+    el.innerHTML = '<i class="fas ' + (icons[type] || 'fa-circle-info') + '"></i><span></span>';
+    el.querySelector('span').textContent = message;
+    toastStack.appendChild(el);
+    setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 3200);
+}
+
+// FormData-aware API helper (for file uploads)
+async function apiForm(path, formData) {
+    const token = getToken();
+    const headers = {};
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const r = await fetch(API_BASE + path, { method: 'POST', headers, body: formData });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.error || 'Upload failed');
+    return data;
+}
+
+// ===== ONLINE / OFFLINE STATUS MONITOR =====
+let connOnline = null;
+async function checkConnection() {
+    const pill = document.getElementById('connPill');
+    if (!pill) return;
+    pill.classList.add('checking');
+    try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 4000);
+        const r = await fetch('http://localhost:3000/api/health', { signal: ctrl.signal });
+        clearTimeout(t);
+        connOnline = r.ok;
+    } catch (e) {
+        connOnline = false;
+    }
+    pill.classList.remove('checking');
+    pill.classList.toggle('offline', connOnline === false);
+    document.getElementById('connText').textContent = connOnline ? 'Online' : 'Offline';
+}
+window.addEventListener('online', () => checkConnection());
+window.addEventListener('offline', () => checkConnection());
+setInterval(checkConnection, 30000);
+checkConnection();
+
+// ===== DATA LOADING =====
+async function loadAllData() {
+    try {
+        const [lessonsRes, statsRes, catsRes, testsRes, instRes] = await Promise.all([
+            api('/lessons/admin?limit=1000'),
+            api('/lessons/stats'),
+            api('/categories'),
+            api('/testimonials/admin'),
+            api('/instructors')
+        ]);
+        lessonsCache = lessonsRes.lessons || [];
+        window._stats = statsRes.stats || {};
+        window._catStats = statsRes.categoryStats || [];
+        window._categories = catsRes.categories || [];
+        window._testimonials = testsRes.testimonials || [];
+        window._instructors = instRes.instructors || [];
+        updateLessonCount();
+        populateCategoryFilter();
+        populateFormSelects();
+    } catch (err) {
+        console.error('Load data error:', err);
+    }
+}
+
+function updateLessonCount() {
+    const count = document.getElementById('lessonCount');
+    if (count) count.textContent = lessonsCache.length;
+}
+
+function populateCategoryFilter() {
+    const sel = document.getElementById('filterCategory');
+    const cats = window._categories || [];
+    sel.innerHTML = '<option value="">All Categories</option>';
+    cats.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.textContent = c.name;
+        sel.appendChild(opt);
+    });
+    if (currentFilterCategory) sel.value = currentFilterCategory;
+}
+
+function populateFormSelects() {
+    const cats = window._categories || [];
+    const catSel = document.getElementById('lessonCategory');
+    if (catSel) {
+        catSel.innerHTML = '<option value="">Select category...</option>' +
+            cats.map(c => '<option value="' + c.name + '">' + c.name + '</option>').join('');
+    }
+    const insts = window._instructors || [];
+    const instSel = document.getElementById('lessonInstructor');
+    if (instSel) {
+        instSel.innerHTML = '<option value="">Select instructor...</option>' +
+            insts.map(i => '<option value="' + i.name + '">' + i.name + '</option>').join('');
+    }
+}
+
+// ===== RENDER LESSONS =====
+function getFilteredLessons() {
+    let filtered = [...lessonsCache];
+    if (currentFilterCategory) filtered = filtered.filter(l => l.category_name === currentFilterCategory);
+    if (currentFilterStatus) {
+        if (currentFilterStatus === 'published') filtered = filtered.filter(l => l.is_published === 1);
+        else if (currentFilterStatus === 'pending' || currentFilterStatus === 'draft') filtered = filtered.filter(l => l.is_published === 0);
+    }
+    if (currentSearch) filtered = filtered.filter(l => l.title.toLowerCase().includes(currentSearch.toLowerCase()));
+    return filtered;
+}
+
+function renderLessonsTable() {
+    const filtered = getFilteredLessons();
+    const totalPages = Math.ceil(filtered.length / perPage) || 1;
+    if (currentPageNum > totalPages) currentPageNum = totalPages;
+
+    const start = (currentPageNum - 1) * perPage;
+    const end = start + perPage;
+    const pageData = filtered.slice(start, end);
+
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+
+    if (filtered.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="9" style="text-align:center;padding:40px 20px;color:var(--text-muted);"><i class="fas fa-video-slash" style="font-size:30px;opacity:0.25;display:block;margin-bottom:10px;"></i><div style="font-weight:600;color:var(--text-sec);font-size:14px;">No lessons found</div><div style="font-size:12px;margin-top:3px;">Try clearing your filters or add a new lesson.</div></td>';
+        tbody.appendChild(tr);
+        const info = document.getElementById('paginationInfo');
+        info.textContent = 'No lessons found';
+        document.getElementById('paginationBtns').innerHTML = '';
+        return;
+    }
+
+    pageData.forEach((l, i) => {
+        const tr = document.createElement('tr');
+        const st = l.is_published ? 'published' : 'pending';
+        const stars = l.rating ? '<i class="fas fa-star" style="color:var(--gold);font-size:11px;"></i> '.repeat(Math.floor(l.rating)) : '';
+        const thumb = l.thumbnail_url || 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg';
+        const dur = l.duration_minutes ? l.duration_minutes + ' min' : '--';
+        const cat = l.category_name || 'Uncategorized';
+        const inst = l.instructor_name || 'Unknown';
+        const date = l.created_at ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+        const viewStyle = l.is_published ? '' : 'opacity:0.35;cursor:not-allowed;';
+        const viewHref = l.is_published ? 'video.html?id=' + l.id : 'javascript:void(0);';
+        tr.innerHTML = `
+            <td><div class="lesson-info"><img class="lesson-thumb" src="${thumb}" alt=""><div><div class="lesson-name">${l.title}</div></div></div></td>
+            <td><span style="font-size:12px;color:var(--text-sec);">${cat}</span></td>
+            <td><span style="font-size:12px;color:var(--text-sec);">${inst}</span></td>
+            <td><span style="font-size:12px;color:var(--gold);">${stars} ${l.rating || '-'}</span></td>
+            <td><span style="font-size:12px;color:var(--text-sec);">${l.student_count || 0}</span></td>
+            <td><span style="font-size:12px;color:var(--text-muted);">${dur}</span></td>
+            <td><span class="status-badge ${st}">${st}</span></td>
+            <td><span style="font-size:12px;color:var(--text-muted);">${date}</span></td>
+            <td><div class="table-actions"><a href="${viewHref}" class="table-btn view" title="${l.is_published ? 'View' : 'Not published yet'}" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;${viewStyle}"><i class="fas fa-eye"></i></a><button class="table-btn publish" title="${l.is_published ? 'Unpublish' : 'Publish'}" data-id="${l.id}" style="${l.is_published ? 'color:#3da76e;' : ''}"><i class="fas ${l.is_published ? 'fa-circle-check' : 'fa-circle'}"></i></button><button class="table-btn edit" title="Edit" data-id="${l.id}"><i class="fas fa-pen"></i></button><button class="table-btn delete" title="Delete" data-id="${l.id}"><i class="fas fa-trash"></i></button></div></td>
+        `;
+        tr.querySelector('.delete').addEventListener('click', async () => {
+            if (!confirm('Delete this lesson?')) return;
+            try {
+                await api('/lessons/' + l.id, { method: 'DELETE' });
+                toast('Lesson deleted.');
+                await loadAllData();
+                renderLessonsTable();
+            } catch (err) {
+                toast('Delete failed: ' + err.message, 'error');
+            }
+        });
+        const publishBtn = tr.querySelector('.publish');
+        if (publishBtn) {
+            publishBtn.addEventListener('click', async () => {
+                const target = l.is_published ? 0 : 1;
+                try {
+                    await api('/lessons/' + l.id + '/publish', { method: 'PATCH', body: JSON.stringify({ isPublished: target }) });
+                    toast(target ? 'Lesson published' : 'Lesson unpublished', 'info');
+                    await loadAllData();
+                    renderLessonsTable();
+                } catch (err) {
+                    toast('Publish failed: ' + err.message, 'error');
+                }
+            });
+        }
+        const editBtn = tr.querySelector('.edit');
+        if (editBtn) {
+            editBtn.addEventListener('click', () => openEditModal(l.id));
+        }
+        tbody.appendChild(tr);
+    });
+
+    const info = document.getElementById('paginationInfo');
+    info.textContent = filtered.length === 0 ? 'No lessons found'
+        : 'Showing ' + (start + 1) + '-' + Math.min(end, filtered.length) + ' of ' + filtered.length + ' lessons';
+
+    const btns = document.getElementById('paginationBtns');
+    btns.innerHTML = '';
+    btns.innerHTML += '<button class="pagination-btn" data-page="' + (currentPageNum - 1) + '" ' + (currentPageNum <= 1 ? 'disabled style="opacity:0.3;cursor:default;"' : '') + '><i class="fas fa-chevron-left"></i></button>';
+    for (let i = 1; i <= totalPages; i++) {
+        btns.innerHTML += '<button class="pagination-btn ' + (i === currentPageNum ? 'active' : '') + '" data-page="' + i + '">' + i + '</button>';
+    }
+    btns.innerHTML += '<button class="pagination-btn" data-page="' + (currentPageNum + 1) + '" ' + (currentPageNum >= totalPages ? 'disabled style="opacity:0.3;cursor:default;"' : '') + '><i class="fas fa-chevron-right"></i></button>';
+
+    btns.querySelectorAll('.pagination-btn:not([disabled])').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const p = parseInt(btn.dataset.page);
+            if (p && p !== currentPageNum && p >= 1 && p <= totalPages) {
+                currentPageNum = p;
+                renderLessonsTable();
+            }
+        });
+    });
+}
+
+// ===== RENDER DASHBOARD =====
+function renderDashboard() {
+    const s = window._stats || {};
+    document.getElementById('statLessons').textContent = lessonsCache.length || 0;
+    const totalStudents = s.totalStudents || 0;
+    document.getElementById('statStudents').textContent = totalStudents >= 1000 ? (totalStudents / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : totalStudents;
+    document.getElementById('statPending').textContent = s.pendingReview || 0;
+    document.getElementById('statThisMonth').textContent = s.thisMonth || 0;
+
+    const recent = [...lessonsCache].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5);
+    const container = document.getElementById('recentLessons');
+    container.innerHTML = recent.map(l => {
+        const st = l.is_published ? 'published' : 'draft';
+        const thumb = l.thumbnail_url || 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg';
+        const cat = l.category_name || '';
+        const inst = l.instructor_name || '';
+        return '<div class="quick-item"><img class="thumb" src="' + thumb + '" alt=""><div class="info"><h4>' + l.title + '</h4><p>' + cat + ' &middot; ' + inst + '</p></div><span class="status ' + st + '">' + st + '</span></div>';
+    }).join('');
+
+    const chart = document.getElementById('monthlyChart');
+    const monthCounts = {};
+    lessonsCache.forEach(l => {
+        if (l.created_at) {
+            const d = new Date(l.created_at);
+            const key = d.toLocaleString('en', { month: 'short' });
+            monthCounts[key] = (monthCounts[key] || 0) + 1;
+        }
+    });
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'];
+    const values = months.map(m => monthCounts[m] || 0);
+    const maxH = Math.max(...values, 1);
+    chart.innerHTML = values.map((v, i) => '<div class="chart-bar" style="height:' + Math.round((v / maxH) * 100) + 'px;" title="' + months[i] + ': ' + v + '"><span class="label">' + months[i] + '</span></div>').join('');
+}
+
+// ===== RENDER CATEGORIES =====
+function renderCategories() {
+    const container = document.getElementById('categoriesList');
+    const cats = window._categories || [];
+    const catStats = window._catStats || [];
+    const countBadge = document.getElementById('catCount');
+    countBadge.textContent = cats.length + ' categories';
+    container.innerHTML = cats.map(c => {
+        const st = catStats.find(cs => cs.id === c.id);
+        const actualCount = st ? st.lesson_count : 0;
+        return '<div class="cat-list-item"><span class="color-dot" style="background:' + (c.color || '#d4a853') + ';"></span><div class="cat-info"><h4>' + c.name + '</h4><p>' + (c.description || '') + '</p></div><div class="cat-stats"><span>' + actualCount + ' lessons</span><button class="table-btn edit" data-id="' + c.id + '" title="Edit"><i class="fas fa-pen"></i></button><button class="table-btn delete" data-id="' + c.id + '" title="Delete"><i class="fas fa-trash"></i></button></div></div>';
+    }).join('');
+    container.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            if (!confirm('Delete this category? Lessons in it will become uncategorized.')) return;
+            try {
+                await api('/categories/' + btn.dataset.id, { method: 'DELETE' });
+                const catsRes = await api('/categories');
+                window._categories = catsRes.categories;
+                const statsRes = await api('/lessons/stats');
+                window._catStats = statsRes.categoryStats;
+                toast('Category deleted.');
+                renderCategories();
+            } catch (err) {
+                toast('Delete failed: ' + err.message, 'error');
+            }
+        });
+    });
+    container.querySelectorAll('.edit').forEach(btn => {
+        btn.addEventListener('click', () => openEditCategoryModal(btn.dataset.id));
+    });
+    populateFormSelects();
+}
+
+// ===== RENDER TESTIMONIALS =====
+function renderTestimonials() {
+    const container = document.getElementById('testimonialsList');
+    const tests = window._testimonials || [];
+    const countBadge = document.getElementById('testCount');
+    countBadge.textContent = tests.length + ' testimonials';
+    if (tests.length === 0) {
+        container.innerHTML = '<div class="testimonials-empty"><i class="fas fa-quote-right"></i><h4>No testimonials yet</h4><p>Add your first testimonial above.</p></div>';
+        return;
+    }
+    container.innerHTML = tests.map(t => {
+        const stars = '<i class="fas fa-star"></i>'.repeat(t.rating);
+        return '<div class="testimonial-admin-card"><div class="t-avatar">' + t.initials + '</div><div class="t-content"><div class="t-name">' + t.name_en + '</div><div class="t-role"><span class="t-lang-label">EN</span> ' + t.role_en + ' &middot; <span class="t-lang-label">RW</span> ' + t.role_rw + '</div><div class="t-stars">' + stars + '</div><div class="t-text"><span class="t-lang-label">EN</span> ' + t.text_en + '</div><div class="t-text" style="margin-top:4px;"><span class="t-lang-label">RW</span> ' + t.text_rw + '</div></div><div class="t-actions"><button class="table-btn edit" data-id="' + t.id + '" title="Edit"><i class="fas fa-pen"></i></button><button class="table-btn delete" data-id="' + t.id + '" title="Delete"><i class="fas fa-trash"></i></button></div></div>';
+    }).join('');
+    container.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            if (!confirm('Delete this testimonial?')) return;
+            try {
+                await api('/testimonials/' + btn.dataset.id, { method: 'DELETE' });
+                const res = await api('/testimonials/admin');
+                window._testimonials = res.testimonials;
+                toast('Testimonial deleted.');
+                renderTestimonials();
+            } catch (err) {
+                toast('Delete failed: ' + err.message, 'error');
+            }
+        });
+    });
+    container.querySelectorAll('.edit').forEach(btn => {
+        btn.addEventListener('click', () => openEditTestimonialModal(btn.dataset.id));
+    });
+}
+
+// ===== TESTIMONIAL FORM =====
+document.getElementById('testimonialForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nameEn = document.getElementById('testName').value.trim();
+    let initials = document.getElementById('testInitials').value.trim().toUpperCase();
+    const roleEn = document.getElementById('testRole').value.trim();
+    const roleRw = document.getElementById('testRoleRw').value.trim();
+    const textEn = document.getElementById('testEn').value.trim();
+    const textRw = document.getElementById('testRw').value.trim();
+    const rating = parseInt(document.getElementById('testRating').value);
+
+    if (!nameEn || !textEn || !textRw) {
+        toast('Please fill in Name and both testimonial texts.', 'warning');
+        return;
+    }
+    if (!initials) {
+        initials = nameEn.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+    try {
+        await api('/testimonials', {
+            method: 'POST',
+            body: JSON.stringify({ nameEn, nameRw: nameEn, roleEn, roleRw, textEn, textRw, initials, rating })
+        });
+        document.getElementById('testimonialForm').reset();
+        const res = await api('/testimonials/admin');
+        window._testimonials = res.testimonials;
+        renderTestimonials();
+    } catch (err) {
+        toast('Error adding testimonial: ' + err.message, 'error');
+    }
+});
+
+// ===== TESTIMONIAL EDIT MODAL =====
+function openEditTestimonialModal(id) {
+    const t = (window._testimonials || []).find(x => String(x.id) === String(id));
+    if (!t) return;
+    document.getElementById('editTestId').value = t.id;
+    document.getElementById('editTestName').value = t.name_en || '';
+    document.getElementById('editTestInitials').value = t.initials || '';
+    document.getElementById('editTestRoleEn').value = t.role_en || '';
+    document.getElementById('editTestRoleRw').value = t.role_rw || '';
+    document.getElementById('editTestTextEn').value = t.text_en || '';
+    document.getElementById('editTestTextRw').value = t.text_rw || '';
+    document.getElementById('editTestRating').value = String(t.rating || 5);
+    document.getElementById('editTestActive').value = String(t.is_active == null ? 1 : t.is_active);
+    document.getElementById('editTestModal').classList.add('show');
+}
+function closeEditTestimonialModal() { document.getElementById('editTestModal').classList.remove('show'); }
+document.getElementById('editTestClose').addEventListener('click', closeEditTestimonialModal);
+document.getElementById('editTestCancel').addEventListener('click', closeEditTestimonialModal);
+document.getElementById('editTestModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeEditTestimonialModal(); });
+document.getElementById('editTestForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('editTestId').value;
+    const nameEn = document.getElementById('editTestName').value.trim();
+    let initials = document.getElementById('editTestInitials').value.trim().toUpperCase();
+    if (!initials) initials = nameEn.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const payload = {
+        nameEn,
+        nameRw: nameEn,
+        roleEn: document.getElementById('editTestRoleEn').value.trim(),
+        roleRw: document.getElementById('editTestRoleRw').value.trim(),
+        textEn: document.getElementById('editTestTextEn').value.trim(),
+        textRw: document.getElementById('editTestTextRw').value.trim(),
+        initials,
+        rating: parseInt(document.getElementById('editTestRating').value),
+        isActive: parseInt(document.getElementById('editTestActive').value)
+    };
+    if (!payload.nameEn || !payload.textEn || !payload.textRw) { toast('Please fill in Name and both testimonial texts.', 'warning'); return; }
+    try {
+        await api('/testimonials/' + id, { method: 'PUT', body: JSON.stringify(payload) });
+        closeEditTestimonialModal();
+        toast('Testimonial updated.');
+        const res = await api('/testimonials/admin');
+        window._testimonials = res.testimonials;
+        renderTestimonials();
+    } catch (err) { toast('Error updating testimonial: ' + err.message, 'error'); }
+});
+
+// ===== CATEGORY EDIT MODAL =====
+function openEditCategoryModal(id) {
+    const c = (window._categories || []).find(x => String(x.id) === String(id));
+    if (!c) return;
+    document.getElementById('editCatId').value = c.id;
+    document.getElementById('editCatName').value = c.name || '';
+    document.getElementById('editCatDesc').value = c.description || '';
+    document.getElementById('editCatColor').value = c.color || '#d4a853';
+    const opts = document.querySelectorAll('#editColorOptions span');
+    opts.forEach(s => s.classList.toggle('selected', s.dataset.color === (c.color || '#d4a853')));
+    document.getElementById('editCatModal').classList.add('show');
+}
+function closeEditCategoryModal() { document.getElementById('editCatModal').classList.remove('show'); }
+document.getElementById('editCatClose').addEventListener('click', closeEditCategoryModal);
+document.getElementById('editCatCancel').addEventListener('click', closeEditCategoryModal);
+document.getElementById('editCatModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeEditCategoryModal(); });
+document.querySelectorAll('#editColorOptions span').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('#editColorOptions span').forEach(s => s.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('editCatColor').value = el.dataset.color;
+    });
+});
+document.getElementById('editCatForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('editCatId').value;
+    const name = document.getElementById('editCatName').value.trim();
+    if (!name) { toast('Please enter a category name.', 'warning'); return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    try {
+        await api('/categories/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({ name, slug, description: document.getElementById('editCatDesc').value.trim(), color: document.getElementById('editCatColor').value })
+        });
+        closeEditCategoryModal();
+        toast('Category updated.');
+        const catsRes = await api('/categories');
+        window._categories = catsRes.categories;
+        const statsRes = await api('/lessons/stats');
+        window._catStats = statsRes.categoryStats;
+        renderCategories();
+    } catch (err) { toast('Error updating category: ' + err.message, 'error'); }
+});
+
+// ===== INSTRUCTORS PAGE =====
+function renderInstructors() {
+    const container = document.getElementById('instructorsList');
+    const insts = window._instructors || [];
+    document.getElementById('instCount').textContent = insts.length + ' instructors';
+    if (insts.length === 0) {
+        container.innerHTML = '<div class="testimonials-empty"><i class="fas fa-chalkboard-user"></i><h4>No instructors yet</h4><p>Add your first instructor above.</p></div>';
+        return;
+    }
+    container.innerHTML = insts.map(i => {
+        const initials = (i.name || '?').split(' ').filter(Boolean).map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        return '<div class="testimonial-admin-card"><div class="t-avatar">' + initials + '</div><div class="t-content"><div class="t-name">' + i.name + '</div><div class="t-role">' + (i.expertise || 'Instructor') + '</div><div class="t-text">' + (i.bio || '') + '</div></div><div class="t-actions"><button class="table-btn edit" data-id="' + i.id + '" title="Edit"><i class="fas fa-pen"></i></button><button class="table-btn delete" data-id="' + i.id + '" title="Delete"><i class="fas fa-trash"></i></button></div></div>';
+    }).join('');
+    container.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            if (!confirm('Delete this instructor? Lessons assigned to them will become unassigned.')) return;
+            try {
+                await api('/instructors/' + btn.dataset.id, { method: 'DELETE' });
+                const res = await api('/instructors');
+                window._instructors = res.instructors;
+                toast('Instructor deleted.');
+                renderInstructors();
+            } catch (err) { toast('Delete failed: ' + err.message, 'error'); }
+        });
+    });
+    container.querySelectorAll('.edit').forEach(btn => {
+        btn.addEventListener('click', () => openEditInstructorModal(btn.dataset.id));
+    });
+    populateFormSelects();
+}
+
+document.getElementById('instructorForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('instName').value.trim();
+    if (!name) { toast('Please enter an instructor name.', 'warning'); return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    try {
+        await api('/instructors', {
+            method: 'POST',
+            body: JSON.stringify({ name, slug, bio: document.getElementById('instBio').value.trim(), expertise: document.getElementById('instExpertise').value.trim() })
+        });
+        document.getElementById('instructorForm').reset();
+        toast('Instructor "' + name + '" added.');
+        const res = await api('/instructors');
+        window._instructors = res.instructors;
+        renderInstructors();
+    } catch (err) { toast('Error adding instructor: ' + err.message, 'error'); }
+});
+
+// ===== INSTRUCTOR EDIT MODAL =====
+function openEditInstructorModal(id) {
+    const inst = (window._instructors || []).find(x => String(x.id) === String(id));
+    if (!inst) return;
+    document.getElementById('editInstId').value = inst.id;
+    document.getElementById('editInstName').value = inst.name || '';
+    document.getElementById('editInstExpertise').value = inst.expertise || '';
+    document.getElementById('editInstBio').value = inst.bio || '';
+    document.getElementById('editInstModal').classList.add('show');
+}
+function closeEditInstructorModal() { document.getElementById('editInstModal').classList.remove('show'); }
+document.getElementById('editInstClose').addEventListener('click', closeEditInstructorModal);
+document.getElementById('editInstCancel').addEventListener('click', closeEditInstructorModal);
+document.getElementById('editInstModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeEditInstructorModal(); });
+document.getElementById('editInstForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('editInstId').value;
+    const name = document.getElementById('editInstName').value.trim();
+    if (!name) { toast('Please enter an instructor name.', 'warning'); return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    try {
+        await api('/instructors/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({ name, slug, bio: document.getElementById('editInstBio').value.trim(), expertise: document.getElementById('editInstExpertise').value.trim() })
+        });
+        closeEditInstructorModal();
+        toast('Instructor updated.');
+        const res = await api('/instructors');
+        window._instructors = res.instructors;
+        renderInstructors();
+    } catch (err) { toast('Error updating instructor: ' + err.message, 'error'); }
+});
+
+// ===== NAVIGATION =====
+function navigateTo(page) {
+    currentPage = page;
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(`page-${page}`).classList.add('active');
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.querySelector(`.sidebar-link[data-page="${page}"]`).classList.add('active');
+
+    const titles = {
+        dashboard: { en: 'Dashboard', rw: 'Ijambo ry\'ibanze' },
+        lessons: { en: 'All Lessons', rw: 'Amasomo Yose' },
+        upload: { en: 'Upload Lesson', rw: 'Shyira Isomo' },
+        categories: { en: 'Categories', rw: 'Ibyiciro' },
+        testimonials: { en: 'Testimonials', rw: 'Ibyabo Bavuga' },
+        instructors: { en: 'Instructors', rw: 'Abigisha' }
+    };
+    const lang = document.body.classList.contains('lang-rw') ? 'rw' : 'en';
+    document.getElementById('pageTitle').textContent = titles[page] ? titles[page][lang] : page;
+    document.getElementById('pageTitle').setAttribute('data-lang', lang);
+
+    if (page === 'lessons') {
+        currentPageNum = 1;
+        renderLessonsTable();
+    }
+    if (page === 'dashboard') renderDashboard();
+    if (page === 'categories') renderCategories();
+    if (page === 'testimonials') renderTestimonials();
+    if (page === 'instructors') renderInstructors();
+
+    if (window.innerWidth <= 992) document.getElementById('sidebar').classList.remove('open');
+}
+
+document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
+    link.addEventListener('click', () => navigateTo(link.dataset.page));
+});
+
+// ===== SEARCH & FILTER =====
+document.getElementById('filterCategory').addEventListener('change', function() {
+    currentFilterCategory = this.value;
+    currentPageNum = 1;
+    renderLessonsTable();
+});
+document.getElementById('filterStatus').addEventListener('change', function() {
+    currentFilterStatus = this.value;
+    currentPageNum = 1;
+    renderLessonsTable();
+});
+document.getElementById('lessonSearch').addEventListener('input', function() {
+    currentSearch = this.value;
+    currentPageNum = 1;
+    renderLessonsTable();
+});
+
+// Global search redirects to lessons page
+document.getElementById('globalSearch').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && this.value.trim()) {
+        currentSearch = this.value.trim();
+        navigateTo('lessons');
+        document.getElementById('lessonSearch').value = this.value.trim();
+        currentPageNum = 1;
+        renderLessonsTable();
+    }
+});
+
+// ===== LOGIN =====
+const loginOverlay = document.getElementById('loginOverlay');
+const dashboardEl = document.getElementById('dashboard');
+const loginForm = document.getElementById('loginForm');
+const emailInput = document.getElementById('emailInput');
+const passwordInput = document.getElementById('passwordInput');
+const loginError = document.getElementById('loginError');
+const loginBtn = document.getElementById('loginBtn');
+
+loginForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    try {
+        const data = await api('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({
+                email: emailInput.value.trim(),
+                password: passwordInput.value
+            })
+        });
+        localStorage.setItem('noorAdminToken', data.token);
+        loginOverlay.classList.add('hidden');
+        dashboardEl.classList.add('show');
+        loginError.classList.remove('show');
+        await loadAllData();
+        renderDashboard();
+        renderLessonsTable();
+        renderCategories();
+        renderTestimonials();
+    } catch (err) {
+        const isAuth = err && err.message && /invalid email or password/i.test(err.message);
+        document.getElementById('loginErrorEn').textContent = isAuth
+            ? 'Invalid email or password. Try again.'
+            : 'Cannot reach the server. Make sure the backend is running, then try again.';
+        document.getElementById('loginErrorRw').textContent = isAuth
+            ? 'Imeri cyangwa ijambo wibanga ntabwo ari byo. Ongera ugerageze.'
+            : 'Ntishobora kugera kuri seriveri. Ongera ugerageze.';
+        loginError.classList.add('show');
+        passwordInput.value = '';
+        passwordInput.focus();
+        loginBtn.style.animation = 'shake 0.4s ease';
+        setTimeout(() => loginBtn.style.animation = '', 400);
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> <span data-lang="en">Sign In</span><span data-lang="rw">Injira</span>';
+    }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem('noorAdminToken');
+    dashboardEl.classList.remove('show');
+    loginOverlay.classList.remove('hidden');
+    passwordInput.value = '';
+    loginError.classList.remove('show');
+});
+
+// Shake animation
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 50%{transform:translateX(6px)} 75%{transform:translateX(-4px)} }`;
+document.head.appendChild(styleSheet);
+
+// ===== UPLOAD FORM =====
+const thumbInput = document.getElementById('thumbInput');
+const thumbUpload = document.getElementById('thumbUpload');
+const thumbPreview = document.getElementById('thumbPreview');
+
+thumbInput.addEventListener('change', () => {
+    const file = thumbInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            thumbPreview.querySelector('img').src = e.target.result;
+            thumbPreview.classList.add('show');
+            thumbUpload.classList.add('has-file');
+            thumbUpload.querySelector('h4').textContent = file.name;
+            thumbUpload.querySelector('h4').className = 'file-name';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+const videoInput = document.getElementById('videoInput');
+const videoUpload = document.getElementById('videoUpload');
+
+videoInput.addEventListener('change', () => {
+    const file = videoInput.files[0];
+    if (file) {
+        videoUpload.classList.add('has-file');
+        const nameEl = videoUpload.querySelector('h4');
+        nameEl.textContent = file.name;
+        nameEl.className = 'file-name';
+        const size = (file.size / (1024 * 1024)).toFixed(1);
+        videoUpload.querySelector('p').textContent = `${size} MB — Ready to upload`;
+        const url = URL.createObjectURL(file);
+        const tempVideo = document.createElement('video');
+        tempVideo.preload = 'metadata';
+        tempVideo.onloadedmetadata = () => {
+            const dur = Math.round(tempVideo.duration);
+            const mins = Math.floor(dur / 60);
+            const secs = dur % 60;
+            const durStr = mins > 0 ? (secs > 30 ? mins + 1 : mins) : 1;
+            document.getElementById('lessonDuration').value = durStr + ' min';
+            URL.revokeObjectURL(url);
+        };
+        tempVideo.onerror = () => { URL.revokeObjectURL(url); };
+        tempVideo.src = url;
+    }
+});
+
+const uploadForm = document.getElementById('uploadForm');
+const submitBtn = document.getElementById('submitBtn');
+const uploadProgress = document.getElementById('uploadProgress');
+const progressFill = document.getElementById('progressFill');
+const progressPercent = document.getElementById('progressPercent');
+
+function setUploadProgress(pct, label) {
+    uploadProgress.classList.add('show');
+    progressFill.style.width = pct + '%';
+    progressPercent.textContent = Math.floor(pct) + '%';
+    if (label) document.getElementById('progressLabel').textContent = label;
+}
+
+function uploadFileWithProgress(file, endpoint, label) {
+    return new Promise((resolve, reject) => {
+        const form = new FormData();
+        form.append(file.type.startsWith('image') ? 'thumbnail' : 'video', file);
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', API_BASE + endpoint);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
+        xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable) {
+                setUploadProgress((e.loaded / e.total) * 80, label);
+            }
+        };
+        xhr.onload = () => {
+            let data;
+            try { data = JSON.parse(xhr.responseText); } catch (e) { data = {}; }
+            if (xhr.status >= 200 && xhr.status < 300) {
+                setUploadProgress(90, label);
+                resolve(data);
+            } else {
+                reject(new Error(data.error || 'Upload failed (' + xhr.status + ')'));
+            }
+        };
+        xhr.onerror = () => reject(new Error('Network error during upload. Is the server online?'));
+        xhr.send(form);
+    });
+}
+
+uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.getElementById('lessonTitle').value.trim();
+    const desc = document.getElementById('lessonDesc').value.trim();
+    const category = document.getElementById('lessonCategory').value;
+    const instructor = document.getElementById('lessonInstructor').value.trim();
+    const difficulty = document.getElementById('lessonDifficulty').value;
+    const duration = document.getElementById('lessonDuration').value || '-- min';
+    const tags = document.getElementById('lessonTags').value.trim();
+    const videoUrl = document.getElementById('lessonVideoUrl').value.trim();
+
+    if (!title || !desc || !category) {
+        toast('Please fill in all required fields (Title, Description, Category).', 'warning');
+        return;
+    }
+    if (!instructor && (window._instructors || []).length > 0) {
+        toast('Please select an instructor.', 'warning');
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    uploadProgress.classList.add('show');
+    setUploadProgress(2, 'Preparing upload...');
+
+    try {
+        const cats = window._categories || [];
+        const cat = cats.find(c => c.name === category);
+        const catId = cat ? cat.id : null;
+        const instRes = await api('/instructors');
+        const inst = instRes.instructors.find(i => i.name === instructor);
+        const instId = inst ? inst.id : null;
+        const durMatch = duration.match(/(\d+)/);
+        const durMin = durMatch ? parseInt(durMatch[1]) : null;
+
+        let thumbnailUrl = null;
+        let uploadedVideoPath = null;
+
+        const thumbFile = thumbInput.files[0];
+        if (thumbFile) {
+            setUploadProgress(5, 'Uploading thumbnail...');
+            const thumbRes = await uploadFileWithProgress(thumbFile, '/upload/thumbnail', 'Uploading thumbnail...');
+            thumbnailUrl = 'http://localhost:3000' + thumbRes.file.url;
+        }
+
+        const videoFile = videoInput.files[0];
+        if (videoFile) {
+            setUploadProgress(8, 'Uploading video...');
+            const videoRes = await uploadFileWithProgress(videoFile, '/upload/video', 'Uploading video...');
+            uploadedVideoPath = videoRes.file.path;
+            setUploadProgress(92, 'Uploading video...');
+        }
+
+        setUploadProgress(95, 'Saving lesson...');
+        await api('/lessons', {
+            method: 'POST',
+            body: JSON.stringify({
+                title, description: desc, categoryId: catId, instructorId: instId,
+                difficulty, durationMinutes: durMin,
+                videoUrl: videoUrl || uploadedVideoPath || undefined,
+                videoFilePath: uploadedVideoPath,
+                thumbnailUrl,
+                rating: parseFloat(document.getElementById('lessonRating').value) || null,
+                studentCount: parseInt(document.getElementById('lessonStudents').value, 10) || 0,
+                isFree: false, isFeatured: false,
+                tags: tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : []
+            })
+        });
+
+        setUploadProgress(100, 'Done');
+        await new Promise(r => setTimeout(r, 400));
+
+        uploadForm.reset();
+        thumbPreview.classList.remove('show');
+        thumbUpload.classList.remove('has-file');
+        thumbUpload.querySelector('h4').textContent = 'Upload Thumbnail';
+        videoUpload.classList.remove('has-file');
+        videoUpload.querySelector('h4').textContent = 'Upload Video';
+        videoUpload.querySelector('p').textContent = 'MP4, MOV or WebM — Max 500MB';
+        uploadProgress.classList.remove('show');
+        progressFill.style.width = '0%';
+        toast('Lesson "' + title + '" created successfully!');
+        await loadAllData();
+        navigateTo('lessons');
+    } catch (err) {
+        uploadProgress.classList.remove('show');
+        progressFill.style.width = '0%';
+        toast('Error creating lesson: ' + (err.message || 'Unknown error'), 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Upload Lesson';
+    }
+});
+
+// ===== CATEGORY FORM =====
+document.querySelectorAll('#colorOptions span').forEach(el => {
+    el.addEventListener('click', () => {
+        document.querySelectorAll('#colorOptions span').forEach(s => s.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('catColor').value = el.dataset.color;
+    });
+});
+
+document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('catName').value.trim();
+    const desc = document.getElementById('catDesc').value.trim();
+    const color = document.getElementById('catColor').value;
+    if (!name) { toast('Please enter a category name.', 'warning'); return; }
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    try {
+        await api('/categories', {
+            method: 'POST',
+            body: JSON.stringify({ name, slug, description: desc, color, iconClass: 'fa-folder' })
+        });
+        document.getElementById('categoryForm').reset();
+        document.getElementById('catColor').value = '#d4a853';
+        document.querySelectorAll('#colorOptions span').forEach((s, i) => s.classList.toggle('selected', i === 0));
+        const res = await api('/categories');
+        window._categories = res.categories;
+        renderCategories();
+    } catch (err) {
+        toast('Error creating category: ' + err.message, 'error');
+    }
+});
+
+// ===== SIDEBAR TOGGLE =====
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar = document.getElementById('sidebar');
+const mq = window.matchMedia('(max-width: 992px)');
+mq.addEventListener('change', (e) => {
+    sidebarToggle.style.display = e.matches ? 'flex' : 'none';
+    if (!e.matches) sidebar.classList.remove('open');
+});
+if (mq.matches) sidebarToggle.style.display = 'flex';
+
+sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 992 && !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+        sidebar.classList.remove('open');
+    }
+});
+
+// ===== EDIT LESSON MODAL =====
+function populateEditFormSelects() {
+    const cats = window._categories || [];
+    const catSel = document.getElementById('editCategory');
+    catSel.innerHTML = cats.map(c => '<option value="' + c.name + '">' + c.name + '</option>').join('');
+    const instResCache = window._instructors || [];
+    const instSel = document.getElementById('editInstructor');
+    instSel.innerHTML = '<option value="">-- Select instructor --</option>' + instResCache.map(i => '<option value="' + i.name + '">' + i.name + '</option>').join('');
+}
+
+async function openEditModal(id) {
+    const lesson = lessonsCache.find(l => l.id === id);
+    if (!lesson) return;
+    if (!window._instructors) {
+        try {
+            const res = await api('/instructors');
+            window._instructors = res.instructors || [];
+        } catch (e) { window._instructors = []; }
+    }
+    populateEditFormSelects();
+    document.getElementById('editLessonId').value = lesson.id;
+    document.getElementById('editTitle').value = lesson.title;
+    document.getElementById('editDesc').value = lesson.description || '';
+    document.getElementById('editCategory').value = lesson.category_name || '';
+    document.getElementById('editInstructor').value = lesson.instructor_name || '';
+    document.getElementById('editRating').value = lesson.rating ? lesson.rating.toString() : '5.0';
+    document.getElementById('editStatus').value = lesson.is_published ? 'published' : 'pending';
+    document.getElementById('editDifficulty').value = lesson.difficulty || 'All Levels';
+    document.getElementById('editStudents').value = lesson.student_count || 0;
+    document.getElementById('editVideoUrl').value = lesson.video_url || '';
+    document.getElementById('editVideoHint').textContent = lesson.video_url
+        ? 'Current: YouTube / external link'
+        : (lesson.video_file_path ? 'Current: uploaded file' : 'No video set yet.');
+    editVideoInput.value = '';
+    editVideoUpload.classList.remove('has-file');
+    const editNameEl = editVideoUpload.querySelector('h4');
+    editNameEl.textContent = 'Upload Video File';
+    editNameEl.className = '';
+    editVideoUpload.querySelector('p').textContent = 'MP4, MOV or WebM — Max 500MB';
+    document.getElementById('editUploadProgress').style.display = 'none';
+    document.getElementById('editModal').classList.add('show');
+}
+
+const editVideoInput = document.getElementById('editVideoInput');
+const editVideoUpload = document.getElementById('editVideoUpload');
+
+editVideoInput.addEventListener('change', () => {
+    const file = editVideoInput.files[0];
+    if (!file) return;
+    editVideoUpload.classList.add('has-file');
+    const nameEl = editVideoUpload.querySelector('h4');
+    nameEl.textContent = file.name;
+    nameEl.className = 'file-name';
+    const size = (file.size / (1024 * 1024)).toFixed(1);
+    editVideoUpload.querySelector('p').textContent = size + ' MB — Ready to upload';
+});
+
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('show');
+}
+
+document.getElementById('editModalClose').addEventListener('click', closeEditModal);
+document.getElementById('editCancelBtn').addEventListener('click', closeEditModal);
+document.getElementById('editModal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) closeEditModal();
+});
+
+document.getElementById('editForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = parseInt(document.getElementById('editLessonId').value);
+    const lesson = lessonsCache.find(l => l.id === id);
+    if (!lesson) return;
+
+    const title = document.getElementById('editTitle').value.trim();
+    const description = document.getElementById('editDesc').value.trim();
+    const categoryName = document.getElementById('editCategory').value;
+    const instructorName = document.getElementById('editInstructor').value.trim();
+    const isPublished = document.getElementById('editStatus').value === 'published' ? 1 : 0;
+    const videoUrl = document.getElementById('editVideoUrl').value.trim();
+
+    const cats = window._categories || [];
+    const cat = cats.find(c => c.name === categoryName);
+    const categoryId = cat ? cat.id : lesson.category_id;
+
+    const saveBtn = document.getElementById('editSaveBtn');
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+    try {
+        const instRes = await api('/instructors');
+        const inst = instRes.instructors.find(i => i.name === instructorName);
+        const instructorId = inst ? inst.id : lesson.instructor_id;
+
+        let videoFilePath;
+        const editFile = editVideoInput.files[0];
+        if (editFile) {
+            const prog = document.getElementById('editUploadProgress');
+            prog.style.display = 'block';
+            const vidRes = await uploadFileWithProgress(editFile, '/upload/video', 'Uploading video...');
+            videoFilePath = vidRes.file.path;
+        }
+
+        await api('/lessons/' + id, {
+            method: 'PUT',
+            body: JSON.stringify({
+                title, description, categoryId, instructorId, isPublished,
+                difficulty: document.getElementById('editDifficulty').value,
+                rating: parseFloat(document.getElementById('editRating').value) || null,
+                studentCount: parseInt(document.getElementById('editStudents').value, 10) || 0,
+                videoUrl,
+                videoFilePath: videoFilePath || undefined
+            })
+        });
+        closeEditModal();
+        await loadAllData();
+        renderLessonsTable();
+        renderCategories();
+    } catch (err) {
+        toast('Error updating lesson: ' + err.message, 'error');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> <span data-lang="en">Save Changes</span><span data-lang="rw">Bika</span>';
+    }
+});
+
+// ===== LANGUAGE TOGGLE (ADMIN) =====
+const adminLangToggle = document.getElementById('adminLangToggle');
+const adminLangOptions = adminLangToggle.querySelectorAll('.lang-option');
+let adminLang = localStorage.getItem('noorAdminLang') || 'en';
+
+function setAdminLang(lang) {
+    adminLang = lang;
+    document.body.className = document.body.className.replace(/lang-\w+/g, '').trim();
+    document.body.classList.add('lang-' + lang);
+    adminLangOptions.forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.langCode === lang);
+    });
+    localStorage.setItem('noorAdminLang', lang);
+    const token = getToken();
+    if (token) {
+        api('/preferences', { method: 'PUT', body: JSON.stringify({ key: 'language', value: lang }) }).catch(function(){});
+    }
+    if (typeof currentPage !== 'undefined') {
+        var titles = {
+            dashboard: { en: 'Dashboard', rw: 'Ijambo ry\'ibanze' },
+            lessons: { en: 'All Lessons', rw: 'Amasomo Yose' },
+            upload: { en: 'Upload Lesson', rw: 'Shyira Isomo' },
+            categories: { en: 'Categories', rw: 'Ibyiciro' },
+            testimonials: { en: 'Testimonials', rw: 'Ibyabo Bavuga' },
+            instructors: { en: 'Instructors', rw: 'Abigisha' }
+        };
+        var el = document.getElementById('pageTitle');
+        if (el) el.textContent = titles[currentPage] ? titles[currentPage][lang] : currentPage;
+    }
+}
+
+adminLangOptions.forEach(opt => {
+    opt.addEventListener('click', () => setAdminLang(opt.dataset.langCode));
+});
+
+// ===== AUTO-LOGIN (restore session on refresh) =====
+(async function initSession() {
+    if (!getToken()) return;
+    try {
+        const data = await api('/auth/me');
+        if (data.user) {
+            loginOverlay.classList.add('hidden');
+            dashboardEl.classList.add('show');
+            loginError.classList.remove('show');
+            await loadAllData();
+            navigateTo('dashboard');
+        }
+    } catch (err) {
+        localStorage.removeItem('noorAdminToken');
+    }
+})();
+
+setAdminLang(adminLang);
+</script>
+
+</body>
+</html>
