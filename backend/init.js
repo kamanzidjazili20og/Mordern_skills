@@ -11,6 +11,23 @@ const pool = require('./config/db');
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nooracademy.com';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const DB_NAME = process.env.DB_NAME || 'noor_academy';
+
+async function ensureDatabase() {
+    const mysql = require('mysql2/promise');
+    const conn = await mysql.createConnection({
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT) || 3306,
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD || ''
+    });
+    try {
+        await conn.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+        console.log(`  ✓ Database '${DB_NAME}' ready`);
+    } finally {
+        await conn.end();
+    }
+}
 
 const CREATE_TABLES = [
     `CREATE TABLE IF NOT EXISTS users (
@@ -190,7 +207,7 @@ async function ensureAdmin() {
 async function seedIfEmpty(table, insertSql, values) {
     const [[{ c }]] = await pool.query('SELECT COUNT(*) AS c FROM ' + table);
     if (c > 0) return;
-    await pool.query(insertSql, values);
+    await pool.query(insertSql, [values]);
     console.log('  ✓ Seeded ' + table);
 }
 
@@ -247,6 +264,7 @@ async function seedDemoContent() {
 async function initDatabase() {
     console.log('Checking database setup...');
     try {
+        await ensureDatabase();
         await createTables();
         console.log('  ✓ Tables ready');
         await ensureAdmin();
