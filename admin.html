@@ -2543,13 +2543,22 @@ loginForm.addEventListener('submit', async function(e) {
         renderCategories();
         renderTestimonials();
     } catch (err) {
-        const isAuth = err && err.message && /invalid email or password/i.test(err.message);
+        const msg = (err && err.message) || '';
+        const isAuth = /invalid email or password/i.test(msg);
+        const isNetwork = !isAuth && (err instanceof TypeError || /fetch failed|failed to fetch|networkerror|network/i.test(msg));
+        const isServer = !isAuth && !isNetwork && msg && /server error/i.test(msg);
         document.getElementById('loginErrorEn').textContent = isAuth
             ? 'Invalid email or password. Try again.'
-            : 'Cannot reach the server. Make sure the backend is running, then try again.';
+            : isNetwork
+                ? 'Cannot reach the server. Make sure the backend is running, then try again.'
+                : isServer
+                    ? 'The server hit an error. Try again in a moment.'
+                    : 'Sign in failed. Please try again.';
         document.getElementById('loginErrorRw').textContent = isAuth
             ? 'Imeri cyangwa ijambo wibanga ntabwo ari byo. Ongera ugerageze.'
-            : 'Ntishobora kugera kuri seriveri. Ongera ugerageze.';
+            : isNetwork
+                ? 'Ntishobora kugera kuri seriveri. Ongera ugerageze.'
+                : 'Kwinjira ntibikunze. Ongera ugerageze.';
         loginError.classList.add('show');
         passwordInput.value = '';
         passwordInput.focus();

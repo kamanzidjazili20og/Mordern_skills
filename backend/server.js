@@ -20,10 +20,20 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const { initDatabase } = require('./init');
+const pool = require('./config/db');
+const { getDbConfig } = require('./config/db');
 
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+    let db = 'error';
+    try {
+        await pool.query('SELECT 1');
+        db = 'ok';
+    } catch (e) {
+        db = 'error';
+    }
     res.json({
         status: 'ok',
+        db,
         timestamp: new Date().toISOString(),
         version: '1.0.0'
     });
@@ -59,9 +69,13 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Noor Academy API server running on http://localhost:${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    const dbCfg = getDbConfig();
+    console.log(`Database: ${dbCfg.user}@${dbCfg.host}:${dbCfg.port}/${dbCfg.database}`);
 });
 
-initDatabase().catch(err => {
+initDatabase().then(() => {
+    console.log('Database setup finished.');
+}).catch(err => {
     console.error('Database init error:', err.message);
 });
 

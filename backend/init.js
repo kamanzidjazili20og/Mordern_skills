@@ -7,26 +7,41 @@
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const pool = require('./config/db');
+const { getDbConfig } = require('./config/db');
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'Admin@123';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@nooracademy.com';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
-const DB_NAME = process.env.DB_NAME || 'noor_academy';
+
+async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function ensureDatabase() {
     const mysql = require('mysql2/promise');
-    const conn = await mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT) || 3306,
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || ''
-    });
-    try {
-        await conn.query(`CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
-        console.log(`  ✓ Database '${DB_NAME}' ready`);
-    } finally {
-        await conn.end();
+    const cfg = getDbConfig();
+    const dbName = cfg.database;
+
+    let lastErr;
+    for (let attempt = 1; attempt <= 10; attempt++) {
+        let conn;
+        try {
+            conn = await mysql.createConnection({
+                host: cfg.host,
+                port: cfg.port,
+                user: cfg.user,
+                password: cfg.password,
+                connectTimeout: 10000
+            });
+            await conn.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+            console.log(`  ✓ Database '${dbName}' ready (${cfg.host}:${cfg.port})`);
+            return;
+        } catch (err) {
+            lastErr = err;
+            console.error(`  ⚠ DB connection attempt ${attempt}/10 failed: ${err.message}`);
+            if (conn) await conn.end().catch(() => {});
+        }
+        if (attempt < 10) await sleep(5000);
     }
+    throw lastErr || new Error('Database connection failed');
 }
 
 const CREATE_TABLES = [
