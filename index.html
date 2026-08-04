@@ -123,6 +123,21 @@ body.lang-rw [data-lang="en"] { display: none !important; }
 }
 .btn-admin:hover { background: rgba(212,168,83,0.1); border-color: rgba(212,168,83,0.45); }
 
+.menu-toggle {
+    display: none;
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-sec);
+    font-size: 15px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+}
+.menu-toggle:hover { color: var(--text); background: rgba(255,255,255,0.08); }
+
 .offline-banner {
     display: none; align-items: center; justify-content: center; gap: 10px;
     padding: 11px 16px; font-size: 13px; font-weight: 600;
@@ -400,6 +415,7 @@ body.lang-rw [data-lang="en"] { display: none !important; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .featured-inner { flex-direction: column-reverse; align-items: flex-start; }
     .featured-poster { display: none; }
+    .featured-info { max-width: 100%; }
     .stats-band { grid-template-columns: 1fr 1fr; gap: 18px; }
     .stat + .stat { border-left: none; padding-left: 0; }
     .steps-grid { grid-template-columns: 1fr; }
@@ -407,18 +423,70 @@ body.lang-rw [data-lang="en"] { display: none !important; }
 @media (max-width: 768px) {
     .header { padding: 12px 16px; }
     .wrap { padding: 0 16px; }
-    .nav-links { display: none; }
-    .featured { min-height: 62vh; }
-    .featured-inner { padding: 0 16px 40px; }
+    .header-left { gap: 14px; }
+    .header-right { gap: 8px; }
+    .btn-admin { padding: 8px 12px; }
+    .btn-label { display: none; }
+    #connText { display: none; }
+    .menu-toggle { display: flex; }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 16px 16px;
+        background: rgba(5,16,11,0.97);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 20px 40px -18px rgba(0,0,0,0.7);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 12px 14px; font-size: 15px; }
+    .featured { min-height: 60vh; }
+    .featured-inner { padding: 0 16px 36px; }
     .featured-info h1 { font-size: 32px; }
-    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
-    .footer-inner { padding: 32px 16px 0; }
-    .footer-bottom { flex-direction: column; text-align: center; }
-    .wa-bar { padding: 16px; }
-    .pcard { width: 160px; }
+    .featured-info p { font-size: 14.5px; }
+    .f-arabic { font-size: 22px; }
+    .f-meta { gap: 12px; }
     .stats-band { margin-top: -26px; padding: 20px 18px; }
     .stat-icon { width: 44px; height: 44px; font-size: 16px; }
     .stat-num { font-size: 21px; }
+    .step { padding: 28px 20px; }
+    .wa-bar { padding: 18px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+    .footer-inner { padding: 32px 16px 0; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .pcard { width: 160px; }
+    .btn-gold, .btn-ghost { padding: 12px 20px; font-size: 13px; }
+}
+@media (max-width: 480px) {
+    .header { padding: 10px 12px; }
+    .wrap { padding: 0 12px; }
+    .header-left .logo { font-size: 16px; }
+    .btn-admin { padding: 8px 10px; }
+    .lang-option { padding: 5px 8px; font-size: 10px; }
+    .btn-wa-link { display: none; }
+    .featured { min-height: 54vh; }
+    .featured-info h1 { font-size: 26px; }
+    .f-badge { font-size: 11px; padding: 6px 12px; }
+    .f-meta { gap: 10px; font-size: 12px; }
+    .f-btns { flex-direction: column; align-items: stretch; }
+    .f-btns .btn-gold, .f-btns .btn-ghost { justify-content: center; }
+    .stats-band { gap: 14px; padding: 18px 14px; }
+    .stat { gap: 10px; }
+    .stat-icon { width: 38px; height: 38px; font-size: 14px; }
+    .stat-num { font-size: 18px; }
+    .stat-lbl { font-size: 11px; }
+    .row-head h2 { font-size: 18px; }
+    .row-section { margin-top: 40px; }
+    .pcard { width: 150px; }
+    .step-icon { width: 56px; height: 56px; font-size: 22px; }
+    .step h4 { font-size: 16px; }
+    .wa-bar { flex-direction: column; align-items: flex-start; }
+    .btn-wa { width: 100%; justify-content: center; }
+    .footer-inner { padding: 28px 12px 0; }
+    .footer-grid { gap: 24px; }
 }
 </style>
 </head>
@@ -441,8 +509,9 @@ body.lang-rw [data-lang="en"] { display: none !important; }
             <span class="lang-option active" data-lang-code="en">EN</span>
             <span class="lang-option" data-lang-code="rw">RW</span>
         </div>
-        <a href="https://wa.me/250788821628" target="_blank" class="btn-admin"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-        <a href="admin.html" class="btn-admin"><i class="fas fa-cog"></i> Admin</a>
+        <a href="https://wa.me/250788821628" target="_blank" class="btn-admin btn-wa-link"><i class="fab fa-whatsapp"></i> <span class="btn-label">WhatsApp</span></a>
+        <a href="admin.html" class="btn-admin"><i class="fas fa-cog"></i> <span class="btn-label">Admin</span></a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
     </div>
 </header>
 
@@ -825,6 +894,20 @@ function setLang(lang) {
 }
 langOptions.forEach(opt => opt.addEventListener('click', () => setLang(opt.dataset.langCode)));
 setLang(currentLang);
+
+// ===== MOBILE MENU =====
+const menuToggle = document.getElementById('menuToggle');
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        const nav = document.querySelector('.nav-links');
+        const open = nav.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', open);
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }));
+}
 </script>
 </body>
 </html>

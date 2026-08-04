@@ -584,7 +584,6 @@ body::before {
 
 @media (max-width: 1024px) {
     .player-wrapper { grid-template-columns: 1fr; padding: 20px; }
-    .player-sidebar { order: -1; }
     .related-thumb { width: 140px; min-width: 140px; }
     .header { padding: 12px 20px; }
     .nav-links { display: none; }
@@ -592,13 +591,35 @@ body::before {
 }
 
 @media (max-width: 640px) {
-    .player-wrapper { padding: 16px; }
+    .player-wrapper { padding: 14px; }
+    .player-controls { padding: 14px; }
+    .video-info-section { padding: 18px; }
     .video-info-header h1 { font-size: 20px; }
     .video-actions { width: 100%; }
     .btn-action { flex: 1; justify-content: center; }
     .play-big-btn { width: 60px; height: 60px; font-size: 24px; }
     .related-thumb { width: 120px; min-width: 120px; }
     .footer { flex-direction: column; gap: 12px; text-align: center; }
+    .header { padding: 10px 14px; }
+    .header-left { gap: 12px; }
+    .btn-label { display: none; }
+    #connText { display: none; }
+    .back-link { width: 32px; height: 32px; font-size: 15px; }
+    .logo span { font-size: 14px; }
+    .instructor-bar { gap: 10px; }
+}
+
+@media (max-width: 480px) {
+    .player-wrapper { padding: 10px; }
+    .video-info-header { flex-direction: column; }
+    .video-stats-row { gap: 12px; }
+    .player-timeline { margin-right: 8px; }
+    .player-time { font-size: 10px; }
+    .player-bottom-right { gap: 6px; }
+    .player-bottom-btn { width: 30px; height: 30px; font-size: 14px; }
+    .play-big-btn { width: 54px; height: 54px; font-size: 22px; }
+    .related-thumb { width: 108px; min-width: 108px; }
+    .footer-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
 }
 </style>
 </head>
@@ -620,8 +641,8 @@ body::before {
     </div>
     <div class="header-right">
         <span class="conn-pill" id="connPill"><span class="conn-dot"></span><span id="connText">Online</span></span>
-        <a href="https://wa.me/250788821628" target="_blank" class="btn-admin"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-        <a href="admin.html" class="btn-admin"><i class="fas fa-cog"></i> Admin</a>
+        <a href="https://wa.me/250788821628" target="_blank" class="btn-admin"><i class="fab fa-whatsapp"></i> <span class="btn-label">WhatsApp</span></a>
+        <a href="admin.html" class="btn-admin"><i class="fas fa-cog"></i> <span class="btn-label">Admin</span></a>
     </div>
 </header>
 
