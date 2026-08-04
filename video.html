@@ -629,7 +629,7 @@ body::before {
 
     <div class="player-main">
         <div class="player-container" id="playerContainer">
-            <img id="videoThumbnail" src="http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg" alt="Video thumbnail">
+            <img id="videoThumbnail" src="Images/thumbnails/thumb_seed_1.jpg" alt="Video thumbnail">
             <div class="player-gradient" id="playerGradient"></div>
             <div class="player-controls" id="playerControls">
                 <div class="player-top">
@@ -679,7 +679,7 @@ body::before {
 
             <div class="instructor-bar">
                 <div class="instructor-avatar" id="instructorAvatar">
-                    <img src="http://localhost:3000/uploads/avatars/avatar_1.jpg" alt="Instructor">
+                    <img src="Images/avatars/avatar_1.jpg" alt="Instructor">
                 </div>
                 <div class="instructor-info">
                     <h4 id="instructorName">—</h4>
@@ -754,13 +754,13 @@ function formatDate(dateStr) {
 
 function getCategoryFallback(category) {
     const map = {
-        'Tajweed': 'http://localhost:3000/uploads/thumbnails/thumb_seed_11.jpg',
-        'Tafsir': 'http://localhost:3000/uploads/thumbnails/thumb_seed_5.jpg',
-        'Hifz': 'http://localhost:3000/uploads/thumbnails/thumb_seed_9.jpg',
-        'Arabic': 'http://localhost:3000/uploads/thumbnails/thumb_seed_3.jpg',
-        'Video Course': 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg'
+        'Tajweed': 'Images/thumbnails/thumb_seed_11.jpg',
+        'Tafsir': 'Images/thumbnails/thumb_seed_5.jpg',
+        'Hifz': 'Images/thumbnails/thumb_seed_9.jpg',
+        'Arabic': 'Images/thumbnails/thumb_seed_3.jpg',
+        'Video Course': 'Images/thumbnails/thumb_seed_1.jpg'
     };
-    return map[category] || 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg';
+    return map[category] || 'Images/thumbnails/thumb_seed_1.jpg';
 }
 
 function generateStars(rating) {
@@ -938,7 +938,7 @@ wirePlayerControls();
         const bioTxt = lesson.instructor_bio ? lesson.instructor_bio : 'Instructor';
         document.getElementById('instructorBio').innerHTML = bioTxt;
         const avatarImg = document.querySelector('#instructorAvatar img');
-        if (avatarImg) avatarImg.src = lesson.instructor_avatar || 'http://localhost:3000/uploads/avatars/avatar_1.jpg';
+        if (avatarImg) avatarImg.src = lesson.instructor_avatar || 'Images/avatars/avatar_1.jpg';
 
         const timeEl = document.getElementById('playerTime');
         if (lesson.duration_minutes != null) {

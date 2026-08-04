@@ -1203,7 +1203,7 @@ body.lang-rw [data-lang="en"] { display: none !important; }
             </div>
             <div class="admin-profile">
                 <span>Admin</span>
-                <img src="http://localhost:3000/uploads/avatars/avatar_1.jpg" alt="Admin">
+                <img src="Images/avatars/avatar_1.jpg" alt="Admin">
             </div>
         </div>
     </header>
@@ -2045,7 +2045,7 @@ function renderLessonsTable() {
         const tr = document.createElement('tr');
         const st = l.is_published ? 'published' : 'pending';
         const stars = l.rating ? '<i class="fas fa-star" style="color:var(--gold);font-size:11px;"></i> '.repeat(Math.floor(l.rating)) : '';
-        const thumb = l.thumbnail_url || 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg';
+        const thumb = l.thumbnail_url || 'Images/thumbnails/thumb_seed_1.jpg';
         const dur = l.duration_minutes ? l.duration_minutes + ' min' : '--';
         const cat = l.category_name || 'Uncategorized';
         const inst = l.instructor_name || 'Unknown';
@@ -2131,7 +2131,7 @@ function renderDashboard() {
     const container = document.getElementById('recentLessons');
     container.innerHTML = recent.map(l => {
         const st = l.is_published ? 'published' : 'draft';
-        const thumb = l.thumbnail_url || 'http://localhost:3000/uploads/thumbnails/thumb_seed_1.jpg';
+        const thumb = l.thumbnail_url || 'Images/thumbnails/thumb_seed_1.jpg';
         const cat = l.category_name || '';
         const inst = l.instructor_name || '';
         return '<div class="quick-item"><img class="thumb" src="' + thumb + '" alt=""><div class="info"><h4>' + l.title + '</h4><p>' + cat + ' &middot; ' + inst + '</p></div><span class="status ' + st + '">' + st + '</span></div>';
