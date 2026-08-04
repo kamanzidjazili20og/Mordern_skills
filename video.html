@@ -731,7 +731,8 @@ body::before {
 <script>
 const params = new URLSearchParams(window.location.search);
 const lessonId = parseInt(params.get('id')) || 1;
-const API_BASE = 'http://localhost:3000/api';
+const API_ORIGIN = (location.protocol === 'file:' ? 'http://localhost:3000' : location.origin);
+const API_BASE = API_ORIGIN + '/api';
 
 const viewKey = 'lesson_view_' + lessonId;
 let views = parseInt(localStorage.getItem(viewKey)) || 0;
@@ -961,7 +962,7 @@ wirePlayerControls();
             if (isYT) {
                 videoSource = { type: 'youtube', src: vurl };
             } else {
-                const full = /^https?:\/\//.test(vurl) ? vurl : 'http://localhost:3000' + vurl;
+                const full = /^https?:\/\//.test(vurl) ? vurl : API_ORIGIN + vurl;
                 videoSource = { type: 'html5', src: full };
             }
             document.getElementById('playerHint').textContent = videoSource.type === 'youtube' ? 'Click to play (YouTube)' : 'Click to play';

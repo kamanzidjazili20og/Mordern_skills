@@ -573,7 +573,7 @@ async function checkConnection() {
     try {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), 4000);
-        const r = await fetch('http://localhost:3000/api/health', { signal: ctrl.signal });
+        const r = await fetch(API + '/health', { signal: ctrl.signal });
         clearTimeout(t);
         setConn(r.ok);
     } catch (e) { setConn(false); }
@@ -581,10 +581,11 @@ async function checkConnection() {
 window.addEventListener('online', checkConnection);
 window.addEventListener('offline', () => setConn(false));
 setInterval(checkConnection, 30000);
-checkConnection();
 
 // ===== DATA HELPERS =====
-const API = 'http://localhost:3000/api';
+const API_ORIGIN = (location.protocol === 'file:' ? 'http://localhost:3000' : location.origin);
+const API = API_ORIGIN + '/api';
+checkConnection();
 const lessonCacheKey = 'noorLessonsCache';
 
 const CATEGORY_IMAGES = {

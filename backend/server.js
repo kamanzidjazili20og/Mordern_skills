@@ -19,6 +19,8 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const { initDatabase } = require('./init');
+
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'ok',
@@ -43,6 +45,9 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/preferences', preferenceRoutes);
 
+// Serve the frontend (index.html, admin.html, video.html, Images/) from the repo root.
+app.use(express.static(path.join(__dirname, '..')));
+
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
     res.status(500).json({
@@ -54,6 +59,10 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`Noor Academy API server running on http://localhost:${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+initDatabase().catch(err => {
+    console.error('Database init error:', err.message);
 });
 
 module.exports = app;

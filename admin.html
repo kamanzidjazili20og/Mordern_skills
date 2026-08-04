@@ -1860,7 +1860,8 @@ body.lang-rw [data-lang="en"] { display: none !important; }
 
 <script>
 // ===== API LAYER =====
-const API_BASE = 'http://localhost:3000/api';
+const API_ORIGIN = (location.protocol === 'file:' ? 'http://localhost:3000' : location.origin);
+const API_BASE = API_ORIGIN + '/api';
 
 function getToken() { return localStorage.getItem('noorAdminToken'); }
 
@@ -1935,7 +1936,7 @@ async function checkConnection() {
     try {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), 4000);
-        const r = await fetch('http://localhost:3000/api/health', { signal: ctrl.signal });
+        const r = await fetch(API_BASE + '/health', { signal: ctrl.signal });
         clearTimeout(t);
         connOnline = r.ok;
     } catch (e) {
@@ -2681,7 +2682,7 @@ uploadForm.addEventListener('submit', async (e) => {
         if (thumbFile) {
             setUploadProgress(5, 'Uploading thumbnail...');
             const thumbRes = await uploadFileWithProgress(thumbFile, '/upload/thumbnail', 'Uploading thumbnail...');
-            thumbnailUrl = 'http://localhost:3000' + thumbRes.file.url;
+            thumbnailUrl = API_ORIGIN + thumbRes.file.url;
         }
 
         const videoFile = videoInput.files[0];
