@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#06130e">
 <meta name="description" content="Modern Skills — Learn the Quran online with expert instructors. Tajweed, Tafsir, Hifz and Arabic courses.">
 <title>Modern Skills — Learn the Quran Online</title>
+<link rel="icon" type="image/png" href="Images/mordern-skills-logo.png">
+<link rel="apple-touch-icon" href="Images/mordern-skills-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -94,6 +96,7 @@ body.lang-rw [data-lang="en"] { display: none !important; }
 }
 .header-left { display: flex; align-items: center; gap: 36px; }
 .logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.4px; }
+.logo .logo-img { width: 34px; height: 34px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(212,168,83,0.4); }
 .logo i { color: var(--gold); font-size: 22px; filter: drop-shadow(0 0 8px rgba(212,168,83,0.5)); }
 .nav-links { display: flex; gap: 4px; }
 .nav-links a { color: var(--text-sec); font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all .2s; }
@@ -656,12 +659,17 @@ body.loading { overflow: hidden; }
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 38px;
-    color: var(--gold-light);
+    overflow: hidden;
     background: linear-gradient(160deg, rgba(212,168,83,0.2), rgba(212,168,83,0.04));
     border: 1px solid rgba(212,168,83,0.35);
     animation: logoPulse 2.4s ease-in-out infinite;
     filter: drop-shadow(0 0 14px rgba(212,168,83,0.45));
+}
+.splash-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 @keyframes spinRev { to { transform: rotate(-360deg); } }
 @keyframes logoPulse {
@@ -753,7 +761,7 @@ body.loading { overflow: hidden; }
 @media (max-width: 640px) {
     .splash-card { padding: 34px 26px 30px; border-radius: 22px; }
     .splash-orb { width: 126px; height: 126px; margin-bottom: 24px; }
-    .splash-logo { width: 66px; height: 66px; font-size: 30px; border-radius: 18px; }
+    .splash-logo { width: 66px; height: 66px; border-radius: 18px; }
     .splash-ring { inset: 9px; }
     .splash-title { font-size: 27px; }
     .splash-arabic { font-size: 18px; }
@@ -786,7 +794,7 @@ body.loading { overflow: hidden; }
                 <circle class="ring-progress" id="splashRing" cx="80" cy="80" r="74"></circle>
             </svg>
             <div class="splash-ring"></div>
-            <div class="splash-logo"><i class="fas fa-book-quran"></i></div>
+            <div class="splash-logo"><img src="Images/mordern-skills-logo.png" alt="Modern Skills logo"></div>
         </div>
         <div class="splash-title">Modern <span>Skills</span></div>
         <div class="splash-arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
@@ -802,7 +810,7 @@ body.loading { overflow: hidden; }
 
 <header class="header">
     <div class="header-left">
-        <a href="index.html" class="logo"><i class="fas fa-book-quran"></i> Modern Skills</a>
+        <a href="index.html" class="logo"><img src="Images/mordern-skills-logo.png" alt="Modern Skills logo" class="logo-img"> Modern Skills</a>
         <nav class="nav-links">
             <a href="#featured" class="active"><span data-lang="en">Home</span><span data-lang="rw">Ahabanza</span></a>
             <a href="#categoryRows"><span data-lang="en">Lessons</span><span data-lang="rw">Amasomo</span></a>
