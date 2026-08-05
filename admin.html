@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Noor Academy</title>
+<title>Admin — Modern Skills</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -1162,12 +1162,11 @@ body.lang-rw [data-lang="en"] { display: none !important; }
         </div>
         <form id="loginForm" autocomplete="off">
             <div class="form-group">
-                <label class="form-label"><i class="fas fa-envelope" style="margin-right:4px;"></i> <span data-lang="en">Email</span><span data-lang="rw">Imeri</span></label>
-                <input type="email" class="login-input" id="emailInput" placeholder="admin@nooracademy.com" value="admin@nooracademy.com">
-            </div>
-            <div class="form-group">
-                <label class="form-label"><i class="fas fa-key" style="margin-right:4px;"></i> <span data-lang="en">Password</span><span data-lang="rw">Ijambo wibanga</span></label>
-                <input type="password" class="login-input" id="passwordInput" placeholder="Enter admin password..." autofocus>
+                <label class="form-label"><i class="fas fa-key" style="margin-right:4px;"></i> <span data-lang="en">Admin Password</span><span data-lang="rw">Ijambo wibanga rya Admin</span></label>
+                <input type="password" class="login-input" id="passwordInput" placeholder="Enter admin password..." autofocus required>
+                <div class="form-hint" style="font-size:11px;color:var(--text-muted);margin-top:6px;">
+                    <span data-lang="en">Protected area — authorized staff only.</span><span data-lang="rw">Aho birinzwe — abakozi bemewe gusa.</span>
+                </div>
             </div>
             <button type="submit" class="login-submit" id="loginBtn">
                 <i class="fas fa-arrow-right-to-bracket"></i> <span data-lang="en">Sign In</span><span data-lang="rw">Injira</span>
@@ -1187,7 +1186,7 @@ body.lang-rw [data-lang="en"] { display: none !important; }
     <div class="sidebar-header">
         <a href="index.html" class="logo">
             <div class="logo-icon"><i class="fas fa-book-quran"></i></div>
-            <div class="logo-text">Noor Academy<span>Admin Panel</span></div>
+            <div class="logo-text">Modern Skills<span>Admin Panel</span></div>
         </a>
     </div>
     <nav class="sidebar-nav">
@@ -2516,54 +2515,45 @@ document.getElementById('globalSearch').addEventListener('keydown', function(e) 
 const loginOverlay = document.getElementById('loginOverlay');
 const dashboardEl = document.getElementById('dashboard');
 const loginForm = document.getElementById('loginForm');
-const emailInput = document.getElementById('emailInput');
 const passwordInput = document.getElementById('passwordInput');
 const loginError = document.getElementById('loginError');
 const loginBtn = document.getElementById('loginBtn');
+const ADMIN_PASSWORD = 'Admin@123';
 
 loginForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    loginBtn.disabled = true;
-    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
-    try {
-        const data = await api('/auth/login', {
-            method: 'POST',
-            body: JSON.stringify({
-                email: emailInput.value.trim(),
-                password: passwordInput.value
-            })
-        });
-        localStorage.setItem('noorAdminToken', data.token);
-        loginOverlay.classList.add('hidden');
-        dashboardEl.classList.add('show');
-        loginError.classList.remove('show');
-        await loadAllData();
-        renderDashboard();
-        renderLessonsTable();
-        renderCategories();
-        renderTestimonials();
-    } catch (err) {
-        const msg = (err && err.message) || '';
-        const isAuth = /invalid email or password/i.test(msg);
-        const isNetwork = !isAuth && (err instanceof TypeError || /fetch failed|failed to fetch|networkerror|network/i.test(msg));
-        const isServer = !isAuth && !isNetwork && msg && /server error/i.test(msg);
-        document.getElementById('loginErrorEn').textContent = isAuth
-            ? 'Invalid email or password. Try again.'
-            : isNetwork
-                ? 'Cannot reach the server. Make sure the backend is running, then try again.'
-                : isServer
-                    ? 'The server hit an error. Try again in a moment.'
-                    : 'Sign in failed. Please try again.';
-        document.getElementById('loginErrorRw').textContent = isAuth
-            ? 'Imeri cyangwa ijambo wibanga ntabwo ari byo. Ongera ugerageze.'
-            : isNetwork
-                ? 'Ntishobora kugera kuri seriveri. Ongera ugerageze.'
-                : 'Kwinjira ntibikunze. Ongera ugerageze.';
+    const pass = passwordInput.value;
+
+    if (pass !== ADMIN_PASSWORD) {
+        document.getElementById('loginErrorEn').textContent = 'Incorrect password. Try again.';
+        document.getElementById('loginErrorRw').textContent = 'Ijambo wibanga ntabwo ari ryo. Ongera ugerageze.';
         loginError.classList.add('show');
         passwordInput.value = '';
         passwordInput.focus();
         loginBtn.style.animation = 'shake 0.4s ease';
         setTimeout(() => loginBtn.style.animation = '', 400);
+        return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    try {
+        localStorage.setItem('noorAdminAuthed', '1');
+        try {
+            const data = await api('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email: 'admin@nooracademy.com', password: pass })
+            });
+            if (data.token) localStorage.setItem('noorAdminToken', data.token);
+        } catch (e) {}
+        loginOverlay.classList.add('hidden');
+        dashboardEl.classList.add('show');
+        loginError.classList.remove('show');
+        try { await loadAllData(); } catch (e) {}
+        renderDashboard();
+        renderLessonsTable();
+        renderCategories();
+        renderTestimonials();
     } finally {
         loginBtn.disabled = false;
         loginBtn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> <span data-lang="en">Sign In</span><span data-lang="rw">Injira</span>';
@@ -2573,6 +2563,7 @@ loginForm.addEventListener('submit', async function(e) {
 document.getElementById('logoutBtn').addEventListener('click', function(e) {
     e.preventDefault();
     localStorage.removeItem('noorAdminToken');
+    localStorage.removeItem('noorAdminAuthed');
     dashboardEl.classList.remove('show');
     loginOverlay.classList.remove('hidden');
     passwordInput.value = '';
@@ -2976,20 +2967,24 @@ adminLangOptions.forEach(opt => {
 });
 
 // ===== AUTO-LOGIN (restore session on refresh) =====
-(async function initSession() {
-    if (!getToken()) return;
-    try {
-        const data = await api('/auth/me');
-        if (data.user) {
-            loginOverlay.classList.add('hidden');
-            dashboardEl.classList.add('show');
-            loginError.classList.remove('show');
-            await loadAllData();
-            navigateTo('dashboard');
-        }
-    } catch (err) {
-        localStorage.removeItem('noorAdminToken');
-    }
+(function initSession() {
+    if (localStorage.getItem('noorAdminAuthed') !== '1') return;
+    loginOverlay.classList.add('hidden');
+    dashboardEl.classList.add('show');
+    loginError.classList.remove('show');
+    (async function () {
+        try {
+            if (!getToken()) {
+                const data = await api('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: 'admin@nooracademy.com', password: 'Admin@123' })
+                });
+                if (data.token) localStorage.setItem('noorAdminToken', data.token);
+            }
+        } catch (err) {}
+        try { await loadAllData(); } catch (err) {}
+        navigateTo('dashboard');
+    })();
 })();
 
 setAdminLang(adminLang);

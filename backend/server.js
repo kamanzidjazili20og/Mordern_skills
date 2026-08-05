@@ -67,7 +67,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Noor Academy API server running on http://localhost:${PORT}`);
+    console.log(`Modern Skills API server running on http://localhost:${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     const dbCfg = getDbConfig();
     console.log(`Database: ${dbCfg.user}@${dbCfg.host}:${dbCfg.port}/${dbCfg.database}`);

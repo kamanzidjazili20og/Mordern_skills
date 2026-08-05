@@ -1,7 +1,7 @@
 {
   "name": "noor-academy-backend",
   "version": "1.0.0",
-  "description": "Noor Academy — Quran Teaching Platform Backend API",
+  "description": "Modern Skills — Quran Teaching Platform Backend API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

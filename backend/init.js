@@ -209,9 +209,19 @@ async function createTables() {
 }
 
 async function ensureAdmin() {
-    const [rows] = await pool.query('SELECT id FROM users WHERE email = ?', [ADMIN_EMAIL]);
-    if (rows.length > 0) return;
     const passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
+    const [rows] = await pool.query(
+        'SELECT id FROM users WHERE email = ? OR username = ?',
+        [ADMIN_EMAIL, ADMIN_USERNAME]
+    );
+    if (rows.length > 0) {
+        await pool.query(
+            'UPDATE users SET username = ?, email = ?, password_hash = ?, full_name = ?, role = ?, is_active = 1 WHERE id = ?',
+            [ADMIN_USERNAME, ADMIN_EMAIL, passwordHash, 'Admin User', 'admin', rows[0].id]
+        );
+        console.log('  ✓ Admin credentials synced (' + ADMIN_EMAIL + ' / ' + ADMIN_PASSWORD + ')');
+        return;
+    }
     await pool.query(
         'INSERT INTO users (username, email, password_hash, full_name, role) VALUES (?, ?, ?, ?, ?)',
         [ADMIN_USERNAME, ADMIN_EMAIL, passwordHash, 'Admin User', 'admin']
@@ -270,7 +280,7 @@ async function seedDemoContent() {
 
     await seedIfEmpty('testimonials',
         `INSERT INTO testimonials (name_en, name_rw, role_en, role_rw, text_en, text_rw, initials, rating, sort_order) VALUES ?`,
-        [['Fatima Ahmed', 'Fatima Ahmed', 'Student since 2025', 'Umunyeshuri kuva 2025', 'Noor Academy transformed my Quran learning journey. The Tajweed lessons are incredibly clear and the instructors are so patient. I finally feel confident in my recitation.', 'Noor Academy yahinduye urugendo rwanjye rwo kwiga Quran. Amasomo ya Tajweed asobanutse cyane kandi abigisha bafite ihangane. Nongeye kwizera mu gusoma kwanjye.', 'FA', 5, 1],
+        [         ['Fatima Ahmed', 'Fatima Ahmed', 'Student since 2025', 'Umunyeshuri kuva 2025', 'Modern Skills transformed my Quran learning journey. The Tajweed lessons are incredibly clear and the instructors are so patient. I finally feel confident in my recitation.', 'Modern Skills yahinduye urugendo rwanjye rwo kwiga Quran. Amasomo ya Tajweed asobanutse cyane kandi abigisha bafite ihangane. Nongeye kwizera mu gusoma kwanjye.', 'FA', 5, 1],
          ['Omar Khalid', 'Omar Khalid', 'Student since 2024', 'Umunyeshuri kuva 2024', 'Alhamdulillah, I started as a complete beginner and now I can read Arabic script fluently. The structured curriculum makes all the difference. Highly recommended!', 'Alhamdulillah, natangiye nk\'umutangizi wuzuye noneho nshobora gusoma inyandiko y\'icyarabu neza. Gahunda y\'amasomo itunganijwe niyo itanga itandukaniro. Ndabyifuriza cyane!', 'OK', 5, 2],
          ['Aisha Noor', 'Aisha Noor', 'Parent of student', 'Umubyeyi w\'umunyeshuri', 'The Hifz program is amazing! My son has memorized 5 Juz in just 6 months thanks to the effective repetition techniques taught by Hafiz Yusuf Khan.', 'Gahunda ya Hifz irababaje! Umuhungu wanjye yibukije Juz 5 mu mezi 6 gusa kubera tekiniki nziza zo gusubiramo zigishwa na Hafiz Yusuf Khan.', 'AN', 5, 3]]
     );

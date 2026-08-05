@@ -1,5 +1,5 @@
 -- ============================================================
--- Noor Academy — Quran Teaching Platform Database Schema
+-- Modern Skills — Quran Teaching Platform Database Schema
 -- Compatible with MySQL Workbench 8.0+
 -- ============================================================
 
