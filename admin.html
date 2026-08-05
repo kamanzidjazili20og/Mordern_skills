@@ -2670,6 +2670,7 @@ function uploadFileWithProgress(file, endpoint, label) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', API_BASE + endpoint);
         xhr.setRequestHeader('Authorization', 'Bearer ' + getToken());
+        xhr.timeout = 600000;
         xhr.upload.onprogress = (e) => {
             if (e.lengthComputable) {
                 setUploadProgress((e.loaded / e.total) * 80, label);
@@ -2685,7 +2686,15 @@ function uploadFileWithProgress(file, endpoint, label) {
                 reject(new Error(data.error || 'Upload failed (' + xhr.status + ')'));
             }
         };
-        xhr.onerror = () => reject(new Error('Network error during upload. Is the server online?'));
+        xhr.onerror = () => {
+            let msg = 'Network error during upload. Is the server online?';
+            try {
+                const data = JSON.parse(xhr.responseText);
+                if (data && data.error) msg = data.error;
+            } catch (e) { /* ignore */ }
+            reject(new Error(msg));
+        };
+        xhr.ontimeout = () => reject(new Error('Upload timed out. Try a smaller video or a faster connection.'));
         xhr.send(form);
     });
 }

@@ -1,10 +1,20 @@
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
+const VIDEO_DIR = path.join(__dirname, '..', 'uploads', 'videos');
+const THUMBNAIL_DIR = path.join(__dirname, '..', 'uploads', 'thumbnails');
+const AVATAR_DIR = path.join(__dirname, '..', 'uploads', 'avatars');
+
+for (const dir of [VIDEO_DIR, THUMBNAIL_DIR, AVATAR_DIR]) {
+    fs.mkdirSync(dir, { recursive: true });
+}
+
 const videoStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '..', 'uploads', 'videos'));
+        fs.mkdirSync(VIDEO_DIR, { recursive: true });
+        cb(null, VIDEO_DIR);
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
@@ -14,7 +24,8 @@ const videoStorage = multer.diskStorage({
 
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '..', 'uploads', 'thumbnails'));
+        fs.mkdirSync(THUMBNAIL_DIR, { recursive: true });
+        cb(null, THUMBNAIL_DIR);
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
