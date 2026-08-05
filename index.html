@@ -514,10 +514,12 @@ body.loading { overflow: hidden; }
     align-items: center;
     justify-content: center;
     background-color: #040b08;
-    transition: opacity .8s ease, visibility .8s ease;
+    transition: opacity .7s ease, visibility .7s ease;
     overflow: hidden;
 }
 #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+#splash.hide .splash-card { opacity: 0; transform: translateY(16px) scale(0.96); }
+#splash.hide .splash-footer { opacity: 0; }
 
 .splash-bg {
     position: absolute;
@@ -531,8 +533,34 @@ body.loading { overflow: hidden; }
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse at 50% 30%, rgba(6,19,14,0.55) 0%, rgba(4,11,8,0.78) 55%, rgba(3,8,6,0.92) 100%),
-        linear-gradient(180deg, rgba(4,11,8,0.55) 0%, rgba(5,15,11,0.72) 100%);
+        radial-gradient(ellipse at 50% 28%, rgba(6,19,14,0.5) 0%, rgba(4,11,8,0.74) 52%, rgba(3,8,6,0.9) 100%),
+        linear-gradient(180deg, rgba(4,11,8,0.5) 0%, rgba(5,15,11,0.68) 100%);
+}
+
+.splash-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.splash-particles span {
+    position: absolute;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(236,207,139,0.85);
+    box-shadow: 0 0 10px rgba(212,168,83,0.9);
+    animation: twinkle 3.2s ease-in-out infinite;
+}
+.splash-particles span:nth-child(1) { top: 18%; left: 16%; }
+.splash-particles span:nth-child(2) { top: 26%; right: 20%; width: 3px; height: 3px; animation-delay: .7s; }
+.splash-particles span:nth-child(3) { top: 62%; left: 12%; width: 4px; height: 4px; animation-delay: 1.4s; }
+.splash-particles span:nth-child(4) { top: 74%; right: 14%; animation-delay: .3s; }
+.splash-particles span:nth-child(5) { top: 12%; right: 42%; width: 3px; height: 3px; animation-delay: 2s; }
+.splash-particles span:nth-child(6) { bottom: 16%; left: 34%; width: 4px; height: 4px; animation-delay: 1s; }
+.splash-particles span:nth-child(7) { bottom: 24%; right: 34%; animation-delay: 2.4s; }
+.splash-particles span:nth-child(8) { top: 40%; left: 26%; width: 3px; height: 3px; animation-delay: 1.8s; }
+@keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: translateY(0) scale(0.8); }
+    50% { opacity: 1; transform: translateY(-10px) scale(1.15); }
 }
 
 .splash-pattern {
@@ -551,14 +579,20 @@ body.loading { overflow: hidden; }
     text-align: center;
     padding: 46px 52px 40px;
     border-radius: 28px;
-    background: linear-gradient(160deg, rgba(10,26,19,0.82), rgba(5,15,11,0.72));
-    border: 1px solid rgba(212,168,83,0.22);
+    background: linear-gradient(160deg, rgba(10,26,19,0.84), rgba(5,15,11,0.74));
+    border: 1px solid rgba(212,168,83,0.24);
     box-shadow:
         0 30px 90px -20px rgba(0,0,0,0.85),
-        0 0 80px -30px rgba(212,168,83,0.45),
+        0 0 90px -30px rgba(212,168,83,0.5),
         inset 0 1px 0 rgba(255,255,255,0.05);
     backdrop-filter: blur(18px) saturate(130%);
     max-width: 92vw;
+    animation: splashIn .9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    transition: opacity .7s ease, transform .7s ease;
+}
+@keyframes splashIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.94); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .splash-card::before {
     content: '';
@@ -570,29 +604,44 @@ body.loading { overflow: hidden; }
 
 .splash-orb {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     margin-bottom: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: fadeUp .8s ease .15s both;
+}
+.progress-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+.progress-ring .ring-track {
+    fill: none;
+    stroke: rgba(212,168,83,0.16);
+    stroke-width: 3;
+}
+.progress-ring .ring-progress {
+    fill: none;
+    stroke: url(#splashRingGrad);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 464.96;
+    stroke-dashoffset: 464.96;
+    filter: drop-shadow(0 0 6px rgba(212,168,83,0.7));
+    transition: stroke-dashoffset .12s linear;
 }
 .splash-ring {
     position: absolute;
-    inset: 0;
+    inset: 12px;
     border-radius: 50%;
-}
-.ring-1 {
-    border: 1px solid rgba(212,168,83,0.25);
-    border-top-color: var(--gold);
-    animation: spin 2.6s linear infinite;
-}
-.ring-2 {
-    inset: 14px;
     border: 1px dashed rgba(52,211,153,0.35);
     animation: spinRev 3.4s linear infinite;
 }
-.ring-2::after {
+.splash-ring::after {
     content: '';
     position: absolute;
     top: -4px; left: 50%;
@@ -614,7 +663,6 @@ body.loading { overflow: hidden; }
     animation: logoPulse 2.4s ease-in-out infinite;
     filter: drop-shadow(0 0 14px rgba(212,168,83,0.45));
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes spinRev { to { transform: rotate(-360deg); } }
 @keyframes logoPulse {
     0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 16px 44px -12px rgba(0,0,0,0.7), 0 0 40px -10px rgba(212,168,83,0.5), inset 0 0 30px rgba(212,168,83,0.08); }
@@ -626,6 +674,7 @@ body.loading { overflow: hidden; }
     font-weight: 800;
     letter-spacing: -0.5px;
     margin-bottom: 12px;
+    animation: fadeUp .7s ease .3s both;
 }
 .splash-title span {
     background: linear-gradient(120deg, var(--gold-light), var(--gold));
@@ -638,9 +687,10 @@ body.loading { overflow: hidden; }
     margin-bottom: 26px;
     opacity: 0.92;
     text-shadow: 0 0 30px rgba(212,168,83,0.35);
-    animation: fadeLoop 3s ease-in-out infinite;
+    animation: fadeUp .7s ease .42s both, fadeLoop 3s ease-in-out 1.2s infinite;
 }
 @keyframes fadeLoop { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
 .splash-msg {
     font-size: 13px;
@@ -648,6 +698,7 @@ body.loading { overflow: hidden; }
     margin-bottom: 18px;
     letter-spacing: 0.3px;
     min-height: 20px;
+    animation: fadeUp .7s ease .54s both;
 }
 .splash-bar {
     width: min(320px, 70vw);
@@ -657,6 +708,7 @@ body.loading { overflow: hidden; }
     border: 1px solid rgba(212,168,83,0.18);
     overflow: hidden;
     position: relative;
+    animation: fadeUp .7s ease .66s both;
 }
 .splash-bar-fill {
     height: 100%;
@@ -674,22 +726,35 @@ body.loading { overflow: hidden; }
     font-weight: 700;
     color: var(--gold-light);
     letter-spacing: 1px;
+    animation: fadeUp .7s ease .78s both;
 }
 .splash-footer {
     position: absolute;
     bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: rgba(242,247,244,0.5);
+    color: rgba(242,247,244,0.55);
     text-shadow: 0 1px 12px rgba(0,0,0,0.8);
+    transition: opacity .7s ease;
 }
+.splash-footer::before,
+.splash-footer::after {
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,83,0.5));
+}
+.splash-footer::after { transform: rotate(180deg); }
 
 @media (max-width: 640px) {
     .splash-card { padding: 34px 26px 30px; border-radius: 22px; }
-    .splash-orb { width: 118px; height: 118px; margin-bottom: 24px; }
+    .splash-orb { width: 126px; height: 126px; margin-bottom: 24px; }
     .splash-logo { width: 66px; height: 66px; font-size: 30px; border-radius: 18px; }
-    .ring-2 { inset: 11px; }
+    .splash-ring { inset: 9px; }
     .splash-title { font-size: 27px; }
     .splash-arabic { font-size: 18px; }
     .splash-msg { font-size: 12px; }
@@ -704,10 +769,23 @@ body.loading { overflow: hidden; }
     <div class="splash-bg"></div>
     <div class="splash-shade"></div>
     <div class="splash-pattern"></div>
+    <div class="splash-particles">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+    </div>
     <div class="splash-card">
         <div class="splash-orb">
-            <div class="splash-ring ring-1"></div>
-            <div class="splash-ring ring-2"></div>
+            <svg class="progress-ring" width="160" height="160" viewBox="0 0 160 160">
+                <defs>
+                    <linearGradient id="splashRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#eccf8b"></stop>
+                        <stop offset="100%" stop-color="#d4a853"></stop>
+                    </linearGradient>
+                </defs>
+                <circle class="ring-track" cx="80" cy="80" r="74"></circle>
+                <circle class="ring-progress" id="splashRing" cx="80" cy="80" r="74"></circle>
+            </svg>
+            <div class="splash-ring"></div>
             <div class="splash-logo"><i class="fas fa-book-quran"></i></div>
         </div>
         <div class="splash-title">Modern <span>Skills</span></div>
@@ -853,6 +931,12 @@ body.loading { overflow: hidden; }
     const barFill = document.getElementById('splashBarFill');
     const pctEl = document.getElementById('splashPct');
     const msgEl = document.getElementById('splashMsg');
+    const ring = document.getElementById('splashRing');
+    const RING_C = 2 * Math.PI * 74;
+    if (ring) {
+        ring.style.strokeDasharray = RING_C;
+        ring.style.strokeDashoffset = RING_C;
+    }
     const t0 = performance.now();
     let mi = 0;
     setInterval(function () {
@@ -870,6 +954,7 @@ body.loading { overflow: hidden; }
         const pct = Math.round(eased * 100);
         if (barFill) barFill.style.width = pct + '%';
         if (pctEl) pctEl.textContent = pct + '%';
+        if (ring) ring.style.strokeDashoffset = RING_C * (1 - eased);
         if (p < 1) requestAnimationFrame(tick);
         else finish();
     }
