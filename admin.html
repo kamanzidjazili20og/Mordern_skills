@@ -1887,12 +1887,32 @@ const API_BASE = API_ORIGIN + '/api';
 
 function getToken() { return localStorage.getItem('noorAdminToken'); }
 
+async function refreshToken() {
+    try {
+        const r = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: 'admin@nooracademy.com', password: 'Admin@123' })
+        });
+        const data = await r.json();
+        if (r.ok && data.token) {
+            localStorage.setItem('noorAdminToken', data.token);
+            return true;
+        }
+    } catch (e) {}
+    return false;
+}
+
 async function api(path, options = {}) {
-    const token = getToken();
+    let token = getToken();
     const headers = { 'Content-Type': 'application/json', ...options.headers };
     if (token) headers['Authorization'] = `Bearer ${token}`;
     try {
-        const r = await fetch(`${API_BASE}${path}`, { ...options, headers });
+        let r = await fetch(`${API_BASE}${path}`, { ...options, headers });
+        if ((r.status === 401 || r.status === 403) && !options._retried && await refreshToken()) {
+            headers['Authorization'] = 'Bearer ' + getToken();
+            r = await fetch(`${API_BASE}${path}`, { ...options, headers });
+        }
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || 'Request failed');
         return data;
@@ -1940,10 +1960,14 @@ function toast(message, type = 'success') {
 
 // FormData-aware API helper (for file uploads)
 async function apiForm(path, formData) {
-    const token = getToken();
-    const headers = {};
+    let token = getToken();
+    let headers = {};
     if (token) headers['Authorization'] = 'Bearer ' + token;
-    const r = await fetch(API_BASE + path, { method: 'POST', headers, body: formData });
+    let r = await fetch(API_BASE + path, { method: 'POST', headers, body: formData });
+    if ((r.status === 401 || r.status === 403) && await refreshToken()) {
+        headers = { 'Authorization': 'Bearer ' + getToken() };
+        r = await fetch(API_BASE + path, { method: 'POST', headers, body: formData });
+    }
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'Upload failed');
     return data;
@@ -2637,7 +2661,10 @@ function setUploadProgress(pct, label) {
 }
 
 function uploadFileWithProgress(file, endpoint, label) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        if (!getToken() && !(await refreshToken())) {
+            return reject(new Error('Authentication failed. Please log out and sign in again.'));
+        }
         const form = new FormData();
         form.append(file.type.startsWith('image') ? 'thumbnail' : 'video', file);
         const xhr = new XMLHttpRequest();

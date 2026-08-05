@@ -208,6 +208,31 @@ async function createTables() {
     }
 }
 
+async function ensureColumn(table, column, definition) {
+    const [[{ c }]] = await pool.query(
+        `SELECT COUNT(*) AS c FROM information_schema.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?`,
+        [table, column]
+    );
+    if (c > 0) return;
+    await pool.query('ALTER TABLE `' + table + '` ADD COLUMN `' + column + '` ' + definition);
+    console.log('  ✓ Added missing column ' + table + '.' + column);
+}
+
+// Migrate databases created by older versions (CREATE TABLE IF NOT EXISTS
+// never alters an existing table, so missing columns are patched here).
+async function migrateExistingTables() {
+    await ensureColumn('users', 'last_login', 'TIMESTAMP NULL');
+    await ensureColumn('users', 'updated_at', "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+    await ensureColumn('categories', 'sort_order', 'INT NOT NULL DEFAULT 0');
+    await ensureColumn('categories', 'is_active', "TINYINT(1) NOT NULL DEFAULT 1");
+    await ensureColumn('lessons', 'video_file_path', 'VARCHAR(500) DEFAULT NULL');
+    await ensureColumn('lessons', 'video_file_size', 'BIGINT DEFAULT NULL');
+    await ensureColumn('lessons', 'is_free', "TINYINT(1) NOT NULL DEFAULT 0");
+    await ensureColumn('lessons', 'is_featured', "TINYINT(1) NOT NULL DEFAULT 0");
+    await ensureColumn('lessons', 'published_at', 'TIMESTAMP NULL');
+}
+
 async function ensureAdmin() {
     const passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 10);
     const [rows] = await pool.query(
@@ -292,6 +317,7 @@ async function initDatabase() {
         await ensureDatabase();
         await createTables();
         console.log('  ✓ Tables ready');
+        await migrateExistingTables();
         await ensureAdmin();
         await seedDemoContent();
         console.log('Database setup complete.');

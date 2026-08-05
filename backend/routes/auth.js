@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const pool = require('../config/db');
 const { authenticate } = require('../middleware/auth');
+const { secret, expiresIn } = require('../config/jwt');
 
 const router = express.Router();
 require('dotenv').config();
@@ -40,8 +41,8 @@ router.post('/register', [
 
         const token = jwt.sign(
             { id: result.insertId, username, email, role: 'student' },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+            secret,
+            { expiresIn }
         );
 
         res.status(201).json({
@@ -82,12 +83,16 @@ router.post('/login', [
             return res.status(403).json({ error: 'Account is deactivated' });
         }
 
-        await pool.query('UPDATE users SET last_login = NOW() WHERE id = ?', [user.id]);
+        try {
+            await pool.query('UPDATE users SET last_login = NOW() WHERE id = ?', [user.id]);
+        } catch (e) {
+            console.error('Could not update last_login (column may be missing):', e.message);
+        }
 
         const token = jwt.sign(
             { id: user.id, username: user.username, email: user.email, role: user.role },
-            process.env.JWT_SECRET,
-            { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+            secret,
+            { expiresIn }
         );
 
         res.json({
