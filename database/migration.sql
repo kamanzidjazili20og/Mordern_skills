@@ -37,3 +37,24 @@ CREATE TABLE IF NOT EXISTS user_preferences (
     UNIQUE KEY uq_user_pref (user_id, pref_key),
     CONSTRAINT fk_pref_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- PAYMENTS (MoMo payment verification)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS payments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    lesson_id INT NOT NULL,
+    transaction_code VARCHAR(50) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+    status ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+    admin_note TEXT DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    reviewed_at TIMESTAMP NULL,
+    INDEX idx_payments_user (user_id),
+    INDEX idx_payments_lesson (lesson_id),
+    INDEX idx_payments_status (status),
+    CONSTRAINT fk_payments_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_payments_lesson FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

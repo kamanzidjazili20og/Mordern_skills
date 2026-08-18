@@ -14,6 +14,7 @@
     --bg-hover: rgba(20,45,34,0.9);
     --gold: #d4a853;
     --gold-light: #eccf8b;
+    --green: #34d399;
     --text: #f2f7f4;
     --text-sec: #a3bbb0;
     --text-muted: #5f7a6d;
@@ -622,11 +623,257 @@ body::before {
     .related-thumb { width: 108px; min-width: 108px; }
     .footer-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
 }
+
+/* ===== AUTH BUTTONS ===== */
+.btn-auth {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 700; text-decoration: none;
+    transition: all .2s;
+}
+.btn-auth.login-btn {
+    color: var(--gold); border: 1px solid rgba(212,168,83,0.24);
+}
+.btn-auth.login-btn:hover { background: rgba(212,168,83,0.1); border-color: rgba(212,168,83,0.45); }
+.btn-auth.register-btn {
+    background: linear-gradient(135deg, var(--gold), #c79a45); color: #0a1d15;
+    box-shadow: 0 4px 16px rgba(212,168,83,0.25);
+}
+.btn-auth.register-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,168,83,0.35); }
+.user-pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px 6px 10px; border-radius: 100px;
+    font-size: 12px; font-weight: 700; color: #34d399;
+    background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.25);
+}
+.user-pill i { font-size: 11px; }
+.logout-link {
+    font-size: 11px; color: var(--text-muted); cursor: pointer;
+    background: none; border: none; font-family: inherit;
+    padding: 4px 8px; border-radius: 6px; transition: all .2s;
+}
+.logout-link:hover { color: #f87171; background: rgba(248,113,113,0.08); }
+
+/* ===== PAYMENT OVERLAY ===== */
+.payment-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(4,11,8,0.92);
+    backdrop-filter: blur(30px) saturate(150%);
+    padding: 20px;
+}
+.payment-overlay.show { display: flex; }
+
+.payment-bg-img {
+    position: absolute; inset: 0; z-index: 0;
+    background-size: cover; background-position: center;
+    filter: blur(60px) brightness(0.3) saturate(1.5);
+    transform: scale(1.2); opacity: 0.5;
+}
+
+.payment-card {
+    width: 100%; max-width: 480px;
+    background: linear-gradient(170deg, rgba(12,30,22,0.97) 0%, rgba(8,22,16,0.98) 100%);
+    border: 1px solid rgba(212,168,83,0.18);
+    border-radius: 28px;
+    padding: 40px 36px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 40px 120px -20px rgba(0,0,0,0.8), 0 0 60px -10px rgba(212,168,83,0.08);
+    animation: paySlideUp .45s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
+}
+@keyframes paySlideUp { from { opacity: 0; transform: translateY(30px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+.payment-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, #d4a853, #eccf8b, #d4a853, transparent);
+}
+.payment-card::after {
+    content: '';
+    position: absolute; top: -60%; right: -40%; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(212,168,83,0.06) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none;
+}
+
+.pay-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid rgba(212,168,83,0.1); background: rgba(6,19,14,0.6);
+    color: var(--text-sec); font-size: 13px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+}
+.pay-close:hover { background: rgba(248,113,113,0.1); color: #f87171; border-color: rgba(248,113,113,0.2); }
+
+.pay-logo {
+    width: 64px; height: 64px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(212,168,83,0.2), rgba(212,168,83,0.05));
+    border: 1.5px solid rgba(212,168,83,0.28);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px; font-size: 28px; color: #d4a853;
+    box-shadow: 0 10px 30px rgba(212,168,83,0.12);
+}
+.pay-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: #eccf8b;
+    padding: 5px 12px; border-radius: 100px;
+    background: rgba(212,168,83,0.08); border: 1px solid rgba(212,168,83,0.2);
+    margin-bottom: 12px;
+}
+.pay-badge i { font-size: 9px; }
+
+.payment-card h2 {
+    font-size: 21px; font-weight: 800; letter-spacing: -0.3px;
+    margin-bottom: 4px; color: #f2f7f4;
+}
+.payment-card .pay-sub {
+    font-size: 13px; color: #5f7a6d; margin-bottom: 22px; line-height: 1.5;
+}
+
+.pay-account-name {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; font-weight: 700; color: #d4a853;
+    margin-bottom: 20px;
+}
+.pay-account-name i { font-size: 11px; }
+
+.pay-steps {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 22px; text-align: left;
+}
+.pay-step {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 14px; border-radius: 12px;
+    background: rgba(6,19,14,0.5);
+    border: 1px solid rgba(255,255,255,0.03);
+}
+.pay-step-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #d4a853, #c79a45);
+    color: #0a1d15; font-size: 12px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+}
+.pay-step-text h4 { font-size: 13px; font-weight: 700; margin-bottom: 1px; color: #f2f7f4; }
+.pay-step-text p { font-size: 12px; color: #a3bbb0; line-height: 1.4; }
+
+.pay-phone-box {
+    padding: 14px; border-radius: 14px;
+    background: linear-gradient(145deg, rgba(212,168,83,0.06), rgba(212,168,83,0.02));
+    border: 1px solid rgba(212,168,83,0.15);
+    margin-bottom: 20px;
+}
+.pay-phone-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #5f7a6d; margin-bottom: 4px;
+}
+.pay-phone-number {
+    font-size: 20px; font-weight: 800; letter-spacing: 1px;
+    background: linear-gradient(120deg, #eccf8b, #d4a853);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.pay-phone-name {
+    font-size: 11px; color: #a3bbb0; margin-top: 3px;
+}
+
+.pay-code-box {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; margin-bottom: 20px;
+}
+.pay-code-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #5f7a6d;
+}
+.pay-code-display {
+    font-size: 34px; font-weight: 800; letter-spacing: 8px;
+    padding: 14px 32px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(212,168,83,0.12), rgba(212,168,83,0.04));
+    border: 2px dashed rgba(212,168,83,0.35);
+    color: #eccf8b;
+}
+
+.pay-note {
+    font-size: 11px; color: #5f7a6d; line-height: 1.5;
+    padding: 10px; border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+@media (max-width: 540px) {
+    .payment-card { padding: 32px 20px 26px; border-radius: 22px; }
+    .payment-card h2 { font-size: 18px; }
+    .pay-phone-number { font-size: 18px; }
+    .pay-code-display { font-size: 26px; letter-spacing: 6px; }
+    .btn-auth { padding: 6px 10px; font-size: 11px; }
+}
 </style>
 </head>
 <body>
 
 <div class="page-backdrop" id="pageBackdrop"></div>
+
+<!-- ===== PAYMENT OVERLAY ===== -->
+<div class="payment-overlay" id="paymentOverlay">
+    <div class="payment-bg-img" id="payBgImg"></div>
+    <div class="payment-card">
+        <button class="pay-close" id="payClose"><i class="fas fa-xmark"></i></button>
+        <div class="pay-logo"><i class="fas fa-book-quran"></i></div>
+        <div class="pay-badge"><i class="fas fa-lock"></i> <span data-lang="en">Premium Content</span><span data-lang="rw">Ibikubiyemo</span></div>
+        <h2><span data-lang="en">Unlock Full Video</span><span data-lang="rw">Fungura Video Yose</span></h2>
+        <p class="pay-sub"><span data-lang="en">Pay with MTN MoMo to watch this lesson.</span><span data-lang="rw">Riha ukoresheje MTN MoMo kubona iri somo.</span></p>
+
+        <div class="pay-account-name">
+            <i class="fas fa-user-check"></i>
+            <span>Name: Djazili</span>
+        </div>
+
+        <div class="pay-code-box">
+            <div class="pay-code-label"><span data-lang="en">MoMo Payment Code</span><span data-lang="rw">Code y'Amafaranga MoMo</span></div>
+            <div class="pay-code-display">239026</div>
+        </div>
+
+        <div class="pay-phone-box">
+            <div class="pay-phone-label"><span data-lang="en">Send Payment To</span><span data-lang="rw">Ohereza Amafaranga Kuri</span></div>
+            <div class="pay-phone-number">+250 781 853 141</div>
+            <div class="pay-phone-name">MTN MoMo / Mobile Money</div>
+        </div>
+
+        <div class="pay-steps">
+            <div class="pay-step">
+                <div class="pay-step-num">1</div>
+                <div class="pay-step-text">
+                    <h4><span data-lang="en">Send Payment</span><span data-lang="rw">Ohereza Amafaranga</span></h4>
+                    <p><span data-lang="en">Open your MTN MoMo app and send payment to the number above.</span><span data-lang="rw">Fungura app yawe ya MTN MoMo kandi ohereze amahera kuri numero iri hejuru.</span></p>
+                </div>
+            </div>
+            <div class="pay-step">
+                <div class="pay-step-num">2</div>
+                <div class="pay-step-text">
+                    <h4><span data-lang="en">Use Code 239026</span><span data-lang="rw">Koresha Code 239026</span></h4>
+                    <p><span data-lang="en">Include code 239026 in the payment message so we can verify.</span><span data-lang="rw">Ongeraho code 239026 mu mwandiko w'amahera kugira ngo dushobore kwemeza.</span></p>
+                </div>
+            </div>
+            <div class="pay-step">
+                <div class="pay-step-num">3</div>
+                <div class="pay-step-text">
+                    <h4><span data-lang="en">Admin Approves</span><span data-lang="rw">Umuyobozi Yemeza</span></h4>
+                    <p><span data-lang="en">After payment confirmation, the admin will approve your access. Then you can watch!</span><span data-lang="rw">Nyuma y'kwemezwa kw'amahera, umuyobozi azemeza uburenganzira bwawe. Hanyuma ushobora kureba!</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pay-note">
+            <i class="fas fa-info-circle" style="color:#d4a853;margin-right:4px;"></i>
+            <span data-lang="en">After paying, please wait for admin approval. For help, message us on WhatsApp.</span>
+            <span data-lang="rw">Nyuma yo kwishura, utegereze kwemezwa. Kubera ubufasha, duhamagare kuri WhatsApp.</span>
+        </div>
+    </div>
+</div>
 
 <header class="header">
     <div class="header-left">
@@ -642,6 +889,10 @@ body::before {
     </div>
     <div class="header-right">
         <span class="conn-pill" id="connPill"><span class="conn-dot"></span><span id="connText">Online</span></span>
+        <div id="authButtons">
+            <a href="login.html" class="btn-auth login-btn"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</a>
+            <a href="register.html" class="btn-auth register-btn"><i class="fas fa-user-plus"></i> Register</a>
+        </div>
         <a href="https://wa.me/250788821628" target="_blank" class="btn-admin"><i class="fab fa-whatsapp"></i> <span class="btn-label">WhatsApp</span></a>
     </div>
 </header>
@@ -750,16 +1001,47 @@ body::before {
 
 
 <script>
+// ===== AUTH STATE =====
+let currentUser = null;
+(function() {
+    const authEl = document.getElementById('authButtons');
+    try {
+        const user = JSON.parse(localStorage.getItem('ms_user'));
+        if (user && authEl) {
+            currentUser = user;
+            authEl.innerHTML = '<span class="user-pill"><i class="fas fa-user-check"></i> ' + (user.username || 'User') + '</span><button class="logout-link" id="logoutBtn"><i class="fas fa-right-from-bracket"></i> Logout</button>';
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('ms_token');
+                localStorage.removeItem('ms_user');
+                location.reload();
+            });
+        }
+    } catch(e) {}
+})();
+
 const params = new URLSearchParams(window.location.search);
 const lessonId = parseInt(params.get('id')) || 1;
 const API_ORIGIN = (location.protocol === 'file:' ? 'http://localhost:3000' : location.origin);
 const API_BASE = API_ORIGIN + '/api';
+const authToken = localStorage.getItem('ms_token');
 
 const viewKey = 'lesson_view_' + lessonId;
 let views = parseInt(localStorage.getItem(viewKey)) || 0;
 views++;
 localStorage.setItem(viewKey, views);
 
+// ===== LANGUAGE =====
+let currentLang = localStorage.getItem('noorLang') || 'en';
+function applyLang() {
+    document.body.className = document.body.className.replace(/lang-\w+/g, '').trim();
+    document.body.classList.add('lang-' + currentLang);
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
+        el.style.display = el.dataset.lang === currentLang ? '' : 'none';
+    });
+}
+applyLang();
+
+// ===== HELPERS =====
 function formatNumber(num) {
     if (num == null) return '0';
     if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
@@ -768,88 +1050,136 @@ function formatNumber(num) {
 
 function formatDate(dateStr) {
     if (!dateStr) return 'N/A';
-    const d = new Date(dateStr);
+    var d = new Date(dateStr);
     if (isNaN(d)) return 'N/A';
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
 
 function getCategoryFallback(category) {
-    const map = {
+    var map = {
         'Tajweed': 'Images/thumbnails/thumb_seed_11.jpg',
         'Tafsir': 'Images/thumbnails/thumb_seed_5.jpg',
         'Hifz': 'Images/thumbnails/thumb_seed_9.jpg',
         'Arabic': 'Images/thumbnails/thumb_seed_3.jpg',
-        'Video Course': 'Images/thumbnails/thumb_seed_1.jpg'
+        'English Course': 'Images/thumbnails/thumb_seed_1.jpg'
     };
     return map[category] || 'Images/thumbnails/thumb_seed_1.jpg';
 }
 
 function generateStars(rating) {
-    const full = Math.floor(rating);
-    const half = rating % 1 >= 0.5 ? 1 : 0;
-    const empty = 5 - full - half;
-    let html = '';
-    for (let i = 0; i < full; i++) html += '<i class="fas fa-star"></i>';
+    var full = Math.floor(rating);
+    var half = rating % 1 >= 0.5 ? 1 : 0;
+    var empty = 5 - full - half;
+    var html = '';
+    for (var i = 0; i < full; i++) html += '<i class="fas fa-star"></i>';
     if (half) html += '<i class="fas fa-star-half-alt"></i>';
-    for (let i = 0; i < empty; i++) html += '<i class="far fa-star"></i>';
+    for (var i = 0; i < empty; i++) html += '<i class="far fa-star"></i>';
     return html;
 }
 
 function formatDuration(minutes) {
-    const mins = Math.floor(minutes);
-    const secs = Math.round((minutes - mins) * 60);
+    var mins = Math.floor(minutes);
+    var secs = Math.round((minutes - mins) * 60);
     return mins + ':' + String(secs).padStart(2, '0');
 }
 
 function formatClock(secs) {
     if (!isFinite(secs)) return '0:00';
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
+    var m = Math.floor(secs / 60);
+    var s = Math.floor(secs % 60);
     return m + ':' + String(s).padStart(2, '0');
 }
 
-// ===== ONLINE / OFFLINE STATUS =====
+function toast(message, type) {
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:20000;padding:13px 18px;border-radius:12px;background:rgba(8,25,18,0.97);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;box-shadow:0 12px 40px -8px rgba(0,0,0,0.6);display:flex;align-items:center;gap:10px;';
+    el.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-circle-exclamation" style="color:#f87171;' : 'fa-circle-info" style="color:var(--gold);') + '"></i><span></span>';
+    el.querySelector('span').textContent = message;
+    document.body.appendChild(el);
+    setTimeout(function() { el.style.transition = 'opacity 0.3s'; el.style.opacity = '0'; setTimeout(function() { el.remove(); }, 320); }, 3200);
+}
+
+function getYouTubeEmbed(url) {
+    var m = url.match(/(?:youtube\.com\/watch\?v=)([\w-]+)/) || url.match(/(?:youtu\.be\/)([\w-]+)/);
+    if (m) return 'https://www.youtube.com/embed/' + m[1] + '?rel=0&autoplay=1';
+    return null;
+}
+
+// ===== ONLINE / OFFLINE =====
 function setConn(online) {
-    const pill = document.getElementById('connPill');
+    var pill = document.getElementById('connPill');
     if (!pill) return;
     pill.classList.toggle('offline', !online);
     document.getElementById('connText').textContent = online ? 'Online' : (!online && navigator.onLine ? 'Server offline' : 'Offline');
 }
 async function checkConnection() {
     try {
-        const ctrl = new AbortController();
-        const t = setTimeout(() => ctrl.abort(), 4000);
-        const r = await fetch(API_BASE + '/health', { signal: ctrl.signal });
+        var ctrl = new AbortController();
+        var t = setTimeout(function() { ctrl.abort(); }, 4000);
+        var r = await fetch(API_BASE + '/health', { signal: ctrl.signal });
         clearTimeout(t);
         setConn(r.ok);
     } catch (e) { setConn(false); }
 }
 window.addEventListener('online', checkConnection);
-window.addEventListener('offline', () => setConn(false));
+window.addEventListener('offline', function() { setConn(false); });
 setInterval(checkConnection, 30000);
 checkConnection();
 
 // ===== PLAYER STATE =====
-let videoSource = null; // { type:'html5', src } | { type:'youtube', src }
-let lessonData = null;
+var videoSource = null;
+var lessonData = null;
+var userHasAccess = false;
 
-function toast(message, type) {
-    const el = document.createElement('div');
-    el.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:20000;padding:13px 18px;border-radius:12px;background:rgba(8,25,18,0.97);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;box-shadow:0 12px 40px -8px rgba(0,0,0,0.6);display:flex;align-items:center;gap:10px;';
-    el.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-circle-exclamation" style="color:#f87171;' : 'fa-circle-info" style="color:var(--gold);') + '"></i><span></span>';
-    el.querySelector('span').textContent = message;
-    document.body.appendChild(el);
-    setTimeout(() => { el.style.transition = 'opacity 0.3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 320); }, 3200);
+// ===== PAYMENT OVERLAY =====
+(function() {
+    var overlay = document.getElementById('paymentOverlay');
+    var closeBtn = document.getElementById('payClose');
+
+    closeBtn.addEventListener('click', function() { overlay.classList.remove('show'); });
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.classList.remove('show'); });
+
+    var backdrop = document.getElementById('pageBackdrop');
+    var payBg = document.getElementById('payBgImg');
+    if (backdrop && payBg) {
+        var bgStyle = backdrop.style.backgroundImage;
+        if (bgStyle) payBg.style.backgroundImage = bgStyle;
+    }
+})();
+
+// ===== ACCESS CHECK =====
+var userAccessCache = null;
+async function checkUserAccess() {
+    if (!currentUser || !authToken) return false;
+    try {
+        var res = await fetch(API_BASE + '/payments/check-all', {
+            headers: { 'Authorization': 'Bearer ' + authToken }
+        });
+        if (!res.ok) return false;
+        var data = await res.json();
+        userAccessCache = data;
+        return data.hasAccess;
+    } catch (e) {
+        return false;
+    }
 }
 
-function getYouTubeEmbed(url) {
-    let m = url.match(/(?:youtube\.com\/watch\?v=)([\w-]+)/) || url.match(/(?:youtu\.be\/)([\w-]+)/);
-    if (m) return 'https://www.youtube.com/embed/' + m[1] + '?rel=0&autoplay=1';
-    return null;
-}
-
+// ===== PLAYBACK =====
 function startPlayback() {
+    if (userHasAccess) {
+        startActualPlayback();
+    } else {
+        if (!currentUser || !authToken) {
+            toast(currentLang === 'rw' ? 'Injira mbere yo kureba video.' : 'Please sign in to watch this video.');
+            return;
+        }
+        var overlay = document.getElementById('paymentOverlay');
+        overlay.classList.add('show');
+    }
+}
+
+function startActualPlayback() {
     if (!videoSource) {
         toast('This video is not uploaded yet. Please check back soon.');
         return;
@@ -858,53 +1188,53 @@ function startPlayback() {
     document.getElementById('playerGradient').style.display = 'none';
     document.getElementById('playerControls').style.display = 'none';
     if (videoSource.type === 'youtube') {
-        const wrap = document.getElementById('youtubeFrame');
+        var wrap = document.getElementById('youtubeFrame');
         wrap.style.display = 'block';
         wrap.innerHTML = '<iframe src="' + getYouTubeEmbed(videoSource.src) + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
     } else {
-        const v = document.getElementById('realVideo');
+        var v = document.getElementById('realVideo');
         v.style.display = 'block';
         v.src = videoSource.src;
-        v.play().catch(() => {});
+        v.play().catch(function() {});
     }
 }
 
-// Custom player controls (used when video loads)
+// ===== PLAYER CONTROLS =====
 function wirePlayerControls() {
-    const v = document.getElementById('realVideo');
-    const big = document.getElementById('playBigBtn');
-    const center = document.getElementById('playerCenter');
-    const timeEl = document.getElementById('playerTime');
-    const fill = document.getElementById('timelineFill');
-    const bar = document.getElementById('timelineBar');
-    const volBtn = document.getElementById('btnVolume');
-    const expBtn = document.getElementById('btnExpand');
+    var v = document.getElementById('realVideo');
+    var big = document.getElementById('playBigBtn');
+    var center = document.getElementById('playerCenter');
+    var timeEl = document.getElementById('playerTime');
+    var fill = document.getElementById('timelineFill');
+    var bar = document.getElementById('timelineBar');
+    var volBtn = document.getElementById('btnVolume');
+    var expBtn = document.getElementById('btnExpand');
 
     big.addEventListener('click', startPlayback);
     center.addEventListener('click', startPlayback);
 
-    v.addEventListener('timeupdate', () => {
+    v.addEventListener('timeupdate', function() {
         if (!v.duration) return;
         fill.style.width = (v.currentTime / v.duration * 100) + '%';
         timeEl.textContent = formatClock(v.currentTime) + ' / ' + formatClock(v.duration);
     });
-    v.addEventListener('loadedmetadata', () => {
+    v.addEventListener('loadedmetadata', function() {
         timeEl.textContent = '0:00 / ' + formatClock(v.duration);
     });
-    bar.addEventListener('click', (e) => {
+    bar.addEventListener('click', function(e) {
         if (!v.duration) return;
-        const rect = bar.getBoundingClientRect();
-        const pct = (e.clientX - rect.left) / rect.width;
+        var rect = bar.getBoundingClientRect();
+        var pct = (e.clientX - rect.left) / rect.width;
         v.currentTime = pct * v.duration;
     });
-    volBtn.addEventListener('click', () => {
+    volBtn.addEventListener('click', function() {
         v.muted = !v.muted;
         volBtn.innerHTML = v.muted ? '<i class="fas fa-volume-xmark"></i>' : '<i class="fas fa-volume-up"></i>';
     });
-    expBtn.addEventListener('click', () => {
-        const pc = document.getElementById('playerContainer');
+    expBtn.addEventListener('click', function() {
+        var pc = document.getElementById('playerContainer');
         if (document.fullscreenElement) document.exitFullscreen();
-        else pc.requestFullscreen().catch(() => toast('Fullscreen unavailable'));
+        else pc.requestFullscreen().catch(function() { toast('Fullscreen unavailable'); });
     });
 }
 
@@ -912,24 +1242,24 @@ document.getElementById('playBigBtn').addEventListener('click', startPlayback);
 document.getElementById('playerCenter').addEventListener('click', startPlayback);
 wirePlayerControls();
 
+// ===== LOAD LESSON DATA =====
 (async function () {
     try {
-        let res = await fetch(API_BASE + '/lessons/recent');
+        var res = await fetch(API_BASE + '/lessons/recent');
         if (!res.ok) throw new Error('API ' + res.status);
-        const data = await res.json();
-        const lessons = data.lessons || [];
-        let lesson = lessons.find(function (l) { return l.id === lessonId; });
+        var data = await res.json();
+        var lessons = data.lessons || [];
+        var lesson = lessons.find(function (l) { return l.id === lessonId; });
         if (!lesson) lesson = lessons[0];
         if (!lesson) {
             document.getElementById('descriptionText').textContent = 'No lessons available yet.';
             return;
         }
 
-        // Fetch full detail (includes video_url, instructor bio, tags)
         try {
-            const dRes = await fetch(API_BASE + '/lessons/' + lesson.id);
+            var dRes = await fetch(API_BASE + '/lessons/' + lesson.id);
             if (dRes.ok) {
-                const dJson = await dRes.json();
+                var dJson = await dRes.json();
                 lesson = Object.assign({}, lesson, dJson.lesson || {});
             }
         } catch (e) {}
@@ -939,51 +1269,57 @@ wirePlayerControls();
         document.getElementById('videoTag').textContent = lesson.category_name || 'Lesson';
         document.getElementById('videoTitle').textContent = lesson.title || '';
 
-        const thumbEl = document.getElementById('videoThumbnail');
+        var thumbEl = document.getElementById('videoThumbnail');
         thumbEl.src = lesson.thumbnail_url || getCategoryFallback(lesson.category_name);
 
-        const backdrop = document.getElementById('pageBackdrop');
+        var backdrop = document.getElementById('pageBackdrop');
         if (backdrop) {
             backdrop.style.backgroundImage = "url('" + (lesson.thumbnail_url || getCategoryFallback(lesson.category_name)) + "')";
         }
 
-        const rating = lesson.rating || 0;
+        // Set payment overlay background
+        var payBg = document.getElementById('payBgImg');
+        if (payBg) {
+            payBg.style.backgroundImage = "url('" + (lesson.thumbnail_url || getCategoryFallback(lesson.category_name)) + "')";
+        }
+
+        var rating = lesson.rating || 0;
         document.getElementById('ratingDisplay').innerHTML = '<span class="stars">' + generateStars(rating) + '</span> ' + Number(rating).toFixed(1);
 
         document.getElementById('viewCount').textContent = formatNumber(views);
         document.getElementById('studentCount').textContent = formatNumber(lesson.student_count || 0);
         document.getElementById('dateDisplay').innerHTML = '<i class="fas fa-calendar"></i> ' + formatDate(lesson.created_at);
-        document.getElementById('difficultyLevel').textContent = lesson.difficulty || '—';
+        document.getElementById('difficultyLevel').textContent = lesson.difficulty || '\u2014';
 
-        const instrName = lesson.instructor_name || 'Unknown Instructor';
+        var instrName = lesson.instructor_name || 'Unknown Instructor';
         document.getElementById('instructorName').textContent = instrName;
-        const bioTxt = lesson.instructor_bio ? lesson.instructor_bio : 'Instructor';
+        var bioTxt = lesson.instructor_bio ? lesson.instructor_bio : 'Instructor';
         document.getElementById('instructorBio').innerHTML = bioTxt;
-        const avatarImg = document.querySelector('#instructorAvatar img');
+        var avatarImg = document.querySelector('#instructorAvatar img');
         if (avatarImg) avatarImg.src = lesson.instructor_avatar || 'Images/avatars/avatar_1.jpg';
 
-        const timeEl = document.getElementById('playerTime');
+        var timeEl = document.getElementById('playerTime');
         if (lesson.duration_minutes != null) {
             timeEl.textContent = '0:00 / ' + formatDuration(lesson.duration_minutes);
         }
 
-        const badge = document.getElementById('playerTopBadge');
+        var badge = document.getElementById('playerTopBadge');
         if (badge) badge.innerHTML = '<i class="fas fa-play" style="font-size:10px;margin-right:4px;"></i> ' + (lesson.difficulty || 'Now Playing');
 
         document.getElementById('descriptionText').textContent = lesson.description || 'No description available for this lesson yet.';
 
-        const tagsContainer = document.getElementById('videoTags');
-        const tags = [lesson.category_name, lesson.difficulty, lesson.is_free ? 'Free' : null].filter(Boolean);
+        var tagsContainer = document.getElementById('videoTags');
+        var tags = [lesson.category_name, lesson.difficulty, lesson.is_free ? 'Free' : null].filter(Boolean);
         tagsContainer.innerHTML = tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
 
-        // Determine video source (uploaded files take priority over external links)
-        const vurl = lesson.video_file_path || lesson.video_url;
+        // Determine video source
+        var vurl = lesson.video_file_path || lesson.video_url;
         if (vurl) {
-            const isYT = getYouTubeEmbed(vurl);
+            var isYT = getYouTubeEmbed(vurl);
             if (isYT) {
                 videoSource = { type: 'youtube', src: vurl };
             } else {
-                const full = /^https?:\/\//.test(vurl) ? vurl : API_ORIGIN + vurl;
+                var full = /^https?:\/\//.test(vurl) ? vurl : API_ORIGIN + vurl;
                 videoSource = { type: 'html5', src: full };
             }
             document.getElementById('playerHint').textContent = videoSource.type === 'youtube' ? 'Click to play (YouTube)' : 'Click to play';
@@ -991,8 +1327,15 @@ wirePlayerControls();
             document.getElementById('playerHint').textContent = 'Video coming soon';
         }
 
+        // CHECK PAYMENT ACCESS
+        if (lesson.is_free) {
+            userHasAccess = true;
+        } else {
+            userHasAccess = await checkUserAccess();
+        }
+
         // Related lessons
-        let related = lessons.filter(function (l) {
+        var related = lessons.filter(function (l) {
             return l.id !== lesson.id && l.category_name === lesson.category_name;
         });
         if (related.length === 0) {
@@ -1002,9 +1345,9 @@ wirePlayerControls();
         document.getElementById('relatedCount').textContent = related.length + ' videos';
 
         document.getElementById('relatedList').innerHTML = related.map(function (r) {
-            const mins = r.duration_minutes || 0;
-            const d = Math.floor(mins);
-            const relViews = parseInt(localStorage.getItem('lesson_view_' + r.id)) || r.student_count || 0;
+            var mins = r.duration_minutes || 0;
+            var d = Math.floor(mins);
+            var relViews = parseInt(localStorage.getItem('lesson_view_' + r.id)) || r.student_count || 0;
             return '<a href="video.html?id=' + r.id + '" class="related-card">' +
                 '<div class="related-thumb">' +
                     '<img src="' + (r.thumbnail_url || getCategoryFallback(r.category_name)) + '" alt="">' +
@@ -1018,13 +1361,13 @@ wirePlayerControls();
             '</a>';
         }).join('');
 
-        const courseTitle = document.getElementById('courseTitle');
+        var courseTitle = document.getElementById('courseTitle');
         if (lesson.category_name) courseTitle.textContent = 'Complete ' + lesson.category_name + ' Course';
     } catch (err) {
         console.error('Failed to load lesson data:', err);
         setConn(false);
         document.getElementById('descriptionText').textContent = 'Unable to reach the server. Please check your internet connection and try again.';
-        document.getElementById('playerHint').textContent = 'Offline — check connection';
+        document.getElementById('playerHint').textContent = 'Offline \u2014 check connection';
     }
 })();
 </script>

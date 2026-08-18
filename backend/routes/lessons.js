@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
         let sql = `
             SELECT l.id, l.title, l.slug, l.description, l.difficulty, l.duration_minutes,
                    l.thumbnail_url, l.rating, l.student_count, l.is_free, l.is_featured,
-                   l.created_at,
+                   l.price, l.created_at,
                    c.name AS category_name, c.slug AS category_slug, c.color AS category_color,
                    i.name AS instructor_name, i.slug AS instructor_slug
             FROM lessons l
@@ -73,7 +73,7 @@ router.get('/recent', async (req, res) => {
     try {
         const [rows] = await pool.query(
             `SELECT l.id, l.title, l.slug, l.difficulty, l.duration_minutes,
-                    l.thumbnail_url, l.rating, l.student_count, l.is_free, l.created_at,
+                    l.thumbnail_url, l.rating, l.student_count, l.is_free, l.price, l.created_at,
                     c.name AS category_name, c.slug AS category_slug, c.color AS category_color,
                     i.name AS instructor_name
              FROM lessons l
@@ -130,7 +130,7 @@ router.get('/admin', authenticate, requireAdmin, async (req, res) => {
         const [rows] = await pool.query(
             `SELECT l.id, l.title, l.slug, l.difficulty, l.duration_minutes,
                     l.thumbnail_url, l.rating, l.student_count, l.is_published, l.is_free,
-                    l.is_featured, l.created_at, l.updated_at,
+                    l.is_featured, l.price, l.created_at, l.updated_at,
                     l.category_id, l.instructor_id, l.video_url, l.video_file_path,
                     c.name AS category_name,
                     i.name AS instructor_name
@@ -195,7 +195,7 @@ router.post('/', authenticate, requireAdmin, async (req, res) => {
         const {
             title, description, categoryId, instructorId, difficulty,
             durationMinutes, videoUrl, videoFilePath, thumbnailUrl, isFree, isFeatured,
-            rating, studentCount,
+            rating, studentCount, price,
             tags: tagNames
         } = req.body;
 
@@ -214,13 +214,13 @@ router.post('/', authenticate, requireAdmin, async (req, res) => {
         const [result] = await pool.query(
             `INSERT INTO lessons (title, slug, description, category_id, instructor_id, difficulty,
                                   duration_minutes, video_url, video_file_path, thumbnail_url,
-                                  rating, student_count, is_free, is_featured)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                  rating, student_count, is_free, is_featured, price)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [title, slug, description || null, categoryId || null, instructorId || null,
              difficulty || 'All Levels', durationMinutes || null, finalVideoUrl || null,
              videoFilePath || null, thumbnailUrl || null,
              rating == null ? null : rating, studentCount == null ? 0 : studentCount,
-             isFree ? 1 : 0, isFeatured ? 1 : 0]
+             isFree ? 1 : 0, isFeatured ? 1 : 0, price || 0]
         );
 
         if (tagNames && Array.isArray(tagNames) && tagNames.length > 0) {
@@ -250,7 +250,7 @@ router.put('/:id', authenticate, requireAdmin, async (req, res) => {
         const {
             title, description, categoryId, instructorId, difficulty,
             durationMinutes, videoUrl, videoFilePath, thumbnailUrl,
-            isPublished, isFree, isFeatured, rating, studentCount
+            isPublished, isFree, isFeatured, rating, studentCount, price
         } = req.body;
 
         const finalVideoUrl = videoFilePath ? null : ((videoUrl == null || videoUrl === '') ? null : videoUrl);
@@ -271,11 +271,13 @@ router.put('/:id', authenticate, requireAdmin, async (req, res) => {
                 is_featured = COALESCE(?, is_featured),
                 rating = COALESCE(?, rating),
                 student_count = COALESCE(?, student_count),
+                price = COALESCE(?, price),
                 published_at = CASE WHEN ? = 1 AND is_published = 0 THEN NOW() ELSE published_at END
              WHERE id = ?`,
             [title, description, categoryId, instructorId, difficulty, durationMinutes,
              finalVideoUrl, videoFilePath, thumbnailUrl, isPublished, isFree, isFeatured,
              rating == null ? null : rating, studentCount == null ? null : studentCount,
+             price == null ? null : price,
              isPublished, req.params.id]
         );
 

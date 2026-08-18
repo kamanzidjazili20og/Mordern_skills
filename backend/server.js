@@ -46,6 +46,7 @@ const lessonRoutes = require('./routes/lessons');
 const uploadRoutes = require('./routes/upload');
 const testimonialRoutes = require('./routes/testimonials');
 const preferenceRoutes = require('./routes/preferences');
+const paymentRoutes = require('./routes/payments');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
@@ -54,6 +55,7 @@ app.use('/api/lessons', lessonRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/preferences', preferenceRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Serve the frontend (index.html, admin.html, video.html, Images/) from the repo root.
 app.use(express.static(path.join(__dirname, '..')));

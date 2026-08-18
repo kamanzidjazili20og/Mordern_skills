@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="Images/mordern-skills-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 :root {
@@ -565,57 +565,42 @@ body.loading { overflow: hidden; }
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 46px 58px 38px;
-    border-radius: 32px;
-    background: linear-gradient(165deg, rgba(11,27,20,0.78), rgba(5,14,10,0.66));
-    border: 1px solid rgba(212,168,83,0.22);
-    box-shadow:
-        0 40px 100px -24px rgba(0,0,0,0.9),
-        0 0 120px -40px rgba(212,168,83,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-    backdrop-filter: blur(22px) saturate(130%);
+    padding: 34px 40px 42px;
     max-width: 92vw;
-    animation: splashIn 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: splashIn 1s cubic-bezier(0.22, 1, 0.36, 1) both, floatY 4.5s ease-in-out 1.2s infinite;
     transition: opacity .8s ease, transform .8s ease;
 }
-.splash-inner::before,
-.splash-inner::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 54%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(212,168,83,0.7), transparent);
-}
-.splash-inner::before { top: 0; }
-.splash-inner::after { bottom: 0; }
-
 @keyframes splashIn {
-    from { opacity: 0; transform: translateY(28px) scale(0.94); }
+    from { opacity: 0; transform: translateY(28px) scale(0.95); }
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
+@keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
 .splash-emblem {
     position: relative;
-    width: 148px;
-    height: 148px;
+    width: 150px;
+    height: 150px;
     margin-bottom: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeUp .8s ease .15s both;
+    animation: fadeUp .8s ease .1s both;
 }
 .splash-halo {
     position: absolute;
-    inset: -28px;
+    inset: -34px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(212,168,83,0.22) 0%, transparent 62%);
-    animation: haloPulse 3.2s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(212,168,83,0.3) 0%, rgba(212,168,83,0.08) 45%, transparent 70%);
+    filter: blur(10px);
+    animation: haloPulse 3s ease-in-out infinite;
 }
 @keyframes haloPulse {
-    0%, 100% { opacity: .55; transform: scale(.96); }
-    50% { opacity: 1; transform: scale(1.05); }
+    0%, 100% { opacity: .5; transform: scale(.94); }
+    50% { opacity: 1; transform: scale(1.06); }
 }
 .progress-ring {
     position: absolute;
@@ -626,46 +611,47 @@ body.loading { overflow: hidden; }
 }
 .progress-ring .ring-track {
     fill: none;
-    stroke: rgba(212,168,83,0.15);
-    stroke-width: 2.5;
+    stroke: rgba(212,168,83,0.18);
+    stroke-width: 3;
 }
 .progress-ring .ring-progress {
     fill: none;
     stroke: url(#splashRingGrad);
-    stroke-width: 2.5;
+    stroke-width: 3;
     stroke-linecap: round;
     stroke-dasharray: 464.96;
     stroke-dashoffset: 464.96;
-    filter: drop-shadow(0 0 8px rgba(212,168,83,0.65));
+    filter: drop-shadow(0 0 10px rgba(212,168,83,0.7));
     transition: stroke-dashoffset .12s linear;
 }
 .splash-orbit {
     position: absolute;
-    inset: 10px;
+    inset: -14px;
     border-radius: 50%;
-    border: 1px dashed rgba(52,211,153,0.35);
-    animation: spinRev 4s linear infinite;
+    border: 1.5px dashed rgba(212,168,83,0.4);
+    animation: spinRev 20s linear infinite;
 }
 .splash-orbit::after {
     content: '';
     position: absolute;
     top: -4px; left: 50%;
-    width: 7px; height: 7px;
+    width: 8px; height: 8px;
     border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 14px rgba(212,168,83,0.9);
+    background: var(--gold-light);
+    box-shadow: 0 0 16px rgba(212,168,83,0.9);
 }
 .splash-logo {
-    width: 80px; height: 80px;
-    border-radius: 22px;
+    position: relative;
+    z-index: 2;
+    width: 112px; height: 112px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: linear-gradient(160deg, rgba(212,168,83,0.18), rgba(212,168,83,0.03));
-    border: 1px solid rgba(212,168,83,0.35);
-    animation: logoPulse 2.6s ease-in-out infinite;
-    filter: drop-shadow(0 0 16px rgba(212,168,83,0.4));
+    background: linear-gradient(160deg, rgba(212,168,83,0.22), rgba(212,168,83,0.05));
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 40px rgba(212,168,83,0.35), 0 0 80px rgba(212,168,83,0.12);
 }
 .splash-logo img {
     width: 100%;
@@ -674,48 +660,45 @@ body.loading { overflow: hidden; }
     display: block;
 }
 @keyframes spinRev { to { transform: rotate(-360deg); } }
-@keyframes logoPulse {
-    0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 16px 44px -12px rgba(0,0,0,0.7), 0 0 40px -10px rgba(212,168,83,0.5), inset 0 0 30px rgba(212,168,83,0.08); }
-    50% { transform: translateY(-6px) scale(1.04); box-shadow: 0 22px 50px -14px rgba(0,0,0,0.75), 0 0 60px -8px rgba(212,168,83,0.7), inset 0 0 30px rgba(212,168,83,0.14); }
-}
 
 .splash-eyebrow {
-    font-size: 10.5px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 4px;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    color: rgba(212,168,83,0.85);
-    margin-bottom: 10px;
-    animation: fadeUp .8s ease .3s both;
+    color: rgba(212,168,83,0.9);
+    margin-bottom: 12px;
+    animation: fadeUp .8s ease .2s both;
 }
 .splash-title {
-    font-size: 30px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    line-height: 1.15;
     margin-bottom: 4px;
-    animation: fadeUp .8s ease .4s both;
+    animation: fadeUp .8s ease .28s both;
 }
 .splash-title span {
-    background: linear-gradient(120deg, var(--gold-light), var(--gold));
+    background: linear-gradient(120deg, var(--gold-light), var(--gold) 55%, #f6e3b0);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
 }
 .splash-arabic {
     font-family: 'Amiri', serif;
-    font-size: 20px;
+    font-size: 21px;
     color: var(--gold-light);
-    margin: 6px 0 24px;
-    opacity: 0.92;
-    text-shadow: 0 0 30px rgba(212,168,83,0.35);
-    animation: fadeUp .8s ease .5s both;
+    margin: 8px 0 26px;
+    opacity: 0.95;
+    text-shadow: 0 0 34px rgba(212,168,83,0.4);
+    animation: fadeUp .8s ease .36s both;
 }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 
 .splash-status {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 16px;
-    animation: fadeUp .8s ease .62s both;
+    animation: fadeUp .8s ease .46s both;
 }
 .splash-status-dot {
     width: 8px; height: 8px;
@@ -736,38 +719,58 @@ body.loading { overflow: hidden; }
 
 .splash-bar-wrap {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
-    width: min(320px, 72vw);
-    animation: fadeUp .8s ease .74s both;
+    gap: 10px;
+    width: min(300px, 74vw);
+    animation: fadeUp .8s ease .56s both;
+}
+.splash-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 2px;
 }
 .splash-bar {
-    flex: 1;
-    height: 5px;
-    border-radius: 100px;
-    background: rgba(212,168,83,0.13);
-    border: 1px solid rgba(212,168,83,0.16);
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.12);
     overflow: hidden;
     position: relative;
 }
 .splash-bar-fill {
     height: 100%;
     width: 0%;
-    border-radius: 100px;
+    border-radius: 4px;
     background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
     background-size: 200% 100%;
     animation: shimmer 1.6s linear infinite;
-    box-shadow: 0 0 14px rgba(212,168,83,0.7);
+    box-shadow: 0 0 20px rgba(212,168,83,0.8);
 }
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
-.splash-pct {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--gold-light);
-    letter-spacing: 1px;
-    min-width: 40px;
-    text-align: right;
+
+.splash-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 26px;
+    animation: fadeUp .8s ease .64s both;
 }
+.splash-dots span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(212,168,83,0.8);
+    animation: dotBounce 1.4s infinite ease-in-out;
+}
+.splash-dots span:nth-child(2) { animation-delay: 0.2s; }
+.splash-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.3; }
+    50% { transform: translateY(-8px); opacity: 1; }
+}
+
 .splash-footer {
     position: absolute;
     bottom: 30px;
@@ -777,7 +780,7 @@ body.loading { overflow: hidden; }
     font-size: 10.5px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: rgba(242,247,244,0.5);
+    color: rgba(242,247,244,0.55);
     text-shadow: 0 1px 14px rgba(0,0,0,0.85);
     transition: opacity .8s ease;
 }
@@ -791,13 +794,13 @@ body.loading { overflow: hidden; }
 .splash-footer::after { transform: rotate(180deg); }
 
 @media (max-width: 640px) {
-    .splash-inner { padding: 34px 26px 30px; border-radius: 24px; }
+    .splash-inner { padding: 24px 22px 30px; }
     .splash-emblem { width: 120px; height: 120px; margin-bottom: 24px; }
-    .splash-halo { inset: -22px; }
-    .splash-logo { width: 64px; height: 64px; border-radius: 18px; }
-    .splash-orbit { inset: 8px; }
-    .splash-title { font-size: 25px; }
-    .splash-arabic { font-size: 17px; }
+    .splash-halo { inset: -26px; }
+    .splash-orbit { inset: -10px; }
+    .splash-logo { width: 88px; height: 88px; border-width: 2.5px; }
+    .splash-title { font-size: 32px; }
+    .splash-arabic { font-size: 18px; }
     .splash-msg { font-size: 12px; min-width: 0; }
     .splash-footer { bottom: 20px; letter-spacing: 2px; }
 }
@@ -835,9 +838,10 @@ body.loading { overflow: hidden; }
             <span class="splash-msg" id="splashMsg">Preparing your lessons...</span>
         </div>
         <div class="splash-bar-wrap">
-            <div class="splash-bar"><div class="splash-bar-fill" id="splashBarFill"></div></div>
             <div class="splash-pct" id="splashPct">0%</div>
+            <div class="splash-bar"><div class="splash-bar-fill" id="splashBarFill"></div></div>
         </div>
+        <div class="splash-dots"><span></span><span></span><span></span></div>
     </div>
     <div class="splash-footer">Modern Skills Academy &middot; Learn the Quran Online</div>
 </div>
@@ -859,6 +863,10 @@ body.loading { overflow: hidden; }
             <span class="lang-option active" data-lang-code="en">EN</span>
             <span class="lang-option" data-lang-code="rw">RW</span>
         </div>
+        <div id="authButtons">
+            <a href="login.html" class="btn-admin" style="font-size:12px;"><i class="fas fa-arrow-right-to-bracket"></i> <span class="btn-label">Sign In</span></a>
+            <a href="register.html" class="btn-admin" style="background:rgba(212,168,83,0.1);"><i class="fas fa-user-plus"></i> <span class="btn-label">Register</span></a>
+        </div>
         <a href="https://wa.me/250781853141" target="_blank" class="btn-admin btn-wa-link"><i class="fab fa-whatsapp"></i> <span class="btn-label">WhatsApp</span></a>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
     </div>
@@ -866,8 +874,8 @@ body.loading { overflow: hidden; }
 
 <div class="offline-banner" id="offlineBanner">
     <i class="fas fa-wifi"></i>
-    <span data-lang="en">You are offline. see our saved lessons.</span>
-    <span data-lang="rw">Uri offline. Reba amasomo ya nyuma.</span>
+    <!-- <span data-lang="en">You are offline. see our saved lessons.</span>
+    <span data-lang="rw">Uri offline. Reba amasomo ya nyuma.</span> -->
 </div>
 
 <!-- ===== FEATURED ===== -->
@@ -1032,6 +1040,18 @@ body.loading { overflow: hidden; }
     requestAnimationFrame(tick);
 })();
 
+// ===== AUTH STATE =====
+(function() {
+    const authEl = document.getElementById('authButtons');
+    if (!authEl) return;
+    try {
+        const user = JSON.parse(localStorage.getItem('ms_user'));
+        if (user) {
+            authEl.innerHTML = '<span style="display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:100px;font-size:12px;font-weight:700;color:#34d399;background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.25);"><i class="fas fa-user-check" style="font-size:11px;"></i> ' + (user.username || 'User') + '</span><button onclick="localStorage.removeItem(\'ms_token\');localStorage.removeItem(\'ms_user\');location.reload();" style="font-size:11px;color:#5f7a6d;cursor:pointer;background:none;border:none;font-family:inherit;padding:4px 8px;border-radius:6px;"><i class="fas fa-right-from-bracket"></i></button>';
+        }
+    } catch(e) {}
+})();
+
 // ===== TOAST =====
 function toast(message, type) {
     const el = document.createElement('div');
@@ -1082,7 +1102,7 @@ const CATEGORY_IMAGES = {
     tafsir: 'Images/thumbnails/thumb_seed_5.jpg',
     hifz: 'Images/thumbnails/thumb_seed_9.jpg',
     arabic: 'Images/thumbnails/thumb_seed_3.jpg',
-    'video-course': 'Images/thumbnails/thumb_seed_1.jpg'
+    English: 'Images/thumbnails/thumb_seed_1.jpg'
 };
 const CATEGORY_COLORS = {
     gold: '#d4a853', green: '#34d399', blue: '#60a5fa', purple: '#a78bfa', rose: '#fb7185'
