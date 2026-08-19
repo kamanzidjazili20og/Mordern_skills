@@ -1148,6 +1148,64 @@ body.lang-rw [data-lang="en"] { display: none !important; }
 }
 
 .testimonials-empty p { font-size: 13px; }
+
+/* ===== ENHANCED PRICE SECTION ===== */
+.price-section {
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: rgba(6,19,14,0.4);
+    border: 1px solid rgba(212,168,83,0.12);
+    margin-bottom: 16px;
+}
+.price-input-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+.price-field-group { display: flex; flex-direction: column; }
+.price-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.price-input {
+    padding-right: 50px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    height: 44px;
+}
+.price-currency {
+    position: absolute;
+    right: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(212,168,83,0.08);
+    padding: 3px 8px;
+    border-radius: 6px;
+    pointer-events: none;
+}
+.price-preview {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(212,168,83,0.06);
+    border: 1px solid rgba(212,168,83,0.12);
+    font-size: 12px;
+    color: var(--text-sec);
+    margin-top: 8px;
+}
+.price-preview strong {
+    color: var(--gold);
+    font-weight: 700;
+}
+@media (max-width: 640px) {
+    .price-input-row { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -1301,6 +1359,7 @@ body.lang-rw [data-lang="en"] { display: none !important; }
                                 <th>Lesson</th>
                                 <th>Category</th>
                                 <th>Instructor</th>
+                                <th>Price</th>
                                 <th>Rating</th>
                                 <th>Students</th>
                                 <th>Duration</th>
@@ -1395,18 +1454,35 @@ body.lang-rw [data-lang="en"] { display: none !important; }
                                 <input type="text" class="form-control" id="lessonTags" placeholder="e.g. tajweed, noon-sakinah, pronunciation, rules">
                                 <div class="form-hint">Separate tags with commas</div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Price (RWF)</label>
-                                    <input type="number" class="form-control" id="lessonPrice" placeholder="e.g. 1000" min="0" style="width:160px;">
-                                    <div class="form-hint">Set 0 for free lessons</div>
+                            <div class="form-group price-section">
+                                <label class="form-label" style="margin-bottom:10px;">
+                                    <i class="fas fa-tag" style="color:var(--gold);margin-right:4px;"></i>
+                                    <span data-lang="en">Pricing</span><span data-lang="rw">Igiciro</span>
+                                </label>
+                                <div class="price-input-row">
+                                    <div class="price-field-group">
+                                        <label class="form-label" style="font-size:11px;color:var(--text-muted);margin-bottom:4px;"><span data-lang="en">Price (RWF)</span><span data-lang="rw">Igiteranyo (RWF)</span></label>
+                                        <div class="price-input-wrapper">
+                                            <input type="number" class="form-control price-input" id="lessonPrice" placeholder="0" min="0" step="100">
+                                            <span class="price-currency">RWF</span>
+                                        </div>
+                                    </div>
+                                    <div class="price-field-group">
+                                        <label class="form-label" style="font-size:11px;color:var(--text-muted);margin-bottom:4px;"><span data-lang="en">Access Type</span><span data-lang="rw">Ubwoko bw'Uburenganzira</span></label>
+                                        <select class="form-control" id="lessonFree" style="height:44px;">
+                                            <option value="0"><span data-lang="en">Paid Lesson</span><span data-lang="rw">Isyo Ishyurwa</span></option>
+                                            <option value="1"><span data-lang="en">Free Lesson</span><span data-lang="rw">Isyo Bira</span></option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label">Free Lesson?</label>
-                                    <select class="form-control" id="lessonFree" style="width:120px;">
-                                        <option value="0">No (Paid)</option>
-                                        <option value="1">Yes (Free)</option>
-                                    </select>
+                                <div class="price-preview" id="uploadPricePreview" style="display:none;">
+                                    <i class="fas fa-eye" style="font-size:10px;color:var(--gold);margin-right:6px;"></i>
+                                    <span data-lang="en">Preview:</span><span data-lang="rw">Reba:</span>
+                                    <strong id="uploadPricePreviewText">—</strong>
+                                </div>
+                                <div class="form-hint" style="margin-top:6px;">
+                                    <i class="fas fa-info-circle" style="color:var(--text-muted);margin-right:3px;"></i>
+                                    <span data-lang="en">Set 0 for free lessons. Students will see this price on the video page.</span><span data-lang="rw">Shyiraho 0 kuri amasomo y'ibura. Abanyeshuri bazabona iyi igiciro kuri ramera rya video.</span>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1724,18 +1800,35 @@ body.lang-rw [data-lang="en"] { display: none !important; }
                         <input type="number" class="form-control" id="editStudents" min="0" placeholder="0">
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label"><span data-lang="en">Price (RWF)</span><span data-lang="rw">Igiteranyo (RWF)</span></label>
-                        <input type="number" class="form-control" id="editPrice" min="0" placeholder="e.g. 1000">
-                        <div class="form-hint">0 = Free lesson</div>
+                <div class="form-group price-section">
+                    <label class="form-label" style="margin-bottom:10px;">
+                        <i class="fas fa-tag" style="color:var(--gold);margin-right:4px;"></i>
+                        <span data-lang="en">Pricing</span><span data-lang="rw">Igiciro</span>
+                    </label>
+                    <div class="price-input-row">
+                        <div class="price-field-group">
+                            <label class="form-label" style="font-size:11px;color:var(--text-muted);margin-bottom:4px;"><span data-lang="en">Price (RWF)</span><span data-lang="rw">Igiteranyo (RWF)</span></label>
+                            <div class="price-input-wrapper">
+                                <input type="number" class="form-control price-input" id="editPrice" min="0" placeholder="0" step="100">
+                                <span class="price-currency">RWF</span>
+                            </div>
+                        </div>
+                        <div class="price-field-group">
+                            <label class="form-label" style="font-size:11px;color:var(--text-muted);margin-bottom:4px;"><span data-lang="en">Access Type</span><span data-lang="rw">Ubwoko bw'Uburenganzira</span></label>
+                            <select class="form-control" id="editFree" style="height:44px;">
+                                <option value="0"><span data-lang="en">Paid Lesson</span><span data-lang="rw">Isyo Ishyurwa</span></option>
+                                <option value="1"><span data-lang="en">Free Lesson</span><span data-lang="rw">Isyo Bira</span></option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"><span data-lang="en">Free?</span><span data-lang="rw">Birabura?</span></label>
-                        <select class="form-control" id="editFree">
-                            <option value="0">No (Paid)</option>
-                            <option value="1">Yes (Free)</option>
-                        </select>
+                    <div class="price-preview" id="editPricePreview" style="display:none;">
+                        <i class="fas fa-eye" style="font-size:10px;color:var(--gold);margin-right:6px;"></i>
+                        <span data-lang="en">Preview:</span><span data-lang="rw">Reba:</span>
+                        <strong id="editPricePreviewText">—</strong>
+                    </div>
+                    <div class="form-hint" style="margin-top:6px;">
+                        <i class="fas fa-info-circle" style="color:var(--text-muted);margin-right:3px;"></i>
+                        <span data-lang="en">0 = Free lesson. Students see this price on the video page.</span><span data-lang="rw">0 = Isyo bira. Abanyeshuri babona iyi igiciro kuri ramera rya video.</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -2130,7 +2223,7 @@ function renderLessonsTable() {
 
     if (filtered.length === 0) {
         const tr = document.createElement('tr');
-        tr.innerHTML = '<td colspan="9" style="text-align:center;padding:40px 20px;color:var(--text-muted);"><i class="fas fa-video-slash" style="font-size:30px;opacity:0.25;display:block;margin-bottom:10px;"></i><div style="font-weight:600;color:var(--text-sec);font-size:14px;">No lessons found</div><div style="font-size:12px;margin-top:3px;">Try clearing your filters or add a new lesson.</div></td>';
+        tr.innerHTML = '<td colspan="10" style="text-align:center;padding:40px 20px;color:var(--text-muted);"><i class="fas fa-video-slash" style="font-size:30px;opacity:0.25;display:block;margin-bottom:10px;"></i><div style="font-weight:600;color:var(--text-sec);font-size:14px;">No lessons found</div><div style="font-size:12px;margin-top:3px;">Try clearing your filters or add a new lesson.</div></td>';
         tbody.appendChild(tr);
         const info = document.getElementById('paginationInfo');
         info.textContent = 'No lessons found';
@@ -2149,10 +2242,12 @@ function renderLessonsTable() {
         const date = l.created_at ? new Date(l.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
         const viewStyle = l.is_published ? '' : 'opacity:0.35;cursor:not-allowed;';
         const viewHref = l.is_published ? 'video.html?id=' + l.id : 'javascript:void(0);';
+        const priceLabel = l.is_free ? '<span style="color:#3da76e;font-weight:700;font-size:11px;">Free</span>' : (l.price > 0 ? '<span style="color:var(--gold);font-weight:700;font-size:12px;">' + Number(l.price).toLocaleString() + ' RWF</span>' : '<span style="color:var(--text-muted);font-size:11px;">—</span>');
         tr.innerHTML = `
             <td><div class="lesson-info"><img class="lesson-thumb" src="${thumb}" alt=""><div><div class="lesson-name">${l.title}</div></div></div></td>
             <td><span style="font-size:12px;color:var(--text-sec);">${cat}</span></td>
             <td><span style="font-size:12px;color:var(--text-sec);">${inst}</span></td>
+            <td>${priceLabel}</td>
             <td><span style="font-size:12px;color:var(--gold);">${stars} ${l.rating || '-'}</span></td>
             <td><span style="font-size:12px;color:var(--text-sec);">${l.student_count || 0}</span></td>
             <td><span style="font-size:12px;color:var(--text-muted);">${dur}</span></td>
@@ -2656,6 +2751,33 @@ const thumbInput = document.getElementById('thumbInput');
 const thumbUpload = document.getElementById('thumbUpload');
 const thumbPreview = document.getElementById('thumbPreview');
 
+// Price preview for upload form
+(function() {
+    var priceInput = document.getElementById('lessonPrice');
+    var freeSelect = document.getElementById('lessonFree');
+    var preview = document.getElementById('uploadPricePreview');
+    var previewText = document.getElementById('uploadPricePreviewText');
+    function updateUploadPricePreview() {
+        var isFree = freeSelect.value === '1';
+        var price = parseInt(priceInput.value, 10) || 0;
+        if (isFree || price === 0) {
+            preview.style.display = 'flex';
+            previewText.textContent = 'Free Lesson';
+            previewText.style.color = '#3da76e';
+        } else {
+            preview.style.display = 'flex';
+            previewText.textContent = Number(price).toLocaleString() + ' RWF';
+            previewText.style.color = '';
+        }
+    }
+    priceInput.addEventListener('input', updateUploadPricePreview);
+    freeSelect.addEventListener('change', function() {
+        if (this.value === '1') { priceInput.value = 0; priceInput.disabled = true; }
+        else { priceInput.disabled = false; }
+        updateUploadPricePreview();
+    });
+})();
+
 thumbInput.addEventListener('change', () => {
     const file = thumbInput.files[0];
     if (file) {
@@ -2928,6 +3050,26 @@ async function openEditModal(id) {
     document.getElementById('editStudents').value = lesson.student_count || 0;
     document.getElementById('editPrice').value = lesson.price || 0;
     document.getElementById('editFree').value = lesson.is_free ? '1' : '0';
+    // Update edit price preview
+    var editPricePreview = document.getElementById('editPricePreview');
+    var editPricePreviewText = document.getElementById('editPricePreviewText');
+    if (editPricePreview && editPricePreviewText) {
+        var isFree = lesson.is_free || (!lesson.price || lesson.price === 0);
+        if (isFree) {
+            editPricePreview.style.display = 'flex';
+            editPricePreviewText.textContent = 'Free Lesson';
+            editPricePreviewText.style.color = '#3da76e';
+        } else {
+            editPricePreview.style.display = 'flex';
+            editPricePreviewText.textContent = Number(lesson.price).toLocaleString() + ' RWF';
+            editPricePreviewText.style.color = '';
+        }
+    }
+    // Enable/disable price input based on free status
+    var editPriceInput = document.getElementById('editPrice');
+    var editFreeSelect = document.getElementById('editFree');
+    if (editFreeSelect.value === '1') { editPriceInput.disabled = true; }
+    else { editPriceInput.disabled = false; }
     document.getElementById('editVideoUrl').value = lesson.video_url || '';
     document.getElementById('editVideoHint').textContent = lesson.video_url
         ? 'Current: YouTube / external link'
@@ -2965,6 +3107,33 @@ document.getElementById('editCancelBtn').addEventListener('click', closeEditModa
 document.getElementById('editModal').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeEditModal();
 });
+
+// Edit modal price preview
+(function() {
+    var editPriceInput = document.getElementById('editPrice');
+    var editFreeSelect = document.getElementById('editFree');
+    var editPreview = document.getElementById('editPricePreview');
+    var editPreviewText = document.getElementById('editPricePreviewText');
+    function updateEditPricePreview() {
+        var isFree = editFreeSelect.value === '1';
+        var price = parseInt(editPriceInput.value, 10) || 0;
+        if (isFree || price === 0) {
+            editPreview.style.display = 'flex';
+            editPreviewText.textContent = 'Free Lesson';
+            editPreviewText.style.color = '#3da76e';
+        } else {
+            editPreview.style.display = 'flex';
+            editPreviewText.textContent = Number(price).toLocaleString() + ' RWF';
+            editPreviewText.style.color = '';
+        }
+    }
+    editPriceInput.addEventListener('input', updateEditPricePreview);
+    editFreeSelect.addEventListener('change', function() {
+        if (this.value === '1') { editPriceInput.value = 0; editPriceInput.disabled = true; }
+        else { editPriceInput.disabled = false; }
+        updateEditPricePreview();
+    });
+})();
 
 document.getElementById('editForm').addEventListener('submit', async (e) => {
     e.preventDefault();

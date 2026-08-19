@@ -380,6 +380,15 @@ body::before {
 
 .video-stats-row .stat i { font-size: 13px; }
 .video-stats-row .stat .stars { color: var(--gold); }
+.video-stats-row .price-badge-stat {
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(212,168,83,0.1);
+    border: 1px solid rgba(212,168,83,0.2);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--gold);
+}
 
 .video-actions { display: flex; gap: 10px; flex-shrink: 0; }
 
@@ -446,6 +455,39 @@ body::before {
 .instructor-info h4 { font-size: 15px; font-weight: 700; }
 .instructor-info p { font-size: 13px; color: var(--text-muted); }
 .instructor-info a { color: var(--gold); text-decoration: none; font-size: 13px; font-weight: 600; }
+
+.instructor-price {
+    margin-left: auto;
+    text-align: right;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(212,168,83,0.1), rgba(212,168,83,0.03));
+    border: 1px solid rgba(212,168,83,0.2);
+    flex-shrink: 0;
+}
+.instructor-price-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+.instructor-price-value {
+    font-size: 20px;
+    font-weight: 800;
+    background: linear-gradient(120deg, #eccf8b, #d4a853);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+}
+.instructor-price-value.free-label {
+    background: linear-gradient(120deg, #34d399, #3da76e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
 .video-description { padding: 16px 0; }
 
@@ -658,8 +700,8 @@ body::before {
 .payment-overlay {
     position: fixed; inset: 0; z-index: 9999;
     display: none; align-items: center; justify-content: center;
-    background: rgba(4,11,8,0.92);
-    backdrop-filter: blur(30px) saturate(150%);
+    background: rgba(4,11,8,0.94);
+    backdrop-filter: blur(40px) saturate(150%);
     padding: 20px;
 }
 .payment-overlay.show { display: flex; }
@@ -667,148 +709,220 @@ body::before {
 .payment-bg-img {
     position: absolute; inset: 0; z-index: 0;
     background-size: cover; background-position: center;
-    filter: blur(60px) brightness(0.3) saturate(1.5);
+    filter: blur(60px) brightness(0.25) saturate(1.5);
     transform: scale(1.2); opacity: 0.5;
 }
 
 .payment-card {
-    width: 100%; max-width: 480px;
-    background: linear-gradient(170deg, rgba(12,30,22,0.97) 0%, rgba(8,22,16,0.98) 100%);
-    border: 1px solid rgba(212,168,83,0.18);
+    width: 100%; max-width: 440px;
+    background: linear-gradient(170deg, rgba(14,34,26,0.98) 0%, rgba(8,22,16,0.99) 100%);
+    border: 1px solid rgba(212,168,83,0.15);
     border-radius: 28px;
-    padding: 40px 36px 32px;
+    padding: 0 0 28px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 40px 120px -20px rgba(0,0,0,0.8), 0 0 60px -10px rgba(212,168,83,0.08);
-    animation: paySlideUp .45s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 50px 140px -20px rgba(0,0,0,0.85), 0 0 80px -10px rgba(212,168,83,0.06);
+    animation: paySlideUp .5s cubic-bezier(0.22, 1, 0.36, 1);
     z-index: 1;
 }
-@keyframes paySlideUp { from { opacity: 0; transform: translateY(30px) scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes paySlideUp { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: none; } }
 
-.payment-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, transparent, #d4a853, #eccf8b, #d4a853, transparent);
-}
 .payment-card::after {
     content: '';
-    position: absolute; top: -60%; right: -40%; width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(212,168,83,0.06) 0%, transparent 70%);
+    position: absolute; top: -80px; right: -60px; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(212,168,83,0.05) 0%, transparent 70%);
     border-radius: 50%; pointer-events: none;
 }
 
-.pay-close {
-    position: absolute; top: 14px; right: 14px;
-    width: 34px; height: 34px; border-radius: 50%;
-    border: 1px solid rgba(212,168,83,0.1); background: rgba(6,19,14,0.6);
-    color: var(--text-sec); font-size: 13px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all .2s;
+.pay-top-decor {
+    height: 4px;
+    background: linear-gradient(90deg, #d4a853, #eccf8b, #d4a853, #eccf8b, #d4a853);
+    background-size: 200% 100%;
+    animation: payTopShimmer 4s linear infinite;
 }
-.pay-close:hover { background: rgba(248,113,113,0.1); color: #f87171; border-color: rgba(248,113,113,0.2); }
+@keyframes payTopShimmer { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+
+.pay-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08); background: rgba(6,19,14,0.5);
+    color: var(--text-sec); font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s; z-index: 5;
+    backdrop-filter: blur(8px);
+}
+.pay-close:hover { background: rgba(248,113,113,0.12); color: #f87171; border-color: rgba(248,113,113,0.2); }
+
+.pay-logo-wrap { padding-top: 28px; margin-bottom: 10px; }
+
+.pay-logo-ring {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, rgba(212,168,83,0.3), rgba(212,168,83,0.05), rgba(52,211,153,0.15), rgba(212,168,83,0.3));
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    animation: payRingSpin 8s linear infinite;
+}
+@keyframes payRingSpin { to { transform: rotate(360deg); } }
 
 .pay-logo {
-    width: 64px; height: 64px; border-radius: 16px;
-    background: linear-gradient(135deg, rgba(212,168,83,0.2), rgba(212,168,83,0.05));
-    border: 1.5px solid rgba(212,168,83,0.28);
+    width: 58px; height: 58px; border-radius: 50%;
+    background: linear-gradient(145deg, rgba(212,168,83,0.2), rgba(212,168,83,0.06));
+    border: 1.5px solid rgba(212,168,83,0.3);
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 14px; font-size: 28px; color: #d4a853;
-    box-shadow: 0 10px 30px rgba(212,168,83,0.12);
+    font-size: 24px; color: #d4a853;
+    box-shadow: 0 8px 28px rgba(212,168,83,0.12);
+    animation: payRingSpin 8s linear infinite reverse;
 }
+
 .pay-badge {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.8px; color: #eccf8b;
-    padding: 5px 12px; border-radius: 100px;
-    background: rgba(212,168,83,0.08); border: 1px solid rgba(212,168,83,0.2);
-    margin-bottom: 12px;
+    letter-spacing: 0.8px; color: #34d399;
+    padding: 5px 14px; border-radius: 100px;
+    background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2);
+    margin-bottom: 10px;
 }
-.pay-badge i { font-size: 9px; }
+.pay-badge i { font-size: 10px; }
 
 .payment-card h2 {
-    font-size: 21px; font-weight: 800; letter-spacing: -0.3px;
+    font-size: 22px; font-weight: 800; letter-spacing: -0.3px;
     margin-bottom: 4px; color: #f2f7f4;
 }
 .payment-card .pay-sub {
-    font-size: 13px; color: #5f7a6d; margin-bottom: 22px; line-height: 1.5;
+    font-size: 13px; color: #5f7a6d; margin-bottom: 20px; line-height: 1.5;
+    padding: 0 24px;
 }
 
-.pay-account-name {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 13px; font-weight: 700; color: #d4a853;
-    margin-bottom: 20px;
+.pay-amount-box {
+    padding: 18px 24px; border-radius: 18px;
+    background: linear-gradient(145deg, rgba(212,168,83,0.1), rgba(212,168,83,0.03));
+    border: 1.5px solid rgba(212,168,83,0.2);
+    margin: 0 20px 20px;
+    text-align: center;
 }
-.pay-account-name i { font-size: 11px; }
-
-.pay-steps {
-    display: flex; flex-direction: column; gap: 10px;
-    margin-bottom: 22px; text-align: left;
+.pay-amount-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: #5f7a6d; margin-bottom: 4px;
 }
-.pay-step {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 12px 14px; border-radius: 12px;
-    background: rgba(6,19,14,0.5);
-    border: 1px solid rgba(255,255,255,0.03);
-}
-.pay-step-num {
-    width: 28px; height: 28px; flex-shrink: 0;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #d4a853, #c79a45);
-    color: #0a1d15; font-size: 12px; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-}
-.pay-step-text h4 { font-size: 13px; font-weight: 700; margin-bottom: 1px; color: #f2f7f4; }
-.pay-step-text p { font-size: 12px; color: #a3bbb0; line-height: 1.4; }
-
-.pay-phone-box {
-    padding: 14px; border-radius: 14px;
-    background: linear-gradient(145deg, rgba(212,168,83,0.06), rgba(212,168,83,0.02));
-    border: 1px solid rgba(212,168,83,0.15);
-    margin-bottom: 20px;
-}
-.pay-phone-label {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: #5f7a6d; margin-bottom: 4px;
-}
-.pay-phone-number {
-    font-size: 20px; font-weight: 800; letter-spacing: 1px;
-    background: linear-gradient(120deg, #eccf8b, #d4a853);
+.pay-amount-value {
+    font-size: 36px; font-weight: 800; letter-spacing: 1px;
+    background: linear-gradient(120deg, #eccf8b, #d4a853, #eccf8b);
+    background-size: 200% 100%;
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: payAmtShimmer 3s ease-in-out infinite;
+    line-height: 1.1;
 }
-.pay-phone-name {
-    font-size: 11px; color: #a3bbb0; margin-top: 3px;
+@keyframes payAmtShimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.pay-amount-lesson {
+    font-size: 11px; color: #a3bbb0; font-weight: 500;
+    max-width: 260px; margin: 4px auto 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
-.pay-code-box {
-    display: flex; flex-direction: column; align-items: center;
-    gap: 8px; margin-bottom: 20px;
+/* Payment details card */
+.pay-details-card {
+    margin: 0 20px 18px;
+    border-radius: 16px;
+    background: rgba(6,19,14,0.5);
+    border: 1px solid rgba(255,255,255,0.04);
+    overflow: hidden;
 }
-.pay-code-label {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: #5f7a6d;
+
+.pay-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    transition: background 0.2s;
 }
-.pay-code-display {
-    font-size: 34px; font-weight: 800; letter-spacing: 8px;
-    padding: 14px 32px; border-radius: 14px;
+.pay-detail-row:hover {
+    background: rgba(212,168,83,0.03);
+}
+
+.pay-detail-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
     background: linear-gradient(135deg, rgba(212,168,83,0.12), rgba(212,168,83,0.04));
-    border: 2px dashed rgba(212,168,83,0.35);
+    border: 1px solid rgba(212,168,83,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: #d4a853;
+    flex-shrink: 0;
+}
+
+.pay-detail-content {
+    flex: 1; text-align: left; min-width: 0;
+}
+.pay-detail-label {
+    display: block;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: #5f7a6d;
+    margin-bottom: 1px;
+}
+.pay-detail-value {
+    display: block;
+    font-size: 15px; font-weight: 700; color: #f2f7f4;
+}
+.pay-code-val {
+    font-size: 20px; font-weight: 800;
+    letter-spacing: 4px;
     color: #eccf8b;
 }
-
-.pay-note {
-    font-size: 11px; color: #5f7a6d; line-height: 1.5;
-    padding: 10px; border-radius: 8px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.03);
+.pay-phone-val {
+    letter-spacing: 0.5px;
+    color: #34d399;
 }
 
+.pay-detail-divider {
+    height: 1px;
+    margin: 0 16px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+}
+
+.pay-copy-btn {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    border: 1px solid rgba(212,168,83,0.12);
+    background: rgba(212,168,83,0.06);
+    color: #d4a853;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.pay-copy-btn:hover {
+    background: rgba(212,168,83,0.15);
+    border-color: rgba(212,168,83,0.3);
+    transform: scale(1.05);
+}
+.pay-copy-btn.copied {
+    background: rgba(52,211,153,0.12);
+    border-color: rgba(52,211,153,0.3);
+    color: #34d399;
+}
+
+.pay-footer {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 11px; color: #5f7a6d;
+    padding: 0 20px;
+    line-height: 1.4;
+}
+.pay-footer i { font-size: 13px; flex-shrink: 0; }
+
 @media (max-width: 540px) {
-    .payment-card { padding: 32px 20px 26px; border-radius: 22px; }
+    .payment-card { padding: 0 0 22px; border-radius: 22px; }
     .payment-card h2 { font-size: 18px; }
-    .pay-phone-number { font-size: 18px; }
-    .pay-code-display { font-size: 26px; letter-spacing: 6px; }
+    .pay-amount-value { font-size: 28px; }
+    .pay-amount-box { padding: 14px 16px; margin: 0 14px 16px; }
+    .pay-details-card { margin: 0 14px 14px; }
+    .pay-code-val { font-size: 18px; letter-spacing: 3px; }
+    .pay-phone-val { font-size: 14px; }
+    .pay-logo { width: 50px; height: 50px; font-size: 20px; }
+    .pay-logo-ring { width: 62px; height: 62px; }
+    .pay-footer { flex-direction: column; text-align: center; }
     .btn-auth { padding: 6px 10px; font-size: 11px; }
 }
 </style>
@@ -822,55 +936,57 @@ body::before {
     <div class="payment-bg-img" id="payBgImg"></div>
     <div class="payment-card">
         <button class="pay-close" id="payClose"><i class="fas fa-xmark"></i></button>
-        <div class="pay-logo"><i class="fas fa-book-quran"></i></div>
-        <div class="pay-badge"><i class="fas fa-lock"></i> <span data-lang="en">Premium Content</span><span data-lang="rw">Ibikubiyemo</span></div>
-        <h2><span data-lang="en">Unlock Full Video</span><span data-lang="rw">Fungura Video Yose</span></h2>
-        <p class="pay-sub"><span data-lang="en">Pay with MTN MoMo to watch this lesson.</span><span data-lang="rw">Riha ukoresheje MTN MoMo kubona iri somo.</span></p>
 
-        <div class="pay-account-name">
-            <i class="fas fa-user-check"></i>
-            <span>Name: Djazili</span>
-        </div>
+        <div class="pay-top-decor"></div>
 
-        <div class="pay-code-box">
-            <div class="pay-code-label"><span data-lang="en">MoMo Payment Code</span><span data-lang="rw">Code y'Amafaranga MoMo</span></div>
-            <div class="pay-code-display">239026</div>
-        </div>
-
-        <div class="pay-phone-box">
-            <div class="pay-phone-label"><span data-lang="en">Send Payment To</span><span data-lang="rw">Ohereza Amafaranga Kuri</span></div>
-            <div class="pay-phone-number">+250 781 853 141</div>
-            <div class="pay-phone-name">MTN MoMo / Mobile Money</div>
-        </div>
-
-        <div class="pay-steps">
-            <div class="pay-step">
-                <div class="pay-step-num">1</div>
-                <div class="pay-step-text">
-                    <h4><span data-lang="en">Send Payment</span><span data-lang="rw">Ohereza Amafaranga</span></h4>
-                    <p><span data-lang="en">Open your MTN MoMo app and send payment to the number above.</span><span data-lang="rw">Fungura app yawe ya MTN MoMo kandi ohereze amahera kuri numero iri hejuru.</span></p>
-                </div>
-            </div>
-            <div class="pay-step">
-                <div class="pay-step-num">2</div>
-                <div class="pay-step-text">
-                    <h4><span data-lang="en">Use Code 239026</span><span data-lang="rw">Koresha Code 239026</span></h4>
-                    <p><span data-lang="en">Include code 239026 in the payment message so we can verify.</span><span data-lang="rw">Ongeraho code 239026 mu mwandiko w'amahera kugira ngo dushobore kwemeza.</span></p>
-                </div>
-            </div>
-            <div class="pay-step">
-                <div class="pay-step-num">3</div>
-                <div class="pay-step-text">
-                    <h4><span data-lang="en">Admin Approves</span><span data-lang="rw">Umuyobozi Yemeza</span></h4>
-                    <p><span data-lang="en">After payment confirmation, the admin will approve your access. Then you can watch!</span><span data-lang="rw">Nyuma y'kwemezwa kw'amahera, umuyobozi azemeza uburenganzira bwawe. Hanyuma ushobora kureba!</span></p>
-                </div>
+        <div class="pay-logo-wrap">
+            <div class="pay-logo-ring">
+                <div class="pay-logo"><i class="fas fa-lock"></i></div>
             </div>
         </div>
 
-        <div class="pay-note">
-            <i class="fas fa-info-circle" style="color:#d4a853;margin-right:4px;"></i>
-            <span data-lang="en">After paying, please wait for admin approval. For help, message us on WhatsApp.</span>
-            <span data-lang="rw">Nyuma yo kwishura, utegereze kwemezwa. Kubera ubufasha, duhamagare kuri WhatsApp.</span>
+        <div class="pay-badge"><i class="fas fa-shield-halved"></i> <span data-lang="en">Secure Payment</span><span data-lang="rw">Kwishura Ku Bwizinga</span></div>
+        <h2><span data-lang="en">Unlock This Lesson</span><span data-lang="rw">Fungura Iri Somo</span></h2>
+        <p class="pay-sub"><span data-lang="en">Complete the MoMo payment below to gain instant access.</span><span data-lang="rw">Uzuza kwishura MoMo hasi kugira ngo ubone uburenganzira bwihuta.</span></p>
+
+        <div class="pay-amount-box">
+            <div class="pay-amount-label"><span data-lang="en">Amount to Pay</span><span data-lang="rw">Igiteranyo Gushyiraho</span></div>
+            <div class="pay-amount-value" id="payAmountDisplay">— RWF</div>
+            <div class="pay-amount-lesson" id="payAmountLesson"></div>
+        </div>
+
+        <div class="pay-details-card">
+            <div class="pay-detail-row">
+                <div class="pay-detail-icon"><i class="fas fa-user"></i></div>
+                <div class="pay-detail-content">
+                    <span class="pay-detail-label"><span data-lang="en">Account Name</span><span data-lang="rw">Izina ry'Akounti</span></span>
+                    <span class="pay-detail-value">Djazili</span>
+                </div>
+            </div>
+            <div class="pay-detail-divider"></div>
+            <div class="pay-detail-row">
+                <div class="pay-detail-icon"><i class="fas fa-hashtag"></i></div>
+                <div class="pay-detail-content">
+                    <span class="pay-detail-label"><span data-lang="en">Payment Code</span><span data-lang="rw">Code y'Ishyura</span></span>
+                    <span class="pay-detail-value pay-code-val" id="payCodeDisplay">239026</span>
+                </div>
+                <button class="pay-copy-btn" id="payCopyCode" title="Copy code"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="pay-detail-divider"></div>
+            <div class="pay-detail-row">
+                <div class="pay-detail-icon"><i class="fas fa-phone"></i></div>
+                <div class="pay-detail-content">
+                    <span class="pay-detail-label"><span data-lang="en">Send To</span><span data-lang="rw">Ohereza Kuri</span></span>
+                    <span class="pay-detail-value pay-phone-val">+250 781 853 141</span>
+                </div>
+                <button class="pay-copy-btn" id="payCopyPhone" title="Copy number"><i class="fas fa-copy"></i></button>
+            </div>
+        </div>
+
+        <div class="pay-footer">
+            <i class="fas fa-circle-check" style="color:#34d399;"></i>
+            <span data-lang="en">After paying, admin will approve your access shortly.</span>
+            <span data-lang="rw">Nyuma yo kwishura, umuyobozi azemeza uburenganzira bwawe vuba.</span>
         </div>
     </div>
 </div>
@@ -935,6 +1051,10 @@ body::before {
                     <div class="tag" id="videoTag">Tajweed</div>
                     <h1 id="videoTitle">Introduction to Makhaarij &amp; Sifaat</h1>
                     <div class="video-stats-row">
+                        <span class="stat price-badge-stat" id="priceDisplay" style="display:none;">
+                            <i class="fas fa-tag" style="color:var(--gold);"></i>
+                            <span id="priceTag">—</span>
+                        </span>
                         <span class="stat" id="difficultyDisplay"><i class="fas fa-signal"></i> <span id="difficultyLevel">—</span></span>
                         <span class="stat" id="ratingDisplay"><span class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span> 5.0</span>
                         <span class="stat" id="viewsDisplay"><i class="fas fa-eye"></i> <span id="viewCount">0</span> views</span>
@@ -956,6 +1076,10 @@ body::before {
                 <div class="instructor-info">
                     <h4 id="instructorName">—</h4>
                     <p id="instructorBio">Instructor &middot; <a href="#">View Profile</a></p>
+                </div>
+                <div class="instructor-price" id="instructorPrice" style="display:none;">
+                    <div class="instructor-price-label"><span data-lang="en">Price</span><span data-lang="rw">Igiciro</span></div>
+                    <div class="instructor-price-value" id="instructorPriceValue">—</div>
                 </div>
             </div>
 
@@ -1146,6 +1270,37 @@ var userHasAccess = false;
         var bgStyle = backdrop.style.backgroundImage;
         if (bgStyle) payBg.style.backgroundImage = bgStyle;
     }
+
+    // Copy buttons
+    var copyCode = document.getElementById('payCopyCode');
+    var copyPhone = document.getElementById('payCopyPhone');
+    function copyToClipboard(text, btn) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(function() {
+                btn.classList.add('copied');
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(function() {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = '<i class="fas fa-copy"></i>';
+                }, 1500);
+            });
+        } else {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            btn.classList.add('copied');
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+            setTimeout(function() {
+                btn.classList.remove('copied');
+                btn.innerHTML = '<i class="fas fa-copy"></i>';
+            }, 1500);
+        }
+    }
+    if (copyCode) copyCode.addEventListener('click', function() { copyToClipboard('239026', this); });
+    if (copyPhone) copyPhone.addEventListener('click', function() { copyToClipboard('+250781853141', this); });
 })();
 
 // ===== ACCESS CHECK =====
@@ -1283,6 +1438,21 @@ wirePlayerControls();
             payBg.style.backgroundImage = "url('" + (lesson.thumbnail_url || getCategoryFallback(lesson.category_name)) + "')";
         }
 
+        // Set payment price dynamically
+        var payAmountEl = document.getElementById('payAmountDisplay');
+        var payLessonEl = document.getElementById('payAmountLesson');
+        if (payAmountEl) {
+            var priceVal = lesson.price || 0;
+            if (lesson.is_free || priceVal === 0) {
+                payAmountEl.textContent = 'FREE';
+            } else {
+                payAmountEl.textContent = Number(priceVal).toLocaleString() + ' RWF';
+            }
+        }
+        if (payLessonEl) {
+            payLessonEl.textContent = lesson.title || '';
+        }
+
         var rating = lesson.rating || 0;
         document.getElementById('ratingDisplay').innerHTML = '<span class="stars">' + generateStars(rating) + '</span> ' + Number(rating).toFixed(1);
 
@@ -1291,12 +1461,39 @@ wirePlayerControls();
         document.getElementById('dateDisplay').innerHTML = '<i class="fas fa-calendar"></i> ' + formatDate(lesson.created_at);
         document.getElementById('difficultyLevel').textContent = lesson.difficulty || '\u2014';
 
+        // Show price badge
+        var priceDisplay = document.getElementById('priceDisplay');
+        var priceTag = document.getElementById('priceTag');
+        if (priceDisplay && priceTag) {
+            if (lesson.is_free || !lesson.price || lesson.price === 0) {
+                priceTag.textContent = 'Free';
+                priceDisplay.style.display = '';
+            } else {
+                priceTag.textContent = Number(lesson.price).toLocaleString() + ' RWF';
+                priceDisplay.style.display = '';
+            }
+        }
+
         var instrName = lesson.instructor_name || 'Unknown Instructor';
         document.getElementById('instructorName').textContent = instrName;
         var bioTxt = lesson.instructor_bio ? lesson.instructor_bio : 'Instructor';
         document.getElementById('instructorBio').innerHTML = bioTxt;
         var avatarImg = document.querySelector('#instructorAvatar img');
         if (avatarImg) avatarImg.src = lesson.instructor_avatar || 'Images/avatars/avatar_1.jpg';
+
+        // Show price next to instructor
+        var instrPriceBox = document.getElementById('instructorPrice');
+        var instrPriceVal = document.getElementById('instructorPriceValue');
+        if (instrPriceBox && instrPriceVal) {
+            instrPriceBox.style.display = '';
+            if (lesson.is_free || !lesson.price || lesson.price === 0) {
+                instrPriceVal.textContent = 'Free';
+                instrPriceVal.className = 'instructor-price-value free-label';
+            } else {
+                instrPriceVal.textContent = Number(lesson.price).toLocaleString() + ' RWF';
+                instrPriceVal.className = 'instructor-price-value';
+            }
+        }
 
         var timeEl = document.getElementById('playerTime');
         if (lesson.duration_minutes != null) {
